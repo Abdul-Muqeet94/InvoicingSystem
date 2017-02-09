@@ -10,7 +10,7 @@ namespace SimpleInvoices.Controllers
          [Route("api/users/register"), HttpPost]
          public BaseResponse AddUser([FromBody] RegisterUserReq user)
 		{
-			return new UserService(_db).insertUser(user);
+			return new BLL.Users(_db).addUsers(user);
 		}
     }
 }
