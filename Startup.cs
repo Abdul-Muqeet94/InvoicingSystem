@@ -32,7 +32,9 @@ namespace invoicingSystem
             services.AddDbContext<SimpleInvoices.InvoiceContext>(options =>
     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
     
-    
+            services.AddScoped<SimpleInvoices.Controllers.ValuesController>();
+           // services.AddScoped<SimpleInvoices.Controllers.UserController>();
+           // services.AddScoped<SimpleInvoices.Controllers.AuditFormsController>();
             // Add framework services.
             services.AddMvc();
             /*Adding swagger generation with default settings*/
