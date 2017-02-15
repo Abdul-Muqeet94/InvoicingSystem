@@ -214,11 +214,14 @@
 --resource:"D:\Games\Application\invoicingSystem\obj\Debug\netcoreapp1.1\invoicingSystemdotnet-compile.deps.json",invoicingSystem.deps.json
 D:\Games\Application\invoicingSystem\Program.cs
 D:\Games\Application\invoicingSystem\Startup.cs
+D:\Games\Application\invoicingSystem\BLL\Biller.cs
 D:\Games\Application\invoicingSystem\BLL\Customer.cs
 D:\Games\Application\invoicingSystem\BLL\Users.cs
 D:\Games\Application\invoicingSystem\Constants\Constant.cs
 D:\Games\Application\invoicingSystem\Controllers\BaseController.cs
+D:\Games\Application\invoicingSystem\Controllers\BillerController.cs
 D:\Games\Application\invoicingSystem\Controllers\CustomerController.cs
+D:\Games\Application\invoicingSystem\Controllers\HomeController.cs
 D:\Games\Application\invoicingSystem\Controllers\UserController.cs
 D:\Games\Application\invoicingSystem\Controllers\ValuesController.cs
 D:\Games\Application\invoicingSystem\Migrations\20170214142710_muqeet.cs
@@ -246,4 +249,5 @@ D:\Games\Application\invoicingSystem\Utils\Utils.cs
 D:\Games\Application\invoicingSystem\ViewModels\BaseResponse.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\RegisterUserReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\Users\UserViewReq.cs
+D:\Games\Application\invoicingSystem\ViewModels\Response\CustomFieldRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\UserViewRes.cs

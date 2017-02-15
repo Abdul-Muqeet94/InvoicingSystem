@@ -6,7 +6,7 @@ namespace SimpleInvoices.Controllers{
     public class BillerController:BaseController{
 
         public BillerController(InvoiceContext context):base(context){
-
+            
         }
 
         [Route("api/biller/create"), HttpPost]

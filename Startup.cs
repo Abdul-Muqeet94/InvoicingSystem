@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.Swagger.Model;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace invoicingSystem
 {
@@ -22,6 +25,8 @@ namespace invoicingSystem
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            
+            
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -31,9 +36,11 @@ namespace invoicingSystem
         {
             services.AddDbContext<SimpleInvoices.InvoiceContext>(options =>
     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-    
+            services.AddScoped<SimpleInvoices.Controllers.HomeController>();
             services.AddScoped<SimpleInvoices.Controllers.ValuesController>();
             services.AddScoped<SimpleInvoices.Controllers.UserController>();
+            services.AddDirectoryBrowser();
+            
            // services.AddScoped<SimpleInvoices.Controllers.AuditFormsController>();
             // Add framework services.
             services.AddMvc();
@@ -53,13 +60,24 @@ namespace invoicingSystem
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            
             /*Enabling swagger file*/
              app.UseSwagger();
              /*Enabling Swagger ui, consider doing it on Development env only*/
             app.UseSwaggerUi();
+            app.UseDefaultFiles();
+    app.UseStaticFiles();
+           
+       /*     app.UseMvc(routes =>
+   {
+       routes.MapRoute(
+           name: "default",
+           template: "{controller=Home}/{action=Index}");
+   });*/
             app.UseMvc();
 
- 
+       
             
         }
     }

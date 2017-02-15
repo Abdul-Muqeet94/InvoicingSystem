@@ -11,6 +11,22 @@ namespace SimpleInvoices.BLL{
         public Customers (InvoiceContext context){
             _db=context;
         }
+        public List<CustomFieldRes> getCustomFields()
+        {
+            List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
+            var db=_db;
+            var fields=db.customFields.Where(c=>c.tableName.Equals("Customers")).ToList();
+            if(fields.Count>0)
+            {
+                foreach(var entity in fields)
+                {
+                    toReturn.Add(new CustomFieldRes{
+                        fieldName=entity.fieldName
+                    });
+                }
+            }
+            return toReturn;
+        }
         public List<UserViewRes> getCustomers (int id)
         {
             var db=_db;
@@ -70,6 +86,7 @@ namespace SimpleInvoices.BLL{
                     db.userType.AddRange(types);
                     db.SaveChanges();
                 }
+                
                 cust.name=customer.name;
                 cust.address=customer.address;
                 cust.city=customer.city;
@@ -77,6 +94,18 @@ namespace SimpleInvoices.BLL{
                 cust.email=customer.email;
                 cust.enable=Constant.USER_ACTIVE;
                 cust.userType=db.userType.Where(c=>c.name.Equals("Customer")).FirstOrDefault();
+                if(customer.customFields.Count>0)
+                {
+                    foreach(var entity in customer.customFields)
+                    {
+                        var field=db.customFields.Where(c=>c.tableName.Equals("Customer") && c.fieldName.Equals(entity.fieldName)).FirstOrDefault();
+                    field.FieldValues.Add(new FieldValue {
+                        value=entity.fieldValue,
+                        customBillers=cust 
+                    });
+                    }
+                    
+                }
                 db.customersBillers.Add(cust);
                 if(db.SaveChanges()==1)
                 {

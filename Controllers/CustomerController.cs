@@ -8,6 +8,11 @@ namespace SimpleInvoices.Controllers{
         public CustomerController(InvoiceContext context):base(context){
 
         }
+        [Route("api/customer/getcustomfield"),HttpPost]
+        public List<CustomFieldRes> getCustomField()
+        {
+            return new BLL.Customers(_db).getCustomFields();
+        }
 
         [Route("api/customer/create"), HttpPost]
         public BaseResponse addCustomer ([FromBody] UserViewReq customer)

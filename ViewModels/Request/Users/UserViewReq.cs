@@ -8,6 +8,7 @@ namespace SimpleInvoices.ViewModels{
         public string contact {get;set;}
         public string email {get;set;}
         public string city {get;set;}
+        public List<CustomFieldRes> customFields {get;set;}
         
     }
 }
