@@ -44,7 +44,7 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
-        public BaseResponse addCustomer(UserViewReq customer)
+        public BaseResponse addBiller(UserViewReq customer)
         {
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
@@ -96,7 +96,7 @@ namespace SimpleInvoices.BLL{
             return toReturn;
         }
 
-        public BaseResponse editCustomer(UserViewReq customer)
+        public BaseResponse editBiller(UserViewReq customer)
         {
             var db=_db;
             BaseResponse toReturn =new BaseResponse();
@@ -129,7 +129,7 @@ namespace SimpleInvoices.BLL{
 
         }
 
-        public BaseResponse deleteCustomer(int id)
+        public BaseResponse deleteBiller(int id)
         {
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
