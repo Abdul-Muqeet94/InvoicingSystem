@@ -12,7 +12,6 @@ public class product:identity {
     public string description {get;set;}
     public double unitPrice{get;set;}
     public List<ProductTaxes> productTaxes {get;set;}
-    public List<CustomersBillersProducts> customersBillersProduct {get;set;}
     public List<ProcuctDesign> productDesign {get;set;}
     public DateTime createdOn {get {
         return createdOn;

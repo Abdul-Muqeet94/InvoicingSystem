@@ -10,42 +10,6 @@ namespace invoicingSystem.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "billers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    address = table.Column<string>(nullable: true),
-                    city = table.Column<string>(nullable: true),
-                    contact = table.Column<string>(nullable: true),
-                    email = table.Column<string>(nullable: true),
-                    enable = table.Column<bool>(nullable: false),
-                    name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_billers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "customers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    address = table.Column<string>(nullable: true),
-                    city = table.Column<string>(nullable: true),
-                    contact = table.Column<string>(nullable: true),
-                    email = table.Column<string>(nullable: true),
-                    enable = table.Column<bool>(nullable: false),
-                    name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_customers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "customFields",
                 columns: table => new
                 {
@@ -53,7 +17,6 @@ namespace invoicingSystem.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     enable = table.Column<bool>(nullable: false),
                     fieldName = table.Column<string>(nullable: true),
-                    fieldValue = table.Column<string>(nullable: true),
                     tableName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -143,6 +106,20 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "userType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    enable = table.Column<bool>(nullable: false),
+                    name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_userType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ledgerDetails",
                 columns: table => new
                 {
@@ -159,40 +136,6 @@ namespace invoicingSystem.Migrations
                         name: "FK_ledgerDetails_paymentTypes_paymentTypesId",
                         column: x => x.paymentTypesId,
                         principalTable: "paymentTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "customersBillersProducts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CustomersId = table.Column<int>(nullable: true),
-                    billersId = table.Column<int>(nullable: true),
-                    enable = table.Column<bool>(nullable: false),
-                    productId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_customersBillersProducts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_customersBillersProducts_customers_CustomersId",
-                        column: x => x.CustomersId,
-                        principalTable: "customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_customersBillersProducts_billers_billersId",
-                        column: x => x.billersId,
-                        principalTable: "billers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_customersBillersProducts_products_productId",
-                        column: x => x.productId,
-                        principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -252,6 +195,94 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "customersBillers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    address = table.Column<string>(nullable: true),
+                    city = table.Column<string>(nullable: true),
+                    contact = table.Column<string>(nullable: true),
+                    email = table.Column<string>(nullable: true),
+                    enable = table.Column<bool>(nullable: false),
+                    name = table.Column<string>(nullable: true),
+                    userTypeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_customersBillers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_customersBillers_userType_userTypeId",
+                        column: x => x.userTypeId,
+                        principalTable: "userType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "customersBillersProducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    billersId = table.Column<int>(nullable: true),
+                    customersId = table.Column<int>(nullable: true),
+                    enable = table.Column<bool>(nullable: false),
+                    productId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_customersBillersProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_customersBillersProducts_customersBillers_billersId",
+                        column: x => x.billersId,
+                        principalTable: "customersBillers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_customersBillersProducts_customersBillers_customersId",
+                        column: x => x.customersId,
+                        principalTable: "customersBillers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_customersBillersProducts_products_productId",
+                        column: x => x.productId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FieldValues",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CustomFieldsId = table.Column<int>(nullable: true),
+                    IdUser = table.Column<int>(nullable: false),
+                    customBillersId = table.Column<int>(nullable: true),
+                    enable = table.Column<bool>(nullable: false),
+                    value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FieldValues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FieldValues_customFields_CustomFieldsId",
+                        column: x => x.CustomFieldsId,
+                        principalTable: "customFields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FieldValues_customersBillers_customBillersId",
+                        column: x => x.customBillersId,
+                        principalTable: "customersBillers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ledgers",
                 columns: table => new
                 {
@@ -282,9 +313,9 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_customersBillersProducts_CustomersId",
-                table: "customersBillersProducts",
-                column: "CustomersId");
+                name: "IX_customersBillers_userTypeId",
+                table: "customersBillers",
+                column: "userTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_customersBillersProducts_billersId",
@@ -292,9 +323,24 @@ namespace invoicingSystem.Migrations
                 column: "billersId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_customersBillersProducts_customersId",
+                table: "customersBillersProducts",
+                column: "customersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_customersBillersProducts_productId",
                 table: "customersBillersProducts",
                 column: "productId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldValues_CustomFieldsId",
+                table: "FieldValues",
+                column: "CustomFieldsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldValues_customBillersId",
+                table: "FieldValues",
+                column: "customBillersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ledgerDetails_paymentTypesId",
@@ -335,7 +381,7 @@ namespace invoicingSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "customFields");
+                name: "FieldValues");
 
             migrationBuilder.DropTable(
                 name: "ledgers");
@@ -348,6 +394,9 @@ namespace invoicingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "customFields");
 
             migrationBuilder.DropTable(
                 name: "ledgerDetails");
@@ -365,13 +414,13 @@ namespace invoicingSystem.Migrations
                 name: "paymentTypes");
 
             migrationBuilder.DropTable(
-                name: "customers");
-
-            migrationBuilder.DropTable(
-                name: "billers");
+                name: "customersBillers");
 
             migrationBuilder.DropTable(
                 name: "products");
+
+            migrationBuilder.DropTable(
+                name: "userType");
         }
     }
 }

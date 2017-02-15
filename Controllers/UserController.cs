@@ -12,5 +12,6 @@ namespace SimpleInvoices.Controllers
 		{
 			return new BLL.Users(_db).addUsers(user);
 		}
+        
     }
 }
