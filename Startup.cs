@@ -67,7 +67,7 @@ namespace invoicingSystem
              /*Enabling Swagger ui, consider doing it on Development env only*/
             app.UseSwaggerUi();
             app.UseDefaultFiles();
-    app.UseStaticFiles();
+            app.UseStaticFiles();
            
        /*     app.UseMvc(routes =>
    {
