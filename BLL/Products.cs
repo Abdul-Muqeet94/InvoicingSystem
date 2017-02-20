@@ -48,8 +48,10 @@ namespace SimpleInvoices.BLL{
                      var customFields =new List<CustomFieldRes>();
                      for(int i=0;i<entity.customFields.Count;i++)
                      {
-                        customFields[i].fieldName=entity.customFields[i].fieldName;
-                        customFields[i].fieldValue=entity.customFields[i].FieldValues.Where(c=>c.product==entity).FirstOrDefault().value;
+                        customFields.Add(new CustomFieldRes {
+                            fieldName=entity.customFields[i].fieldName,
+                            fieldValue=entity.customFields[i].FieldValues.Where(c=>c.product==entity).FirstOrDefault().value
+                        });
                      }
                      toReturn.Add(new ProductViewRes(){
                          name=entity.name,
@@ -71,9 +73,10 @@ namespace SimpleInvoices.BLL{
         {
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
-            var Product=db.products.Where(c=>c.name.Equals(product.name)).FirstOrDefault();
+            var Product=db.products.Where(c=>c.Id.Equals(product.id)).FirstOrDefault();
             if(Product==null)
             {
+                Console.WriteLine("Product is null");
                 SimpleInvoices.product prod=new SimpleInvoices.product();
                 
                 prod.name=product.name;
@@ -83,28 +86,41 @@ namespace SimpleInvoices.BLL{
                 prod.price=product.price;
                 prod.enable=Constant.USER_ACTIVE;
                 prod.createdOn=DateTime.Now;
-                if(product.customField!=null)
+                Console.WriteLine("After Date");
+                if(product.customField.Count>0)
                 {
                     Console.WriteLine("in first If");
                     foreach(var entity in product.customField)
                     {
+                        string fieldname=entity.fieldName;
                         var field=db.customFields.Where(c=>c.tableName.Equals("Product") && c.fieldName.Equals(entity.fieldName)).FirstOrDefault();
                         field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
                         product=prod
                     });
-                    
+                    List<FieldValue> fieldValue=new List<FieldValue>();
+                   fieldValue=field.FieldValues;
+                   db.FieldValues.AddRange(fieldValue);
+                   Console.WriteLine("Field added");
                    }        
             }
+            
             else if(product.design.Count>0)
                    {
+                       Console.WriteLine("product count");
                        foreach (var entity in product.design)
                        {
-                           var design=db.design.Where(c=>c.Id.Equals(entity.id)).FirstOrDefault();
+                           var design=new Design{
+                               color=entity.color,
+                               fabric=entity.fabric,
+                               cut=entity.cut,
+                               note=entity.note
+                           };
                            prod.productDesign.Add(new ProductDesign {
                                product=prod,
                                design=design
                            });
+                        db.design.Add(design);
                        }
                    }
              

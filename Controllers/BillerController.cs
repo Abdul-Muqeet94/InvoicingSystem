@@ -25,9 +25,9 @@ namespace SimpleInvoices.Controllers{
             return new BLL.Biller(_db).deleteBiller(biller);
         }
         [Route("api/biller/getCustomers"), HttpPost]
-        public List<UserViewRes> getCustomers ([FromBody] int customer)
+        public List<UserViewRes> getBiller ([FromBody] int biller)
         {
-            return new BLL.Customers(_db).getCustomers(customer);
+            return new BLL.Biller(_db).getBiller(biller);
         }
 
     }

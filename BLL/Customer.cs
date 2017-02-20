@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SimpleInvoices;
 using SimpleInvoices.ViewModels;
 
@@ -15,7 +16,7 @@ namespace SimpleInvoices.BLL{
         {
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             var db=_db;
-            var fields=db.customFields.Where(c=>c.tableName.Equals("Customers")).ToList();
+            var fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
             if(fields.Count>0)
             {
                 foreach(var entity in fields)
@@ -37,18 +38,19 @@ namespace SimpleInvoices.BLL{
             if(id==0)
             {
               userList=db.customersBillers.Where(c=>c.userType.Equals(usertype) && c.enable==true).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
             }
             else
             {
              userList=db.customersBillers.Where(c=>c.Id.Equals(id) && c.userType.Equals(usertype) && c.enable==true).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
             }
             
             if(userList.Count>0)
             {
                 foreach(var entity in userList)
                 {
+                    var getCustom=bll_getcustomFields(fields,entity);
                     toReturn.Add(new UserViewRes(){
                         name=entity.name,
                         contact=entity.contact,
@@ -69,10 +71,14 @@ namespace SimpleInvoices.BLL{
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             
             for(int i=0;i<customField.Count;i++){
-
-                toReturn[i].fieldName=customField[i].fieldName;
-                toReturn[i].fieldValue=(customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault()!=null)?
+                var fieldValue=(customField[i].FieldValues.Where(c=> c.customBillers.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
                 customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault().value:" ";
+                toReturn.Add(new CustomFieldRes{
+                    fieldName=customField[i].fieldName,
+                    fieldValue=fieldValue
+                });
+              //  toReturn[i].fieldValue=(customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault()!=null)?
+              //  customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault().value:" ";
             }
             
             return toReturn;
@@ -87,7 +93,6 @@ namespace SimpleInvoices.BLL{
                 SimpleInvoices.CustomersBillers cust=new SimpleInvoices.CustomersBillers();
                 if(!db.userType.Any())
                 {
-                    Console.WriteLine("value is empty");
                     List<UsersType> types=new List<UsersType>();
                     
                     types.Add(new SimpleInvoices.UsersType(){
