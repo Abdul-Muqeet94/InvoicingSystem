@@ -61,6 +61,18 @@ namespace invoicingSystem
              app.UseSwagger();
              /*Enabling Swagger ui, consider doing it on Development env only*/
             app.UseSwaggerUi();
+<<<<<<< HEAD
+=======
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+           
+       /*     app.UseMvc(routes =>
+   {
+       routes.MapRoute(
+           name: "default",
+           template: "{controller=Home}/{action=Index}");
+   });*/
+>>>>>>> c2c0d72c1fa0f986e0778c8f649ab6ec3f9f8d40
             app.UseMvc();
 
  

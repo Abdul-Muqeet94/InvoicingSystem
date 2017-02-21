@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace SimpleInvoices.ViewModels{
     public class UserViewReq{
+        public UserViewReq(){
+            customFields=new List<CustomFieldRes>();
+        }
         public int id {get;set;}
         public string name {get;set;}
         public string address {get;set;}

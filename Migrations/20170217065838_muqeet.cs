@@ -10,21 +10,6 @@ namespace invoicingSystem.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "customFields",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    enable = table.Column<bool>(nullable: false),
-                    fieldName = table.Column<string>(nullable: true),
-                    tableName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_customFields", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "design",
                 columns: table => new
                 {
@@ -141,30 +126,49 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "productDesign",
+                name: "customFields",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DesignId = table.Column<int>(nullable: true),
                     enable = table.Column<bool>(nullable: false),
-                    productId = table.Column<int>(nullable: true)
+                    fieldName = table.Column<string>(nullable: true),
+                    productId = table.Column<int>(nullable: true),
+                    tableName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_productDesign", x => x.Id);
+                    table.PrimaryKey("PK_customFields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_productDesign_design_DesignId",
-                        column: x => x.DesignId,
-                        principalTable: "design",
+                        name: "FK_customFields_products_productId",
+                        column: x => x.productId,
+                        principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "productDesign",
+                columns: table => new
+                {
+                    productId = table.Column<int>(nullable: false),
+                    designId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productDesign", x => new { x.productId, x.designId });
+                    table.ForeignKey(
+                        name: "FK_productDesign_design_designId",
+                        column: x => x.designId,
+                        principalTable: "design",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_productDesign_products_productId",
                         column: x => x.productId,
                         principalTable: "products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,8 +178,7 @@ namespace invoicingSystem.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TaxesId = table.Column<int>(nullable: true),
-                    enable = table.Column<bool>(nullable: false),
-                    productId = table.Column<int>(nullable: true)
+                    enable = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,12 +187,6 @@ namespace invoicingSystem.Migrations
                         name: "FK_ProductTaxes_taxes_TaxesId",
                         column: x => x.TaxesId,
                         principalTable: "taxes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProductTaxes_products_productId",
-                        column: x => x.productId,
-                        principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -260,9 +257,9 @@ namespace invoicingSystem.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CustomFieldsId = table.Column<int>(nullable: true),
-                    IdUser = table.Column<int>(nullable: false),
                     customBillersId = table.Column<int>(nullable: true),
                     enable = table.Column<bool>(nullable: false),
+                    productId = table.Column<int>(nullable: true),
                     value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -278,6 +275,12 @@ namespace invoicingSystem.Migrations
                         name: "FK_FieldValues_customersBillers_customBillersId",
                         column: x => x.customBillersId,
                         principalTable: "customersBillers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FieldValues_products_productId",
+                        column: x => x.productId,
+                        principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -333,6 +336,11 @@ namespace invoicingSystem.Migrations
                 column: "productId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_customFields_productId",
+                table: "customFields",
+                column: "productId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FieldValues_CustomFieldsId",
                 table: "FieldValues",
                 column: "CustomFieldsId");
@@ -341,6 +349,11 @@ namespace invoicingSystem.Migrations
                 name: "IX_FieldValues_customBillersId",
                 table: "FieldValues",
                 column: "customBillersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldValues_productId",
+                table: "FieldValues",
+                column: "productId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ledgerDetails_paymentTypesId",
@@ -358,24 +371,14 @@ namespace invoicingSystem.Migrations
                 column: "customersBillersProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_productDesign_DesignId",
+                name: "IX_productDesign_designId",
                 table: "productDesign",
-                column: "DesignId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_productDesign_productId",
-                table: "productDesign",
-                column: "productId");
+                column: "designId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductTaxes_TaxesId",
                 table: "ProductTaxes",
                 column: "TaxesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductTaxes_productId",
-                table: "ProductTaxes",
-                column: "productId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

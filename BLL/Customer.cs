@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SimpleInvoices;
 using SimpleInvoices.ViewModels;
 
@@ -15,7 +16,7 @@ namespace SimpleInvoices.BLL{
         {
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             var db=_db;
-            var fields=db.customFields.Where(c=>c.tableName.Equals("Customers")).ToList();
+            var fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
             if(fields.Count>0)
             {
                 foreach(var entity in fields)
@@ -31,34 +32,55 @@ namespace SimpleInvoices.BLL{
         {
             var db=_db;
             List<UserViewRes> toReturn =new List<UserViewRes>();
+            List<CustomFields> fields=new List<CustomFields>();
             var usertype=db.userType.Where(c=>c.name.Equals("Customer")).FirstOrDefault();
             List<SimpleInvoices.CustomersBillers> userList=new List<SimpleInvoices.CustomersBillers>();
             if(id==0)
             {
               userList=db.customersBillers.Where(c=>c.userType.Equals(usertype) && c.enable==true).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
             }
             else
             {
              userList=db.customersBillers.Where(c=>c.Id.Equals(id) && c.userType.Equals(usertype) && c.enable==true).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
             }
             
             if(userList.Count>0)
             {
                 foreach(var entity in userList)
                 {
+                    var getCustom=bll_getcustomFields(fields,entity);
                     toReturn.Add(new UserViewRes(){
                         name=entity.name,
                         contact=entity.contact,
                         city=entity.city,
                         id=entity.Id,
                         email=entity.email,
-                        address=entity.address
+                        address=entity.address,
+                        customfields=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>()
                     });
                 }
             }
             else{
                 return toReturn;
             }
+            return toReturn;
+        }
+        public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,CustomersBillers customer){
+            List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
+            
+            for(int i=0;i<customField.Count;i++){
+                var fieldValue=(customField[i].FieldValues.Where(c=> c.customBillers.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
+                customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault().value:" ";
+                toReturn.Add(new CustomFieldRes{
+                    fieldName=customField[i].fieldName,
+                    fieldValue=fieldValue
+                });
+              //  toReturn[i].fieldValue=(customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault()!=null)?
+              //  customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault().value:" ";
+            }
+            
             return toReturn;
         }
         public BaseResponse addCustomer(UserViewReq customer)
@@ -71,7 +93,6 @@ namespace SimpleInvoices.BLL{
                 SimpleInvoices.CustomersBillers cust=new SimpleInvoices.CustomersBillers();
                 if(!db.userType.Any())
                 {
-                    Console.WriteLine("value is empty");
                     List<UsersType> types=new List<UsersType>();
                     
                     types.Add(new SimpleInvoices.UsersType(){
@@ -98,16 +119,21 @@ namespace SimpleInvoices.BLL{
                 {
                     foreach(var entity in customer.customFields)
                     {
-                        var field=db.customFields.Where(c=>c.tableName.Equals("Customer") && c.fieldName.Equals(entity.fieldName)).FirstOrDefault();
-                    field.FieldValues.Add(new FieldValue {
+                        string name=entity.fieldName;
+                        var field=db.customFields.Where(c=>c.tableName.Equals("Customer") && c.fieldName.Equals(name)).FirstOrDefault();
+                   field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
                         customBillers=cust 
                     });
+                    
+                   List<FieldValue> fieldValue=new List<FieldValue>();
+                   fieldValue=field.FieldValues;
+                    db.FieldValues.AddRange(fieldValue);
                     }
                     
                 }
                 db.customersBillers.Add(cust);
-                if(db.SaveChanges()==1)
+                if(db.SaveChanges()>=1)
                 {
                     toReturn.status=1;
                     toReturn.developerMessage="Customer has been created";

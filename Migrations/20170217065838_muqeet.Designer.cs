@@ -8,7 +8,7 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170214142710_muqeet")]
+    [Migration("20170217065838_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,9 +76,13 @@ namespace invoicingSystem.Migrations
 
                     b.Property<string>("fieldName");
 
+                    b.Property<int?>("productId");
+
                     b.Property<string>("tableName");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("productId");
 
                     b.ToTable("customFields");
                 });
@@ -110,11 +114,11 @@ namespace invoicingSystem.Migrations
 
                     b.Property<int?>("CustomFieldsId");
 
-                    b.Property<int>("IdUser");
-
                     b.Property<int?>("customBillersId");
 
                     b.Property<bool>("enable");
+
+                    b.Property<int?>("productId");
 
                     b.Property<string>("value");
 
@@ -123,6 +127,8 @@ namespace invoicingSystem.Migrations
                     b.HasIndex("CustomFieldsId");
 
                     b.HasIndex("customBillersId");
+
+                    b.HasIndex("productId");
 
                     b.ToTable("FieldValues");
                 });
@@ -185,26 +191,6 @@ namespace invoicingSystem.Migrations
                     b.ToTable("paymentTypes");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.ProcuctDesign", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("DesignId");
-
-                    b.Property<bool>("enable");
-
-                    b.Property<int?>("productId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DesignId");
-
-                    b.HasIndex("productId");
-
-                    b.ToTable("productDesign");
-                });
-
             modelBuilder.Entity("SimpleInvoices.product", b =>
                 {
                     b.Property<int>("Id")
@@ -231,6 +217,19 @@ namespace invoicingSystem.Migrations
                     b.ToTable("products");
                 });
 
+            modelBuilder.Entity("SimpleInvoices.ProductDesign", b =>
+                {
+                    b.Property<int>("productId");
+
+                    b.Property<int>("designId");
+
+                    b.HasKey("productId", "designId");
+
+                    b.HasIndex("designId");
+
+                    b.ToTable("productDesign");
+                });
+
             modelBuilder.Entity("SimpleInvoices.ProductTaxes", b =>
                 {
                     b.Property<int>("Id")
@@ -240,13 +239,9 @@ namespace invoicingSystem.Migrations
 
                     b.Property<bool>("enable");
 
-                    b.Property<int?>("productId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("TaxesId");
-
-                    b.HasIndex("productId");
 
                     b.ToTable("ProductTaxes");
                 });
@@ -319,6 +314,13 @@ namespace invoicingSystem.Migrations
                         .HasForeignKey("productId");
                 });
 
+            modelBuilder.Entity("SimpleInvoices.CustomFields", b =>
+                {
+                    b.HasOne("SimpleInvoices.product")
+                        .WithMany("customFields")
+                        .HasForeignKey("productId");
+                });
+
             modelBuilder.Entity("SimpleInvoices.FieldValue", b =>
                 {
                     b.HasOne("SimpleInvoices.CustomFields")
@@ -328,6 +330,10 @@ namespace invoicingSystem.Migrations
                     b.HasOne("SimpleInvoices.CustomersBillers", "customBillers")
                         .WithMany()
                         .HasForeignKey("customBillersId");
+
+                    b.HasOne("SimpleInvoices.product", "product")
+                        .WithMany()
+                        .HasForeignKey("productId");
                 });
 
             modelBuilder.Entity("SimpleInvoices.LedgerDetails", b =>
@@ -348,15 +354,17 @@ namespace invoicingSystem.Migrations
                         .HasForeignKey("customersBillersProductsId");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.ProcuctDesign", b =>
+            modelBuilder.Entity("SimpleInvoices.ProductDesign", b =>
                 {
-                    b.HasOne("SimpleInvoices.Design")
+                    b.HasOne("SimpleInvoices.Design", "design")
                         .WithMany("productDesign")
-                        .HasForeignKey("DesignId");
+                        .HasForeignKey("designId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SimpleInvoices.product")
+                    b.HasOne("SimpleInvoices.product", "product")
                         .WithMany("productDesign")
-                        .HasForeignKey("productId");
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SimpleInvoices.ProductTaxes", b =>
@@ -364,10 +372,6 @@ namespace invoicingSystem.Migrations
                     b.HasOne("SimpleInvoices.Taxes")
                         .WithMany("productTaxes")
                         .HasForeignKey("TaxesId");
-
-                    b.HasOne("SimpleInvoices.product")
-                        .WithMany("productTaxes")
-                        .HasForeignKey("productId");
                 });
         }
     }

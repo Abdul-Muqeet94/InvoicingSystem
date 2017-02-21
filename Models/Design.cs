@@ -7,6 +7,6 @@ namespace SimpleInvoices {
         public string cut {get;set;}
         public string color {get;set;}
         public string note {get;set;}
-        public List<ProcuctDesign> productDesign {get;set;}
+        public List<ProductDesign> productDesign {get;set;}
     }
 }

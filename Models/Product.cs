@@ -11,13 +11,8 @@ public class product:identity {
     public string note {get;set;}
     public string description {get;set;}
     public double unitPrice{get;set;}
-    public List<ProductTaxes> productTaxes {get;set;}
-    public List<ProcuctDesign> productDesign {get;set;}
-    public DateTime createdOn {get {
-        return createdOn;
-    } set 
-    {
-        this.createdOn=DateTime.Now;
-    }}
+    public List<CustomFields> customFields {get;set;}
+    public List<ProductDesign> productDesign {get;set;}
+    public DateTime createdOn {get;set;}
     }
 }
