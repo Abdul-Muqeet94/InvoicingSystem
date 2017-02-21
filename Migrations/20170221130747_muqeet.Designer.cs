@@ -8,7 +8,7 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170221070740_muqeet")]
+    [Migration("20170221130747_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,6 +161,8 @@ namespace invoicingSystem.Migrations
                     b.Property<double>("amount");
 
                     b.Property<double>("balance");
+
+                    b.Property<DateTime>("createdDate");
 
                     b.Property<int?>("customersBillersProductsId");
 

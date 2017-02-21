@@ -294,6 +294,7 @@ namespace invoicingSystem.Migrations
                     LedgerDetailsId = table.Column<int>(nullable: true),
                     amount = table.Column<double>(nullable: false),
                     balance = table.Column<double>(nullable: false),
+                    createdDate = table.Column<DateTime>(nullable: false),
                     customersBillersProductsId = table.Column<int>(nullable: true),
                     dueDate = table.Column<DateTime>(nullable: false),
                     enable = table.Column<bool>(nullable: false)

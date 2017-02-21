@@ -161,6 +161,8 @@ namespace invoicingSystem.Migrations
 
                     b.Property<double>("balance");
 
+                    b.Property<DateTime>("createdDate");
+
                     b.Property<int?>("customersBillersProductsId");
 
                     b.Property<DateTime>("dueDate");

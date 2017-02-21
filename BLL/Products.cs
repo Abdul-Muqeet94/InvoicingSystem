@@ -35,11 +35,11 @@ namespace SimpleInvoices.BLL{
             List<SimpleInvoices.product> productList=new List<SimpleInvoices.product>();
             if(id==0)
             {
-              productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).Include(c=>c.productDesign).ToList();
+              productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).Include(c=>c.productDesign).ThenInclude(c=>c.design).ToList();
             }
             else
             {
-             productList=db.products.Where(c=>c.Id.Equals(id)  && c.enable==true).ToList();
+             productList=db.products.Where(c=>c.Id.Equals(id)  && c.enable==true).Include(c=>c.customFields).Include(c=>c.productDesign).ThenInclude(c=>c.design).ToList();
             }
             
             if(productList.Count>0)
@@ -47,11 +47,24 @@ namespace SimpleInvoices.BLL{
                  foreach(var entity in productList)
                  {
                      var customFields =new List<CustomFieldRes>();
+                     var design=new List<DesignViewReq>();
                      for(int i=0;i<entity.customFields.Count;i++)
                      {
                         customFields.Add(new CustomFieldRes {
                             fieldName=entity.customFields[i].fieldName,
                             fieldValue=entity.customFields[i].FieldValues.Where(c=>c.product==entity).FirstOrDefault().value
+                        });
+                     }
+                     for(int i=0;i<entity.productDesign.Count;i++)
+                     {
+                         Console.WriteLine("product Design"+entity.productDesign.Count);
+                         Console.WriteLine(" Design"+entity.productDesign[i].design.color);
+                        design.Add(new DesignViewReq{
+                            color=entity.productDesign[i].design.color,
+                            fabric=entity.productDesign[i].design.fabric,
+                            cut=entity.productDesign[i].design.cut,
+                            note=entity.productDesign[i].design.note
+                            
                         });
                      }
                      toReturn.Add(new ProductViewRes(){
@@ -61,7 +74,8 @@ namespace SimpleInvoices.BLL{
                          note=entity.note,
                          description=entity.description,
                          price=entity.price,
-                         customField=customFields
+                         customField=customFields,
+                         designs=design
                      });
                  }
             }
@@ -78,9 +92,10 @@ namespace SimpleInvoices.BLL{
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
             SimpleInvoices.product dbProduct=new SimpleInvoices.product();
+            List<Design> designLists=new List<Design>();
             string name=product.name;
-            Console.WriteLine(name);
-             dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
+            Console.WriteLine("Product name "+name);
+            dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
             Console.WriteLine("get Product");
             if(dbProduct==null)
             {
@@ -117,22 +132,33 @@ namespace SimpleInvoices.BLL{
                        Console.WriteLine("product count");
                        foreach (var entity in product.design)
                        {
-                           var design=new Design{
+                           var design=new SimpleInvoices.Design{
                                color=entity.color,
                                fabric=entity.fabric,
                                cut=entity.cut,
                                note=entity.note
                            };
+                           /*
                            prod.productDesign.Add(new ProductDesign {
                                product=prod,
                                design=design
-                           });
-                        db.design.Add(design);
+                           }); */
+                           Console.WriteLine("Design Values"+design.color+"fabric"+design.fabric);
+                           db.design.Add(design);
+                           db.products.Add(prod);
+                            var productDesign=new ProductDesign{
+                            product=prod,
+                            design=design
+                        };
+                        db.productDesign.Add(productDesign);
                        }
+                        
                    }
-             
-                db.products.Add(prod);
-                if(db.SaveChanges()==1)
+                     else
+                       {
+                           db.products.Add(prod);
+                       }
+                if(db.SaveChanges()>0)
                 {
                     toReturn.status=1;
                     toReturn.developerMessage="Product has been created";

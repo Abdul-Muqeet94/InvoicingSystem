@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleInvoices.Controllers{
     public class ProductController:BaseController{
-        protected readonly InvoiceContext _db;
         public ProductController(InvoiceContext context):base(context)
         {
         }
