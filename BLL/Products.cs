@@ -77,16 +77,15 @@ namespace SimpleInvoices.BLL{
             try{
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
-    
+            SimpleInvoices.product dbProduct=new SimpleInvoices.product();
             string name=product.name;
             Console.WriteLine(name);
-            var dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
+             dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
             Console.WriteLine("get Product");
             if(dbProduct==null)
             {
                 Console.WriteLine("Product is null");
                 SimpleInvoices.product prod=new SimpleInvoices.product();
-                
                 prod.name=product.name;
                 prod.color=product.color;
                 prod.note=product.note;
