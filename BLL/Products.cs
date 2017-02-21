@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SimpleInvoices;
 using SimpleInvoices.ViewModels;
 
@@ -34,7 +35,7 @@ namespace SimpleInvoices.BLL{
             List<SimpleInvoices.product> productList=new List<SimpleInvoices.product>();
             if(id==0)
             {
-              productList=db.products.Where(c=> c.enable==true).ToList();
+              productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).Include(c=>c.productDesign).ToList();
             }
             else
             {
@@ -69,12 +70,19 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
+
+       
         public BaseResponse addProduct(ProductViewReq product)
         {
+            try{
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
-            var Product=db.products.Where(c=>c.Id.Equals(product.id)).FirstOrDefault();
-            if(Product==null)
+    
+            string name=product.name;
+            Console.WriteLine(name);
+            var dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
+            Console.WriteLine("get Product");
+            if(dbProduct==null)
             {
                 Console.WriteLine("Product is null");
                 SimpleInvoices.product prod=new SimpleInvoices.product();
@@ -141,9 +149,14 @@ namespace SimpleInvoices.BLL{
                 toReturn.status=-2;
                 toReturn.developerMessage="Product is already Created";
             }
-            return toReturn;
-        }
 
+            return toReturn;
+            }
+            catch(Exception ex){
+                Console.WriteLine("error "+ex);
+                return new BaseResponse();
+            }
+        }
         public BaseResponse editProduct(ProductViewReq product)
         {
             var db=_db;

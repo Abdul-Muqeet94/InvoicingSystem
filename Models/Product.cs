@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 namespace SimpleInvoices {
 
 public class product:identity {
+    public product(){
+        customFields=new List<CustomFields>();
+        productDesign=new List<ProductDesign>();
+    }
     public string name {get;set;}
     public string color {get;set;}
     public double price {get;set;}
