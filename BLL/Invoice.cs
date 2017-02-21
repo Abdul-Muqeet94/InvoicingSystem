@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SimpleInvoices;
 using SimpleInvoices.ViewModels;
@@ -51,6 +53,7 @@ namespace SimpleInvoices.BLL{
         }
         public List<InvoiceRes> getAllInvoice(){
             List<InvoiceRes> toReturn=new List<InvoiceRes>();
+            
             return toReturn;
         }
 

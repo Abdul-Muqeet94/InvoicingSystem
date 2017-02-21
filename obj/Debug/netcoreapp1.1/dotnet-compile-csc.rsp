@@ -256,6 +256,7 @@
 "D:\Games\Application\invoicingSystem\ViewModels\Request\product\productViewReq.cs"
 "D:\Games\Application\invoicingSystem\ViewModels\Request\Users\UserViewReq.cs"
 "D:\Games\Application\invoicingSystem\ViewModels\Response\CustomFieldRes.cs"
+"D:\Games\Application\invoicingSystem\ViewModels\Response\InvoiceRes.cs"
 "D:\Games\Application\invoicingSystem\ViewModels\Response\productRes.cs"
 "D:\Games\Application\invoicingSystem\ViewModels\Response\ProductViewRes.cs"
 "D:\Games\Application\invoicingSystem\ViewModels\Response\UserViewRes.cs"

@@ -11,6 +11,9 @@ namespace SimpleInvoices.ViewModels{
         public string contact {get;set;}
         public string email {get;set;}
         public string city {get;set;}
+        public double total{get;set;}
+        public double paid{get;set;}
+        public double owing{get;set;}
         public List<CustomFieldRes> customfields{get;set;}
 
     }

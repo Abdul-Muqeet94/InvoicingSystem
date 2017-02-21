@@ -31,6 +31,9 @@ namespace SimpleInvoices.BLL{
         public List<UserViewRes> getCustomers (int id)
         {
             var db=_db;
+            double total=0;
+            double paid=0;
+            double owing=0;
             List<UserViewRes> toReturn =new List<UserViewRes>();
             List<CustomFields> fields=new List<CustomFields>();
             var usertype=db.userType.Where(c=>c.name.Equals("Customer")).FirstOrDefault();
@@ -39,6 +42,7 @@ namespace SimpleInvoices.BLL{
             {
               userList=db.customersBillers.Where(c=>c.userType.Equals(usertype) && c.enable==true).ToList();
               fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
+              
             }
             else
             {
@@ -48,8 +52,18 @@ namespace SimpleInvoices.BLL{
             
             if(userList.Count>0)
             {
+                
                 foreach(var entity in userList)
                 {
+                    var legder=db.ledgers.Include(c=>c.customersBillersProducts).ThenInclude(c=>c.customers).Where(c=>c.customersBillersProducts.customers==entity).ToList();
+                   foreach(var values in legder)
+                   {
+                    paid+=values.amount;
+                    owing+=values.balance;
+                   }
+                   total=paid+owing;
+                  Console.WriteLine("Customer added"); 
+                    
                     var getCustom=bll_getcustomFields(fields,entity);
                     toReturn.Add(new UserViewRes(){
                         name=entity.name,
@@ -58,7 +72,10 @@ namespace SimpleInvoices.BLL{
                         id=entity.Id,
                         email=entity.email,
                         address=entity.address,
-                        customfields=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>()
+                        customfields=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>(),
+                        total=total,
+                        paid=paid,
+                        owing=owing
                     });
                 }
             }
