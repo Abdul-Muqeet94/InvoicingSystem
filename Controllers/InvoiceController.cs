@@ -9,7 +9,7 @@ namespace SimpleInvoices.Controllers
 
         }
         [Route("api/invoice/createinvoice"),HttpPost]
-        public BaseResponse createInvoice([FromBody] InvoiceReq invoice)
+        public BaseResponse createInvoice([FromBody] List<InvoiceReq> invoice)
         {
             return new BLL.Invoice(_db).createInvoice(invoice);
         } 

@@ -11,11 +11,12 @@ namespace SimpleInvoices.BLL{
         public Invoice (InvoiceContext context){
             _db=context;
         }
-        public BaseResponse createInvoice(InvoiceReq invoice){
+        public BaseResponse createInvoice(List<InvoiceReq> invoiceList){
             BaseResponse toReturn=new BaseResponse();
             CustomersBillersProducts customerBillerProduct=new CustomersBillersProducts();
-            try{
             var db=_db;
+            try{
+                foreach(var invoice in invoiceList){
             var customer=db.customersBillers.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
             var biller=db.customersBillers.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
             var product=db.products.Where(c=>c.Id.Equals(invoice.productId)).FirstOrDefault();
@@ -34,6 +35,9 @@ namespace SimpleInvoices.BLL{
                     customersBillersProducts=customerBillerProduct,
                     enable=Constant.USER_ACTIVE
                 });
+                
+            }
+                }
                 if(db.SaveChanges()>0){
                     toReturn.developerMessage="Invoice Created Successfully";
                     toReturn.status=1;
@@ -42,8 +46,6 @@ namespace SimpleInvoices.BLL{
                     toReturn.developerMessage="Unable to Create invoice";
                     toReturn.status=2;
                 }
-            }
-
             return toReturn;
             }
             catch (Exception ex){
