@@ -31,9 +31,7 @@ namespace SimpleInvoices.BLL{
         public List<UserViewRes> getCustomers (int id)
         {
             var db=_db;
-            double total=0;
-            double paid=0;
-            double owing=0;
+            
             List<UserViewRes> toReturn =new List<UserViewRes>();
             List<CustomFields> fields=new List<CustomFields>();
             var usertype=db.userType.Where(c=>c.name.Equals("Customer")).FirstOrDefault();
@@ -55,6 +53,9 @@ namespace SimpleInvoices.BLL{
                 
                 foreach(var entity in userList)
                 {
+                    double total=0;
+            double paid=0;
+            double owing=0;
                     var legder=db.ledgers.Include(c=>c.customersBillersProducts).ThenInclude(c=>c.customers).Where(c=>c.customersBillersProducts.customers==entity).ToList();
                    foreach(var values in legder)
                    {
