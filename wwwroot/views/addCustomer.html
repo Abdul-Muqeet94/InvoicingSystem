@@ -1,0 +1,85 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <title>Bootstrap Example</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="css/bootstrap.min.css">
+	  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/stylesheet.css">
+
+	</head>
+	<body>-->
+	 				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+	 					<div class="" ng-controller="addCustomer" >
+	 						<form ng-submit="addCustomer()">
+	 							<fieldset class="form-group">
+	 								<legend>Add Customer</legend>
+	 								<label for="customerName">Customer Name</label>
+	 								<input type="text" class="form-control" id="customerName"ng-model="name" placeholder="Enter Customer Name">
+	 								<!--<label for="department">Department</label>
+	 								<input type="text" class="form-control" id="department" placeholder="Department">-->
+	 								<label for="customerContact">Customer Contact (Attn)</label>
+	 								<input type="number" class="form-control" id="customerContact"  ng-model="contact" placeholder="Customer Contact (Attn)">
+	 								<label for="streetAddress">Street Address</label>
+	 								<input type="text" class="form-control" id="streetAddress" ng-model="address"  placeholder="Street Address">
+	 								<!--<label for="streetAddress2">Street Address</label>
+	 								<input type="text" class="form-control" id="streetAddress2" placeholder="Street Address">-->
+	 								<label for="city">City</label>
+	 								<input type="text" class="form-control" id="city" ng-model="city" placeholder="City">
+	 								<!--<label for="state">State</label>
+	 								<input type="text" class="form-control" id="state" placeholder="State">
+	 								<label for="zipCode">Zip Code</label>
+	 								<input type="text" class="form-control" id="zipCode" placeholder="Zip Code">
+	 								<label for="country">Country</label>
+	 								<input type="text" class="form-control" id="country" placeholder="Country">
+	 								<label for="fax">Phone</label>
+	 								<input type="text" class="form-control" id="fax" placeholder="Fax">-->
+	 								<!--<label for="phone">Phone</label>
+	 								<input type="number" class="form-control" id="phone" ng-model="user.number" placeholder="Phone">-->
+	 								<!--<label for="mobilePhone">Mobile Phone</label>
+	 								<input type="text" class="form-control" id="mobilePhone" placeholder="Mobile Phone">
+	 								<label for="fax">Fax</label>
+	 								<input type="text" class="form-control" id="fax" placeholder="Fax">-->
+	 								<label for="email">Email</label>
+	 								<input type="email" class="form-control" id="email" ng-model="email" placeholder="Email">
+	 								<!--<label for="craditCardHolderName">Cradit Card Holder Name</label>
+	 								<input type="text" class="form-control" id="craditCardHolderName" placeholder="Cradit Card Holder Name">
+	 								<label for="craditCardNumber">Cradit Card Number</label>
+	 								<input type="text" class="form-control" id="craditCardNumber" placeholder="Cradit Card Number">
+	 								<label for="craditCardExpiryMonth">Cradit Card Expiry Month</label>
+	 								<input type="text" class="form-control" id="craditCardExpiryMonth" placeholder="Cradit Card Expiry Month">
+	 								<label for="craditCardExpiryYear">Cradit Card Expiry Year</label>
+	 								<input type="text" class="form-control" id="craditCardExpiryYear" placeholder="Cradit Card Expiry Year">-->
+	 								<label for="select">Enable</label>
+	 								<select name="select" >
+	 									<option value="enable">Enable</option>
+	 									<option value="disable">Disable</option>
+	 								</select>
+
+<div ng-repeat="input in fields">
+ <label for="craditCardNumber">{{input}}</label>
+  <input type="text" class="form-control" ng-model="{{input}}"> 
+</div>
+
+	 							</fieldset>
+ <button type="submit"><i class="fa fa-plus-circle" aria-hidden="true"></i><span> New Customer</span></button>
+	 						</form>
+	 					</div>
+	 				</div>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>
+	  <!--<script src="../shared/angular.min.js"></script> -->
+	 <script src="../angular-route/angular-route.js"></script>
+	  <script src="../angular-animate/angular-animate.js"></script>
+	 <script  src="../js/customer.js"></script>
+	 <!-- <script   src="../controllers/customer.js"></script> -->
+	  <script src="js/jquery.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+	  <script>
+$("#menu > li > a").click(function () {
+    // $('ul.sub-menu').not($(this).siblings()).slideUp();
+    $(this).siblings("ul.sub-menu").slideToggle();
+});
+</script>
+	<!--</body>
+</html>-->
