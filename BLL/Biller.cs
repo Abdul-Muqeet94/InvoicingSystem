@@ -12,21 +12,21 @@ namespace SimpleInvoices.BLL{
             _db=context;
         }
         
-        public List<UserViewRes> getBiller (int id)
+        public List<BillerViewRes> getBiller (int id)
         {
             var db=_db;
-            List<UserViewRes> toReturn =new List<UserViewRes>();
-            var usertype=db.userType.Where(c=>c.name.Equals("Biller")).FirstOrDefault();
-            List<SimpleInvoices.CustomersBillers> userList=new List<SimpleInvoices.CustomersBillers>();
+            List<BillerViewRes> toReturn =new List<BillerViewRes>();
+            
+            List<SimpleInvoices.Billers> userList=new List<SimpleInvoices.Billers>();
             List<SimpleInvoices.CustomFields> fields=new List<SimpleInvoices.CustomFields>();
             if(id==0)
             {
-              userList=db.customersBillers.Where(c=>c.userType.Equals(usertype) && c.enable==true).ToList();
+              userList=db.biller.Where(c=>c.enable==true).ToList();
               fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).ToList();
             }
             else
             {
-             userList=db.customersBillers.Where(c=>c.Id.Equals(id) && c.userType.Equals(usertype) && c.enable==true).ToList();
+             userList=db.biller.Where(c=>c.Id.Equals(id)  && c.enable==true).ToList();
              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).ToList();
             }
             
@@ -34,7 +34,7 @@ namespace SimpleInvoices.BLL{
             {
                 foreach(var entity in userList)
                 {
-                    toReturn.Add(new UserViewRes(){
+                    toReturn.Add(new BillerViewRes(){
                         name=entity.name,
                         contact=entity.contact,
                         city=entity.city,
@@ -50,7 +50,7 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
-        public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,CustomersBillers customer){
+        public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,Billers customer){
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             
             for(int i=0;i<customField.Count;i++){
@@ -66,37 +66,21 @@ namespace SimpleInvoices.BLL{
             
             return toReturn;
         }
-        public BaseResponse addBiller(UserViewReq customer)
+        public BaseResponse addBiller(BillerViewReq customer)
         {
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
-            var Customer=db.customersBillers.Where(c=>c.email.Equals(customer.email)).FirstOrDefault();
+            var Customer=db.biller.Where(c=>c.email.Equals(customer.email)).FirstOrDefault();
             if(Customer==null)
             {
-                SimpleInvoices.CustomersBillers cust=new SimpleInvoices.CustomersBillers();
-                if(!db.userType.Any())
-                {
-                    List<UsersType> types=new List<UsersType>();
-                    
-                    types.Add(new SimpleInvoices.UsersType(){
-                        name="Customer",
-                        enable=true
-                    });
-                    
-                    types.Add(new SimpleInvoices.UsersType(){
-                        name="Biller",
-                        enable=true
-                    });
-                    db.userType.AddRange(types);
-                    db.SaveChanges();
-                }
+                SimpleInvoices.Billers cust=new SimpleInvoices.Billers();
+               
                 cust.name=customer.name;
                 cust.address=customer.address;
                 cust.city=customer.city;
                 cust.contact=customer.contact;
                 cust.email=customer.email;
                 cust.enable=Constant.USER_ACTIVE;
-                cust.userType=db.userType.Where(c=>c.name.Equals("Biller")).FirstOrDefault();
                 if(customer.customFields.Count>0)
                 {
                     foreach(var entity in customer.customFields)
@@ -115,7 +99,7 @@ namespace SimpleInvoices.BLL{
                     
                 }
                 
-                db.customersBillers.Add(cust);
+                db.biller.Add(cust);
                 if(db.SaveChanges()==1)
                 {
                     toReturn.status=1;
@@ -135,11 +119,11 @@ namespace SimpleInvoices.BLL{
             return toReturn;
         }
 
-        public BaseResponse editBiller(UserViewReq customer)
+        public BaseResponse editBiller(BillerViewReq customer)
         {
             var db=_db;
             BaseResponse toReturn =new BaseResponse();
-            var entity =db.customersBillers.Where(c=>c.Id.Equals(customer.id)).FirstOrDefault();
+            var entity =db.biller.Where(c=>c.Id.Equals(customer.id) && c.enable==true).FirstOrDefault();
             if(entity!=null)
             {
                 entity.address=customer.address;
@@ -172,7 +156,7 @@ namespace SimpleInvoices.BLL{
         {
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
-            var entity=db.customersBillers.Where(c=>c.Id.Equals(id)).FirstOrDefault();
+            var entity=db.biller.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
             if(entity!=null)
             {
             entity.enable=false;

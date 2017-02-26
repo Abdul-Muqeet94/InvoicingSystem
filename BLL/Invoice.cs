@@ -17,10 +17,15 @@ namespace SimpleInvoices.BLL{
             var db=_db;
             try{
                 foreach(var invoice in invoiceList){
-            var customer=db.customersBillers.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
-            var biller=db.customersBillers.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
+            var customer=db.customer.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
+            var biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
             var product=db.products.Where(c=>c.Id.Equals(invoice.productId)).FirstOrDefault();
-            if(customer!=null && biller!=null && product!=null){
+            if(product==null){
+                if(new SimpleInvoices.BLL.Products(db).addProduct(invoice.product).status==1){
+                    product=db.products.Where(c=>c.Id==invoice.productId).FirstOrDefault();
+                } 
+            }
+            if(customer!=null && biller!=null && product!=null ){
                 customerBillerProduct.customers=customer;
                 customerBillerProduct.billers=biller;
                 customerBillerProduct.product=product;

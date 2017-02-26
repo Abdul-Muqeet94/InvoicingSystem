@@ -94,7 +94,6 @@ namespace SimpleInvoices.BLL{
             SimpleInvoices.product dbProduct=new SimpleInvoices.product();
             List<Design> designLists=new List<Design>();
             string name=product.name;
-            Console.WriteLine("Product name "+name);
             dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
             Console.WriteLine("get Product");
             if(dbProduct==null)
@@ -133,6 +132,7 @@ namespace SimpleInvoices.BLL{
                        foreach (var entity in product.design)
                        {
                            var design=new SimpleInvoices.Design{
+                               name=entity.name,
                                color=entity.color,
                                fabric=entity.fabric,
                                cut=entity.cut,
@@ -186,7 +186,7 @@ namespace SimpleInvoices.BLL{
         {
             var db=_db;
             BaseResponse toReturn =new BaseResponse();
-            var entity =db.products.Where(c=>c.Id.Equals(product.id)).FirstOrDefault();
+            var entity =db.products.Where(c=>c.Id.Equals(product.id) && c.enable==true).FirstOrDefault();
             if(entity!=null)
             {
                 entity.name=product.name;
@@ -219,7 +219,7 @@ namespace SimpleInvoices.BLL{
         {
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
-            var entity=db.products.Where(c=>c.Id.Equals(id)).FirstOrDefault();
+            var entity=db.products.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
             if(entity!=null)
             {
             entity.enable=false;

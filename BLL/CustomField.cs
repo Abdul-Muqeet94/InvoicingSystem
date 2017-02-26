@@ -1,11 +1,32 @@
 using SimpleInvoices.ViewModels;
 using SimpleInvoices.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SimpleInvoices.BLL{
     public class CustomField{
         protected readonly InvoiceContext _db;
         public CustomField(InvoiceContext context){
             _db=context;
+        }
+
+         public List<CustomFieldRes> getCustomFields(string tableName)
+        {
+            List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
+            var db=_db;
+            
+            var fields=db.customFields.Where(c=>c.tableName.Equals(tableName)).Include(c=>c.FieldValues).ToList();
+            if(fields.Count>0)
+            {
+                foreach(var entity in fields)
+                {
+                    toReturn.Add(new CustomFieldRes{
+                        fieldName=entity.fieldName
+                    });
+                }
+            }
+            return toReturn;
         }
 
         public BaseResponse addCustomField(CustomFieldReq customField){

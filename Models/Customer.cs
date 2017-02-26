@@ -1,11 +1,6 @@
-using System.Collections.Generic;
+namespace SimpleInvoices {
+    public class Customer:identity{
 
-namespace SimpleInvoices.ViewModels{
-    public class UserViewReq{
-        public UserViewReq(){
-            customFields=new List<CustomFieldRes>();
-        }
-        public int id {get;set;}
         public string name {get;set;}
         public string address {get;set;}
         public string contact {get;set;}
@@ -36,7 +31,7 @@ namespace SimpleInvoices.ViewModels{
     public string ankle {get;set;}
     public string pantLength{get;set;}
     public string measurementType{get;set;}
-        public List<CustomFieldRes> customFields {get;set;}
-        
+    public string imagepath{get;set;}
+        public UsersType userType {get;set;}
     }
 }
