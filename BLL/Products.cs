@@ -31,7 +31,6 @@ namespace SimpleInvoices.BLL{
         {
             var db=_db;
             List<ProductViewRes> toReturn =new List<ProductViewRes>();
-            var usertype=db.userType.Where(c=>c.name.Equals("Product")).FirstOrDefault();
             List<SimpleInvoices.product> productList=new List<SimpleInvoices.product>();
             if(id==0)
             {
@@ -60,6 +59,7 @@ namespace SimpleInvoices.BLL{
                          Console.WriteLine("product Design"+entity.productDesign.Count);
                          Console.WriteLine(" Design"+entity.productDesign[i].design.color);
                         design.Add(new DesignViewReq{
+                            name=entity.productDesign[i].design.name,
                             color=entity.productDesign[i].design.color,
                             fabric=entity.productDesign[i].design.fabric,
                             cut=entity.productDesign[i].design.cut,
@@ -88,6 +88,7 @@ namespace SimpleInvoices.BLL{
        
         public BaseResponse addProduct(ProductViewReq product)
         {
+            int productId=0;
             try{
             BaseResponse toReturn=new BaseResponse();
             var db=_db;
@@ -98,7 +99,6 @@ namespace SimpleInvoices.BLL{
             Console.WriteLine("get Product");
             if(dbProduct==null)
             {
-                Console.WriteLine("Product is null");
                 SimpleInvoices.product prod=new SimpleInvoices.product();
                 prod.name=product.name;
                 prod.color=product.color;
@@ -107,7 +107,6 @@ namespace SimpleInvoices.BLL{
                 prod.price=product.price;
                 prod.enable=Constant.USER_ACTIVE;
                 prod.createdOn=DateTime.Now;
-                Console.WriteLine("After Date");
                 if(product.customField.Count>0)
                 {
                     Console.WriteLine("in first If");
@@ -136,7 +135,8 @@ namespace SimpleInvoices.BLL{
                                color=entity.color,
                                fabric=entity.fabric,
                                cut=entity.cut,
-                               note=entity.note
+                               note=entity.note,
+                               enable=true
                            };
                            /*
                            prod.productDesign.Add(new ProductDesign {
@@ -145,7 +145,7 @@ namespace SimpleInvoices.BLL{
                            }); */
                            Console.WriteLine("Design Values"+design.color+"fabric"+design.fabric);
                            db.design.Add(design);
-                           db.products.Add(prod);
+                          db.products.Add(prod);
                             var productDesign=new ProductDesign{
                             product=prod,
                             design=design
@@ -154,18 +154,19 @@ namespace SimpleInvoices.BLL{
                        }
                         
                    }
-                     else
-                       {
-                           db.products.Add(prod);
-                       }
+                   else
+                    {
+                           productId=db.products.Add(prod).Entity.Id;
+                 }
                 if(db.SaveChanges()>0)
                 {
-                    toReturn.status=1;
+                    productId=prod.Id;
+                    toReturn.status=productId;
                     toReturn.developerMessage="Product has been created";
                 }
                 else
                 {
-                    toReturn.status=2;
+                    toReturn.status=productId;
                     toReturn.developerMessage="product can not been created";
                 }
             }

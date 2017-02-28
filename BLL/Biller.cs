@@ -54,8 +54,8 @@ namespace SimpleInvoices.BLL{
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             
             for(int i=0;i<customField.Count;i++){
-                var fieldValue=(customField[i].FieldValues.Where(c=> c.customBillers.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
-                customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault().value:" ";
+                var fieldValue=(customField[i].FieldValues.Where(c=> c.billers.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
+                customField[i].FieldValues.Where(c=>c.billers==customer).FirstOrDefault().value:" ";
                 toReturn.Add(new CustomFieldRes{
                     fieldName=customField[i].fieldName,
                     fieldValue=fieldValue
@@ -89,7 +89,7 @@ namespace SimpleInvoices.BLL{
                         var field=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER) && c.fieldName.Equals(name)).FirstOrDefault();
                    field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
-                        customBillers=cust 
+                        billers=cust 
                     });
                     
                    List<FieldValue> fieldValue=new List<FieldValue>();

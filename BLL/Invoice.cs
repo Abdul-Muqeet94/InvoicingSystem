@@ -11,6 +11,40 @@ namespace SimpleInvoices.BLL{
         public Invoice (InvoiceContext context){
             _db=context;
         }
+        public List<UserDropdownRes> getDropdownRes(string user){
+            var db=_db;
+            List<UserDropdownRes> dropdownRes=new List<UserDropdownRes>();
+            if(user.ToLower().Equals("customer")){
+                var usersList=db.customer.Where(c=>c.enable==true).ToList();
+                foreach (var entity in usersList){
+                    dropdownRes.Add(new UserDropdownRes{
+                        id=entity.Id,
+                        name=entity.name
+                    });
+                }
+                
+            }
+            else if(user.ToLower().Equals("biller")){
+                 var usersList=db.biller.Where(c=>c.enable==true).ToList();
+                foreach (var entity in usersList){
+                    dropdownRes.Add(new UserDropdownRes{
+                        id=entity.Id,
+                        name=entity.name
+                    });
+                }
+            }
+            else if(user.ToLower().Equals("product")){
+                 var usersList=db.products.Where(c=>c.enable==true).ToList();
+                foreach (var entity in usersList){
+                    dropdownRes.Add(new UserDropdownRes{
+                        id=entity.Id,
+                        name=entity.name
+                    });
+                }
+            }
+            return dropdownRes;
+            
+        }
         public BaseResponse createInvoice(List<InvoiceReq> invoiceList){
             BaseResponse toReturn=new BaseResponse();
             CustomersBillersProducts customerBillerProduct=new CustomersBillersProducts();
@@ -21,8 +55,9 @@ namespace SimpleInvoices.BLL{
             var biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
             var product=db.products.Where(c=>c.Id.Equals(invoice.productId)).FirstOrDefault();
             if(product==null){
-                if(new SimpleInvoices.BLL.Products(db).addProduct(invoice.product).status==1){
-                    product=db.products.Where(c=>c.Id==invoice.productId).FirstOrDefault();
+                int productId=new SimpleInvoices.BLL.Products(db).addProduct(invoice.product).status;
+                if(productId >0){
+                    product=db.products.Where(c=>c.Id==productId).FirstOrDefault();
                 } 
             }
             if(customer!=null && biller!=null && product!=null ){
@@ -31,8 +66,9 @@ namespace SimpleInvoices.BLL{
                 customerBillerProduct.product=product;
                 customerBillerProduct.enable=Constant.USER_ACTIVE;
                 db.customersBillersProducts.Add(customerBillerProduct);
-                Double bal=product.price-invoice.amount;
+                Double bal=(product.price*invoice.quantity)-invoice.amount;
                 db.ledgers.Add(new Ledgers{
+                    quantity=invoice.quantity,
                     createdDate=invoice.createdDate,
                     dueDate=invoice.dueDate,
                     amount=invoice.amount,

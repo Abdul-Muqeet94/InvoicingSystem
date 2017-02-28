@@ -16,7 +16,7 @@ namespace invoicingSystem.Migrations
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SimpleInvoices.CustomersBillers", b =>
+            modelBuilder.Entity("SimpleInvoices.Billers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -33,13 +33,83 @@ namespace invoicingSystem.Migrations
 
                     b.Property<string>("name");
 
-                    b.Property<int?>("userTypeId");
+                    b.HasKey("Id");
+
+                    b.ToTable("biller");
+                });
+
+            modelBuilder.Entity("SimpleInvoices.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("address");
+
+                    b.Property<string>("ankle");
+
+                    b.Property<string>("armHole");
+
+                    b.Property<string>("backNeckDepth");
+
+                    b.Property<string>("backNeckWidth");
+
+                    b.Property<string>("bicep");
+
+                    b.Property<string>("calf");
+
+                    b.Property<string>("chaak");
+
+                    b.Property<string>("chest");
+
+                    b.Property<string>("contact");
+
+                    b.Property<string>("daaman");
+
+                    b.Property<string>("email");
+
+                    b.Property<bool>("enable");
+
+                    b.Property<string>("forearm");
+
+                    b.Property<string>("frontNeckDepth");
+
+                    b.Property<string>("frontNeckWidth");
+
+                    b.Property<string>("fullSleveLength");
+
+                    b.Property<string>("hips");
+
+                    b.Property<string>("imagepath");
+
+                    b.Property<string>("kneeCap");
+
+                    b.Property<string>("longShirtLength");
+
+                    b.Property<string>("lowerWaist");
+
+                    b.Property<string>("measurementType");
+
+                    b.Property<string>("name");
+
+                    b.Property<string>("pantLength");
+
+                    b.Property<string>("sholder");
+
+                    b.Property<string>("shortShirtLength");
+
+                    b.Property<string>("sleeveLength");
+
+                    b.Property<string>("thigh");
+
+                    b.Property<string>("upperWaist");
+
+                    b.Property<string>("waist");
+
+                    b.Property<string>("wrist");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("userTypeId");
-
-                    b.ToTable("customersBillers");
+                    b.ToTable("customer");
                 });
 
             modelBuilder.Entity("SimpleInvoices.CustomersBillersProducts", b =>
@@ -99,6 +169,8 @@ namespace invoicingSystem.Migrations
 
                     b.Property<string>("fabric");
 
+                    b.Property<string>("name");
+
                     b.Property<string>("note");
 
                     b.HasKey("Id");
@@ -113,7 +185,9 @@ namespace invoicingSystem.Migrations
 
                     b.Property<int?>("CustomFieldsId");
 
-                    b.Property<int?>("customBillersId");
+                    b.Property<int?>("billersId");
+
+                    b.Property<int?>("customerId");
 
                     b.Property<bool>("enable");
 
@@ -125,7 +199,9 @@ namespace invoicingSystem.Migrations
 
                     b.HasIndex("CustomFieldsId");
 
-                    b.HasIndex("customBillersId");
+                    b.HasIndex("billersId");
+
+                    b.HasIndex("customerId");
 
                     b.HasIndex("productId");
 
@@ -165,9 +241,13 @@ namespace invoicingSystem.Migrations
 
                     b.Property<int?>("customersBillersProductsId");
 
+                    b.Property<DateTime>("deliveryDate");
+
                     b.Property<DateTime>("dueDate");
 
                     b.Property<bool>("enable");
+
+                    b.Property<int>("quantity");
 
                     b.HasKey("Id");
 
@@ -279,34 +359,13 @@ namespace invoicingSystem.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.UsersType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("enable");
-
-                    b.Property<string>("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("userType");
-                });
-
-            modelBuilder.Entity("SimpleInvoices.CustomersBillers", b =>
-                {
-                    b.HasOne("SimpleInvoices.UsersType", "userType")
-                        .WithMany()
-                        .HasForeignKey("userTypeId");
-                });
-
             modelBuilder.Entity("SimpleInvoices.CustomersBillersProducts", b =>
                 {
-                    b.HasOne("SimpleInvoices.CustomersBillers", "billers")
+                    b.HasOne("SimpleInvoices.Billers", "billers")
                         .WithMany()
                         .HasForeignKey("billersId");
 
-                    b.HasOne("SimpleInvoices.CustomersBillers", "customers")
+                    b.HasOne("SimpleInvoices.Customer", "customers")
                         .WithMany()
                         .HasForeignKey("customersId");
 
@@ -328,9 +387,13 @@ namespace invoicingSystem.Migrations
                         .WithMany("FieldValues")
                         .HasForeignKey("CustomFieldsId");
 
-                    b.HasOne("SimpleInvoices.CustomersBillers", "customBillers")
+                    b.HasOne("SimpleInvoices.Billers", "billers")
                         .WithMany()
-                        .HasForeignKey("customBillersId");
+                        .HasForeignKey("billersId");
+
+                    b.HasOne("SimpleInvoices.Customer", "customer")
+                        .WithMany()
+                        .HasForeignKey("customerId");
 
                     b.HasOne("SimpleInvoices.product", "product")
                         .WithMany()

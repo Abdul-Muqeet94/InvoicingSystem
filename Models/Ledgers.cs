@@ -7,6 +7,7 @@ namespace SimpleInvoices {
         public DateTime dueDate {get;set;}
         public double amount {get;set;}
         public double balance {get;set;}
+        public int quantity {get;set;}
         public CustomersBillersProducts customersBillersProducts {get;set;}
         
     }

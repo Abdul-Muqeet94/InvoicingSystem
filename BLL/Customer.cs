@@ -21,7 +21,7 @@ namespace SimpleInvoices.BLL{
             List<SimpleInvoices.Customer> userList=new List<SimpleInvoices.Customer>();
             if(id==0)
             {
-              userList=db.customer.Where(c.enable==true).ToList();
+              userList=db.customer.Where(c=>c.enable==true).ToList();
               fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
               
             }
@@ -37,8 +37,8 @@ namespace SimpleInvoices.BLL{
                 foreach(var entity in userList)
                 {
                     double total=0;
-            double paid=0;
-            double owing=0;
+                    double paid=0;
+                    double owing=0;
                     var legder=db.ledgers.Include(c=>c.customersBillersProducts).ThenInclude(c=>c.customers).Where(c=>c.customersBillersProducts.customers==entity).ToList();
                    foreach(var values in legder)
                    {
@@ -71,8 +71,8 @@ namespace SimpleInvoices.BLL{
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             
             for(int i=0;i<customField.Count;i++){
-                var fieldValue=(customField[i].FieldValues.Where(c=> c.customBillers.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
-                customField[i].FieldValues.Where(c=>c.customBillers==customer).FirstOrDefault().value:" ";
+                var fieldValue=(customField[i].FieldValues.Where(c=> c.customer.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
+                customField[i].FieldValues.Where(c=>c.customer==customer).FirstOrDefault().value:" ";
                 toReturn.Add(new CustomFieldRes{
                     fieldName=customField[i].fieldName,
                     fieldValue=fieldValue
@@ -130,7 +130,7 @@ namespace SimpleInvoices.BLL{
                         var field=db.customFields.Where(c=>c.tableName.Equals("Customer") && c.fieldName.Equals(name) && c.enable==true).FirstOrDefault();
                    field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
-                        customBillers=cust 
+                        customer=cust 
                     });
                     
                    List<FieldValue> fieldValue=new List<FieldValue>();

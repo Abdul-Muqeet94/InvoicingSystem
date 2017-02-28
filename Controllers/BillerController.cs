@@ -10,12 +10,12 @@ namespace SimpleInvoices.Controllers{
         }
 
         [Route("api/biller/create"), HttpPost]
-        public BaseResponse addBiller ([FromBody] UserViewReq biller)
+        public BaseResponse addBiller ([FromBody] BillerViewReq biller)
         {
             return new BLL.Biller(_db).addBiller(biller);
         }
         [Route("api/biller/edit"), HttpPost]
-        public BaseResponse editBiller ([FromBody] UserViewReq biller)
+        public BaseResponse editBiller ([FromBody] BillerViewReq biller)
         {
             return new BLL.Biller(_db).editBiller(biller);
         }
@@ -24,8 +24,8 @@ namespace SimpleInvoices.Controllers{
         {
             return new BLL.Biller(_db).deleteBiller(biller);
         }
-        [Route("api/biller/getCustomers"), HttpPost]
-        public List<UserViewRes> getBiller ([FromBody] int biller)
+        [Route("api/biller/getBiller"), HttpPost]
+        public List<BillerViewRes> getBiller ([FromBody] int biller)
         {
             return new BLL.Biller(_db).getBiller(biller);
         }

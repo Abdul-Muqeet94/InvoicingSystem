@@ -32,6 +32,5 @@ namespace SimpleInvoices {
     public string pantLength{get;set;}
     public string measurementType{get;set;}
     public string imagepath{get;set;}
-        public UsersType userType {get;set;}
     }
 }

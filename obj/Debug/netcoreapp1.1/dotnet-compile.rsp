@@ -230,10 +230,11 @@ D:\Games\Application\invoicingSystem\Controllers\InvoiceController.cs
 D:\Games\Application\invoicingSystem\Controllers\ProductController.cs
 D:\Games\Application\invoicingSystem\Controllers\UserController.cs
 D:\Games\Application\invoicingSystem\Controllers\ValuesController.cs
-D:\Games\Application\invoicingSystem\Migrations\20170221130747_muqeet.cs
-D:\Games\Application\invoicingSystem\Migrations\20170221130747_muqeet.Designer.cs
+D:\Games\Application\invoicingSystem\Migrations\20170227165705_muqeet.cs
+D:\Games\Application\invoicingSystem\Migrations\20170227165705_muqeet.Designer.cs
 D:\Games\Application\invoicingSystem\Migrations\InvoiceContextModelSnapshot.cs
-D:\Games\Application\invoicingSystem\Models\CustomersBillers.cs
+D:\Games\Application\invoicingSystem\Models\Billers.cs
+D:\Games\Application\invoicingSystem\Models\Customer.cs
 D:\Games\Application\invoicingSystem\Models\CustomersBillersProducts.cs
 D:\Games\Application\invoicingSystem\Models\CustomFields.cs
 D:\Games\Application\invoicingSystem\Models\Design.cs
@@ -247,7 +248,6 @@ D:\Games\Application\invoicingSystem\Models\ProductDesign.cs
 D:\Games\Application\invoicingSystem\Models\ProductTaxes.cs
 D:\Games\Application\invoicingSystem\Models\taxes.cs
 D:\Games\Application\invoicingSystem\Models\Users.cs
-D:\Games\Application\invoicingSystem\Models\UsersType.cs
 D:\Games\Application\invoicingSystem\Utils\Misc.cs
 D:\Games\Application\invoicingSystem\Utils\NotificationUtil.cs
 D:\Games\Application\invoicingSystem\Utils\Parse.cs
@@ -258,9 +258,12 @@ D:\Games\Application\invoicingSystem\ViewModels\Request\CustomField\CustomFieldR
 D:\Games\Application\invoicingSystem\ViewModels\Request\Invoice\InvoiceReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\product\DesignViewReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\product\productViewReq.cs
+D:\Games\Application\invoicingSystem\ViewModels\Request\Users\BillerViewReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\Users\UserViewReq.cs
+D:\Games\Application\invoicingSystem\ViewModels\Response\BillerViewRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\CustomFieldRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\InvoiceRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\productRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\ProductViewRes.cs
+D:\Games\Application\invoicingSystem\ViewModels\Response\UserDropdownRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\UserViewRes.cs

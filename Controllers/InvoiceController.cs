@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SimpleInvoices.ViewModels;
@@ -12,6 +13,11 @@ namespace SimpleInvoices.Controllers
         public BaseResponse createInvoice([FromBody] List<InvoiceReq> invoice)
         {
             return new BLL.Invoice(_db).createInvoice(invoice);
+        } 
+        [Route("api/invoice/populatedropdown"),HttpPost]
+        public List<UserDropdownRes> getDropDown([FromBody] String name)
+        {
+            return new BLL.Invoice(_db).getDropdownRes(name);
         } 
     }
 }
