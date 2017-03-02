@@ -219,6 +219,7 @@ D:\Games\Application\invoicingSystem\BLL\Customer.cs
 D:\Games\Application\invoicingSystem\BLL\CustomField.cs
 D:\Games\Application\invoicingSystem\BLL\Invoice.cs
 D:\Games\Application\invoicingSystem\BLL\Products.cs
+D:\Games\Application\invoicingSystem\BLL\Tax.cs
 D:\Games\Application\invoicingSystem\BLL\Users.cs
 D:\Games\Application\invoicingSystem\Constants\Constant.cs
 D:\Games\Application\invoicingSystem\Controllers\BaseController.cs
@@ -228,10 +229,11 @@ D:\Games\Application\invoicingSystem\Controllers\CustomFieldController.cs
 D:\Games\Application\invoicingSystem\Controllers\HomeController.cs
 D:\Games\Application\invoicingSystem\Controllers\InvoiceController.cs
 D:\Games\Application\invoicingSystem\Controllers\ProductController.cs
+D:\Games\Application\invoicingSystem\Controllers\TaxController.cs
 D:\Games\Application\invoicingSystem\Controllers\UserController.cs
 D:\Games\Application\invoicingSystem\Controllers\ValuesController.cs
-D:\Games\Application\invoicingSystem\Migrations\20170227165705_muqeet.cs
-D:\Games\Application\invoicingSystem\Migrations\20170227165705_muqeet.Designer.cs
+D:\Games\Application\invoicingSystem\Migrations\20170302122707_muqeet.cs
+D:\Games\Application\invoicingSystem\Migrations\20170302122707_muqeet.Designer.cs
 D:\Games\Application\invoicingSystem\Migrations\InvoiceContextModelSnapshot.cs
 D:\Games\Application\invoicingSystem\Models\Billers.cs
 D:\Games\Application\invoicingSystem\Models\Customer.cs
@@ -245,7 +247,6 @@ D:\Games\Application\invoicingSystem\Models\Ledgers.cs
 D:\Games\Application\invoicingSystem\Models\PaymentTypes.cs
 D:\Games\Application\invoicingSystem\Models\Product.cs
 D:\Games\Application\invoicingSystem\Models\ProductDesign.cs
-D:\Games\Application\invoicingSystem\Models\ProductTaxes.cs
 D:\Games\Application\invoicingSystem\Models\taxes.cs
 D:\Games\Application\invoicingSystem\Models\Users.cs
 D:\Games\Application\invoicingSystem\Utils\Misc.cs
@@ -258,6 +259,7 @@ D:\Games\Application\invoicingSystem\ViewModels\Request\CustomField\CustomFieldR
 D:\Games\Application\invoicingSystem\ViewModels\Request\Invoice\InvoiceReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\product\DesignViewReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\product\productViewReq.cs
+D:\Games\Application\invoicingSystem\ViewModels\Request\Tax\TaxViewReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\Users\BillerViewReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Request\Users\UserViewReq.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\BillerViewRes.cs
@@ -265,5 +267,6 @@ D:\Games\Application\invoicingSystem\ViewModels\Response\CustomFieldRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\InvoiceRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\productRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\ProductViewRes.cs
+D:\Games\Application\invoicingSystem\ViewModels\Response\TaxViewRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\UserDropdownRes.cs
 D:\Games\Application\invoicingSystem\ViewModels\Response\UserViewRes.cs

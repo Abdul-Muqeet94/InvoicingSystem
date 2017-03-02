@@ -24,7 +24,6 @@ namespace SimpleInvoices {
         public DbSet<PaymentTypes> paymentTypes {get;set;}
         public DbSet<Taxes> taxes {get;set;}
         public DbSet<CustomFields> customFields {get;set;}
-        public DbSet<ProductTaxes> ProductTaxes {get;set;}
     }
     
 }

@@ -8,7 +8,7 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170227165705_muqeet")]
+    [Migration("20170302122707_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,11 +250,15 @@ namespace invoicingSystem.Migrations
 
                     b.Property<int>("quantity");
 
+                    b.Property<int?>("taxId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LedgerDetailsId");
 
                     b.HasIndex("customersBillersProductsId");
+
+                    b.HasIndex("taxId");
 
                     b.ToTable("ledgers");
                 });
@@ -312,22 +316,6 @@ namespace invoicingSystem.Migrations
                     b.ToTable("productDesign");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.ProductTaxes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("TaxesId");
-
-                    b.Property<bool>("enable");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaxesId");
-
-                    b.ToTable("ProductTaxes");
-                });
-
             modelBuilder.Entity("SimpleInvoices.Taxes", b =>
                 {
                     b.Property<int>("Id")
@@ -337,7 +325,7 @@ namespace invoicingSystem.Migrations
 
                     b.Property<string>("name");
 
-                    b.Property<string>("value");
+                    b.Property<double>("percent");
 
                     b.HasKey("Id");
 
@@ -417,6 +405,10 @@ namespace invoicingSystem.Migrations
                     b.HasOne("SimpleInvoices.CustomersBillersProducts", "customersBillersProducts")
                         .WithMany()
                         .HasForeignKey("customersBillersProductsId");
+
+                    b.HasOne("SimpleInvoices.Taxes", "tax")
+                        .WithMany()
+                        .HasForeignKey("taxId");
                 });
 
             modelBuilder.Entity("SimpleInvoices.ProductDesign", b =>
@@ -430,13 +422,6 @@ namespace invoicingSystem.Migrations
                         .WithMany("productDesign")
                         .HasForeignKey("productId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SimpleInvoices.ProductTaxes", b =>
-                {
-                    b.HasOne("SimpleInvoices.Taxes")
-                        .WithMany("productTaxes")
-                        .HasForeignKey("TaxesId");
                 });
         }
     }

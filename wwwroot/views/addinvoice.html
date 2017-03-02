@@ -2,25 +2,22 @@
 <html lang="en">
 
 <head>
-    <title>Add Invoice</title>
+    <title>Bootstrap Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../views/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../views/css/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../views/css/stylesheet.css">
-
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
 
 </head>
 
-<body ng-app="invoiceModule">
-
-    <div ng-controller="billerController" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-        <div ng-repeat="biller in billers">{{biller.name}}</div>
+<body>
+    <div ng-app="invoiceModule" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
         <div class="area1">
             <input type="button" name="" value="Itemisend style">
             <input type="button" name="" value="Totle style">
         </div>
-        <form class="form-group">
+        <form class="form-group" ng-controller="billerController">
 
             <label class="label">Biller</label>
             <select name="">
@@ -30,11 +27,61 @@
             <select name="">
 								<option ng-repeat="customer in customers" value="{{customer.id}}">{{customer.name}}</option>
 							</select>
-            <label class="label">Date </label>
+            <label class="label ">Product</label>
+            <select name="" ng-change="update()" ng-model="value">
+			
+								<option ng-repeat="product in products" value="{{product.id}}">{{product.name}}</option>
+							</select>
+            <label class="label ">Taxes</label>
+            <select name="" ng-model="value">
+			
+								<option ng-repeat="tax in taxes" value="{{tax.id}}">{{tax.name}}</option>
+							</select>
+            <label class="label">Delivery Date </label>
+            <input type="datetime-local" ng-model="string"></input>
+            <label class="label">Due Date </label>
             <input type="datetime"></input>
-        </form>
-        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-8 col-lg-offset-2">
-            <table class=" table  table-striped" style="background: #f0f0f0">
+            <label class="label">Amount </label>
+            <input type="text" ng-model="invoice.name" name="" placeholder="Enter Product Name"></input>
+            <label class="label">Quantity </label>
+            <input type="text" ng-model="invoice.name" name="" placeholder="Enter Product Name"></input>
+            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-8 col-lg-offset-2">
+                <div ng-controller="createInvoiceController">
+                    <fieldset data-ng-repeat="invoice in invoices">
+
+                        <input type="text" ng-model="invoice.name" name="" placeholder="Enter Product Name">Product Name</input>
+                        <input type="text" ng-model="invoice.color" name="" placeholder="Enter Product Color ">Product Color</input>
+                        <input type="text" ng-model="invoice.note" name="" placeholder="Enter Product Note">Product Note</input>
+                        <input type="text" ng-model="invoice.description" name="" placeholder="Enter Product description">Product Description</input>
+                        <input type="text" ng-model="invoice.price" name="" placeholder="Enter Product Price"> Product Price</input>
+                        <div ng-repeat="design in invoice.designs">
+                            <h1>Designs</h1>
+                            <form>
+                                <input type="text" ng-model="design.name" name="" placeholder="Enter design name "> Name</input>
+                                <input type="text" ng-model="design.cut" name="" placeholder="Enter design name "> cut</input>
+                                <input type="text" ng-model="design.color" name="" placeholder="Enter design name "> color</input>
+                                <input type="text" ng-model="design.fabric" name="" placeholder="Enter design name "> fabric</input>
+                            </form>
+
+                        </div>
+                        <button class="addfields" ng-show="$last" ng-click="removeDesign($index)">Remove Design fields</button>
+                        <button class="addfields" ng-click="addDesigns($index)">Add Design fields</button>
+
+
+                        <button class="remove" ng-show="$last" ng-click="removeinvoice($index-1)">Remove</button>
+
+                        <button class="addfields" ng-click="createnewInvoice($index+1)">Add fields</button>
+                    </fieldset>
+                    <button class="btn bth-primary" ng-click="addLedger()">Save</button>
+                    <div ng-repeat="invoi in ledgers">{{invoi.name}}</div>
+                    <div id="choicesDisplay">
+                        {{ invoi }}
+                    </div>
+                    <div id="choicesDisplay">
+                        {{ invoi.products }}
+                    </div>
+                </div>
+                <!--table class=" table  table-striped" style="background: #f0f0f0">
                 <thead>
                     <tr>
                         <th></th>
@@ -107,24 +154,26 @@
                     </tr>
 
                 </tbody>
-            </table>
-            <div class="area">
-                <input class="btn btn-primary" type="button" value="save">
-                <input class="btn btn-danger" type="button" value="Cancel">
-            </div>
-        </div>
-    </div>
+            </table-->
 
+                <div class="area">
+                    <input class="btn btn-primary" type="button" value="save">
+                    <input class="btn btn-danger" type="button" value="Cancel">
+                </div>
+            </div>
+    </div>
+    </form>
+    <!--
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>
 
-    <!--<script src="../shared/angular.min.js"></script> -->
+    <!--<script src="../shared/angular.min.js"></script> 
     <script src="../angular-route/angular-route.js"></script>
     <script src="../angular-animate/angular-animate.js"></script>
 
     <script src="../js/services.js"></script>
     <script src="../js/customer.js"></script>
     <script src="../js/invoice.js"></script>
-    <!-- <script   src="../controllers/customer.js"></script> -->
+    <!-- <script   src="../controllers/customer.js"></script> 
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -134,6 +183,4 @@
             $(this).siblings("ul.sub-menu").slideToggle();
         });
     </script>
-</body>
-
-</html>
+	-->

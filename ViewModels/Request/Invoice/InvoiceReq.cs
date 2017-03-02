@@ -12,6 +12,7 @@ namespace SimpleInvoices.ViewModels{
         public int billerId {get;set;}
         public int productId {get;set;}
         public ProductViewReq product {get;set;}
+        public int taxId{get;set;}
 
     }
 }

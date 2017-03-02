@@ -131,7 +131,7 @@ namespace invoicingSystem.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     enable = table.Column<bool>(nullable: false),
                     name = table.Column<string>(nullable: true),
-                    value = table.Column<string>(nullable: true)
+                    percent = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,26 +255,6 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductTaxes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TaxesId = table.Column<int>(nullable: true),
-                    enable = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductTaxes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductTaxes_taxes_TaxesId",
-                        column: x => x.TaxesId,
-                        principalTable: "taxes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ledgers",
                 columns: table => new
                 {
@@ -288,7 +268,8 @@ namespace invoicingSystem.Migrations
                     deliveryDate = table.Column<DateTime>(nullable: false),
                     dueDate = table.Column<DateTime>(nullable: false),
                     enable = table.Column<bool>(nullable: false),
-                    quantity = table.Column<int>(nullable: false)
+                    quantity = table.Column<int>(nullable: false),
+                    taxId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -303,6 +284,12 @@ namespace invoicingSystem.Migrations
                         name: "FK_ledgers_customersBillersProducts_customersBillersProductsId",
                         column: x => x.customersBillersProductsId,
                         principalTable: "customersBillersProducts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ledgers_taxes_taxId",
+                        column: x => x.taxId,
+                        principalTable: "taxes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -405,14 +392,14 @@ namespace invoicingSystem.Migrations
                 column: "customersBillersProductsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ledgers_taxId",
+                table: "ledgers",
+                column: "taxId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_productDesign_designId",
                 table: "productDesign",
                 column: "designId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductTaxes_TaxesId",
-                table: "ProductTaxes",
-                column: "TaxesId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -427,9 +414,6 @@ namespace invoicingSystem.Migrations
                 name: "productDesign");
 
             migrationBuilder.DropTable(
-                name: "ProductTaxes");
-
-            migrationBuilder.DropTable(
                 name: "users");
 
             migrationBuilder.DropTable(
@@ -442,10 +426,10 @@ namespace invoicingSystem.Migrations
                 name: "customersBillersProducts");
 
             migrationBuilder.DropTable(
-                name: "design");
+                name: "taxes");
 
             migrationBuilder.DropTable(
-                name: "taxes");
+                name: "design");
 
             migrationBuilder.DropTable(
                 name: "paymentTypes");

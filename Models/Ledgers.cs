@@ -9,6 +9,7 @@ namespace SimpleInvoices {
         public double balance {get;set;}
         public int quantity {get;set;}
         public CustomersBillersProducts customersBillersProducts {get;set;}
+        public Taxes tax {get;set;}
         
     }
 }

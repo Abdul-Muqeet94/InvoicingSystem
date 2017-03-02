@@ -45,12 +45,11 @@ namespace SimpleInvoices.BLL{
             return dropdownRes;
             
         }
-        public BaseResponse createInvoice(List<InvoiceReq> invoiceList){
+        public BaseResponse createInvoice(InvoiceReq invoice){
             BaseResponse toReturn=new BaseResponse();
             CustomersBillersProducts customerBillerProduct=new CustomersBillersProducts();
             var db=_db;
             try{
-                foreach(var invoice in invoiceList){
             var customer=db.customer.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
             var biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
             var product=db.products.Where(c=>c.Id.Equals(invoice.productId)).FirstOrDefault();
@@ -78,7 +77,7 @@ namespace SimpleInvoices.BLL{
                 });
                 
             }
-                }
+                
                 if(db.SaveChanges()>0){
                     toReturn.developerMessage="Invoice Created Successfully";
                     toReturn.status=1;

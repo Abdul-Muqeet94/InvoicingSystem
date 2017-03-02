@@ -3,12 +3,84 @@
 
 
 
-    app.controller('billerController', function($scope, getBillerService) {
+    app.controller('createInvoiceController', function($scope, createInvoice, getProductId) {
+        //$scope.invoices = [];
+        $scope.ledgers = { id: "0", products: [] };
+        $scope.invoices = [{
+            id: "0",
+            designs: [{ id: "0" }]
+        }];
+        $scope.$on('someEvent', function(event, args) {
+            // loadscope(args);'
+            var fillScope = createInvoice.fillscope(args);
+            fillScope.then(function(pl) { $scope.invoices = pl.data },
+                function(errorpl) {
+                    $log.error('fail to load data' + errorpl);
+                });
+        });
 
+
+        $scope.addDesigns = function(idx) {
+            //  var productIndex = $scope.invoices.length - 1;
+            alert(idx);
+            $scope.invoices[idx].designs.push({ 'id': 0 });
+        }
+        $scope.removeDesign = function(idx) {
+            alert(idx);
+            var lastItem = $scope.invoices[0].designs.length - 1;
+            $scope.invoices[idx].designs.splice(lastItem);
+        }
+
+        $scope.createnewInvoice = function(idx) {
+            alert(idx);
+            //var newinvoiceNo = $scope.invoices.length - 1;
+            $scope.invoices.push({ 'id': 0, designs: [{ id: "0" }] });
+
+
+
+            /*
+                        
+                            */
+        }
+
+        $scope.addLedger = function() {
+            $scope.ledgers.products = $scope.invoices;
+            var getResponse = createInvoice.addInvoices($scope.invoice);
+            getResponse.then(function(pl) { $scope.response = pl.data },
+                function(errorpl) {
+                    $log.error('failure adding invoices', errorpl);
+                });
+        };
+        $scope.removeinvoice = function(idx) {
+            alert(idx);
+            var lastItem = $scope.invoices.length - 1;
+            $scope.invoices.splice(lastItem);
+        };
+    });
+
+
+
+    app.controller('billerController', function($scope, getBillerService, getTaxService, $rootScope) {
+
+        $scope.model = { id: "0", product: [{}] };
         $scope.IsNewRecord = 1; //The flag for the new record
 
         loadRecords();
         loadCustomer();
+        loadProduct();
+        loadTax();
+        $scope.update = function update() {
+
+            $rootScope.$broadcast('someEvent', $scope.value);
+        }
+
+        function loadTax() {
+            var promiseGet = getTaxService.getTaxes();
+            promiseGet.then(function(pl) { $scope.taxes = pl.data },
+                function(errorpl) {
+                    $log.error('Failure loading Tax', errorpl);
+                });
+        }
         //Function to load all Employee records
         function loadRecords() {
             var biller = "biller";
@@ -24,6 +96,15 @@
             var promiseGet = getBillerService.getBiller("customer"); //The MEthod Call from service
 
             promiseGet.then(function(pl) { $scope.customers = pl.data },
+                function(errorPl) {
+                    $log.error('failure loading Employee', errorPl);
+                });
+        }
+
+        function loadProduct() {
+            var promiseGet = getBillerService.getBiller("product"); //The MEthod Call from service
+
+            promiseGet.then(function(pl) { $scope.products = pl.data },
                 function(errorPl) {
                     $log.error('failure loading Employee', errorPl);
                 });
