@@ -6,14 +6,13 @@
     app.controller('createInvoiceController', function($scope, createInvoice, getProductId) {
         //$scope.invoices = [];
         $scope.ledgers = { id: "0", products: [] };
-        $scope.invoices = [{
-            id: "0",
-            designs: [{ id: "0" }]
-        }];
+        $scope.invoices = [id = "0"];
         $scope.$on('someEvent', function(event, args) {
             // loadscope(args);'
             var fillScope = createInvoice.fillscope(args);
-            fillScope.then(function(pl) { $scope.invoices = pl.data },
+            fillScope.then(function(pl) {
+                    $scope.invoices[0].products.push(pl.data)
+                },
                 function(errorpl) {
                     $log.error('fail to load data' + errorpl);
                 });
@@ -70,7 +69,7 @@
         loadProduct();
         loadTax();
         $scope.update = function update() {
-
+            alert("update");
             $rootScope.$broadcast('someEvent', $scope.value);
         }
 
