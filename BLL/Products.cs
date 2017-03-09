@@ -32,13 +32,16 @@ namespace SimpleInvoices.BLL{
             var db=_db;
             List<ProductViewRes> toReturn =new List<ProductViewRes>();
             List<SimpleInvoices.product> productList=new List<SimpleInvoices.product>();
+            List<CustomFields> fields=new List<CustomFields>();
             if(id==0)
             {
-              productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).Include(c=>c.productDesign).ThenInclude(c=>c.design).ToList();
+              productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
             }
             else
             {
-             productList=db.products.Where(c=>c.Id.Equals(id)  && c.enable==true).Include(c=>c.customFields).Include(c=>c.productDesign).ThenInclude(c=>c.design).ToList();
+             productList=db.products.Where(c=>c.Id.Equals(id)  && c.enable==true).Include(c=>c.customFields).ToList();
+            fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
             }
             
             if(productList.Count>0)
@@ -47,26 +50,7 @@ namespace SimpleInvoices.BLL{
                  {
                      var customFields =new List<CustomFieldRes>();
                      var design=new List<DesignViewReq>();
-                     for(int i=0;i<entity.customFields.Count;i++)
-                     {
-                        customFields.Add(new CustomFieldRes {
-                            fieldName=entity.customFields[i].fieldName,
-                            fieldValue=entity.customFields[i].FieldValues.Where(c=>c.product==entity).FirstOrDefault().value
-                        });
-                     }
-                     for(int i=0;i<entity.productDesign.Count;i++)
-                     {
-                         Console.WriteLine("product Design"+entity.productDesign.Count);
-                         Console.WriteLine(" Design"+entity.productDesign[i].design.color);
-                        design.Add(new DesignViewReq{
-                            name=entity.productDesign[i].design.name,
-                            color=entity.productDesign[i].design.color,
-                            fabric=entity.productDesign[i].design.fabric,
-                            cut=entity.productDesign[i].design.cut,
-                            note=entity.productDesign[i].design.note
-                            
-                        });
-                     }
+                   
                      toReturn.Add(new ProductViewRes(){
                          name=entity.name,
                          id=entity.Id,
@@ -74,8 +58,7 @@ namespace SimpleInvoices.BLL{
                          note=entity.note,
                          description=entity.description,
                          price=entity.price,
-                         customField=customFields,
-                         designs=design
+                         customField=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>()
                      });
                  }
             }
@@ -85,7 +68,20 @@ namespace SimpleInvoices.BLL{
             return toReturn;
         }
 
-       
+        public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,product customer){
+            List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
+            
+            for(int i=0;i<customField.Count;i++){
+                var fieldValue=(customField[i].FieldValues.Where(c=> c.product.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
+                customField[i].FieldValues.Where(c=>c.product==customer).FirstOrDefault().value:" ";
+                toReturn.Add(new CustomFieldRes{
+                    fieldName=customField[i].fieldName,
+                    fieldValue=fieldValue
+                });
+            }
+            
+            return toReturn;
+        }
         public BaseResponse addProduct(ProductViewReq product)
         {
             int productId=0;
@@ -124,40 +120,8 @@ namespace SimpleInvoices.BLL{
                    Console.WriteLine("Field added");
                    }        
             }
-            
-            else if(product.design.Count>0)
-                   {
-                       Console.WriteLine("product count");
-                       foreach (var entity in product.design)
-                       {
-                           var design=new SimpleInvoices.Design{
-                               name=entity.name,
-                               color=entity.color,
-                               fabric=entity.fabric,
-                               cut=entity.cut,
-                               note=entity.note,
-                               enable=true
-                           };
-                           /*
-                           prod.productDesign.Add(new ProductDesign {
-                               product=prod,
-                               design=design
-                           }); */
-                           Console.WriteLine("Design Values"+design.color+"fabric"+design.fabric);
-                           db.design.Add(design);
-                          db.products.Add(prod);
-                            var productDesign=new ProductDesign{
-                            product=prod,
-                            design=design
-                        };
-                        db.productDesign.Add(productDesign);
-                       }
-                        
-                   }
-                   else
-                    {
                            productId=db.products.Add(prod).Entity.Id;
-                 }
+                 
                 if(db.SaveChanges()>0)
                 {
                     productId=prod.Id;

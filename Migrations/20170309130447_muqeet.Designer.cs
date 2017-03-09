@@ -8,7 +8,7 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170302122707_muqeet")]
+    [Migration("20170309130447_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,30 +113,6 @@ namespace invoicingSystem.Migrations
                     b.ToTable("customer");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.CustomersBillersProducts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("billersId");
-
-                    b.Property<int?>("customersId");
-
-                    b.Property<bool>("enable");
-
-                    b.Property<int?>("productId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("billersId");
-
-                    b.HasIndex("customersId");
-
-                    b.HasIndex("productId");
-
-                    b.ToTable("customersBillersProducts");
-                });
-
             modelBuilder.Entity("SimpleInvoices.CustomFields", b =>
                 {
                     b.Property<int>("Id")
@@ -162,6 +138,10 @@ namespace invoicingSystem.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("LedgerDetailsledgersId");
+
+                    b.Property<int?>("LedgerDetailsproductId");
+
                     b.Property<string>("color");
 
                     b.Property<string>("cut");
@@ -175,6 +155,8 @@ namespace invoicingSystem.Migrations
                     b.Property<string>("note");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LedgerDetailsledgersId", "LedgerDetailsproductId");
 
                     b.ToTable("design");
                 });
@@ -211,6 +193,61 @@ namespace invoicingSystem.Migrations
 
             modelBuilder.Entity("SimpleInvoices.LedgerDetails", b =>
                 {
+                    b.Property<int>("ledgersId");
+
+                    b.Property<int>("productId");
+
+                    b.Property<double>("quantity");
+
+                    b.Property<int?>("taxId");
+
+                    b.HasKey("ledgersId", "productId");
+
+                    b.HasIndex("productId");
+
+                    b.HasIndex("taxId");
+
+                    b.ToTable("ledgerDetails");
+                });
+
+            modelBuilder.Entity("SimpleInvoices.Ledgers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("PaymentId");
+
+                    b.Property<double>("amount");
+
+                    b.Property<double>("balance");
+
+                    b.Property<int?>("billerId");
+
+                    b.Property<DateTime>("createdDate");
+
+                    b.Property<int?>("customerId");
+
+                    b.Property<DateTime>("deliveryDate");
+
+                    b.Property<DateTime>("dueDate");
+
+                    b.Property<bool>("enable");
+
+                    b.Property<string>("invoiceName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.HasIndex("billerId");
+
+                    b.HasIndex("customerId");
+
+                    b.ToTable("ledgers");
+                });
+
+            modelBuilder.Entity("SimpleInvoices.Payment", b =>
+                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
@@ -224,43 +261,7 @@ namespace invoicingSystem.Migrations
 
                     b.HasIndex("paymentTypesId");
 
-                    b.ToTable("ledgerDetails");
-                });
-
-            modelBuilder.Entity("SimpleInvoices.Ledgers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("LedgerDetailsId");
-
-                    b.Property<double>("amount");
-
-                    b.Property<double>("balance");
-
-                    b.Property<DateTime>("createdDate");
-
-                    b.Property<int?>("customersBillersProductsId");
-
-                    b.Property<DateTime>("deliveryDate");
-
-                    b.Property<DateTime>("dueDate");
-
-                    b.Property<bool>("enable");
-
-                    b.Property<int>("quantity");
-
-                    b.Property<int?>("taxId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LedgerDetailsId");
-
-                    b.HasIndex("customersBillersProductsId");
-
-                    b.HasIndex("taxId");
-
-                    b.ToTable("ledgers");
+                    b.ToTable("payment");
                 });
 
             modelBuilder.Entity("SimpleInvoices.PaymentTypes", b =>
@@ -303,19 +304,6 @@ namespace invoicingSystem.Migrations
                     b.ToTable("products");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.ProductDesign", b =>
-                {
-                    b.Property<int>("productId");
-
-                    b.Property<int>("designId");
-
-                    b.HasKey("productId", "designId");
-
-                    b.HasIndex("designId");
-
-                    b.ToTable("productDesign");
-                });
-
             modelBuilder.Entity("SimpleInvoices.Taxes", b =>
                 {
                     b.Property<int>("Id")
@@ -348,26 +336,18 @@ namespace invoicingSystem.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.CustomersBillersProducts", b =>
-                {
-                    b.HasOne("SimpleInvoices.Billers", "billers")
-                        .WithMany()
-                        .HasForeignKey("billersId");
-
-                    b.HasOne("SimpleInvoices.Customer", "customers")
-                        .WithMany()
-                        .HasForeignKey("customersId");
-
-                    b.HasOne("SimpleInvoices.product", "product")
-                        .WithMany()
-                        .HasForeignKey("productId");
-                });
-
             modelBuilder.Entity("SimpleInvoices.CustomFields", b =>
                 {
                     b.HasOne("SimpleInvoices.product")
                         .WithMany("customFields")
                         .HasForeignKey("productId");
+                });
+
+            modelBuilder.Entity("SimpleInvoices.Design", b =>
+                {
+                    b.HasOne("SimpleInvoices.LedgerDetails")
+                        .WithMany("designs")
+                        .HasForeignKey("LedgerDetailsledgersId", "LedgerDetailsproductId");
                 });
 
             modelBuilder.Entity("SimpleInvoices.FieldValue", b =>
@@ -391,37 +371,41 @@ namespace invoicingSystem.Migrations
 
             modelBuilder.Entity("SimpleInvoices.LedgerDetails", b =>
                 {
-                    b.HasOne("SimpleInvoices.PaymentTypes", "paymentTypes")
-                        .WithMany()
-                        .HasForeignKey("paymentTypesId");
-                });
+                    b.HasOne("SimpleInvoices.Ledgers", "ledgers")
+                        .WithMany("ledgerDetails")
+                        .HasForeignKey("ledgersId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity("SimpleInvoices.Ledgers", b =>
-                {
-                    b.HasOne("SimpleInvoices.LedgerDetails")
-                        .WithMany("ledgers")
-                        .HasForeignKey("LedgerDetailsId");
-
-                    b.HasOne("SimpleInvoices.CustomersBillersProducts", "customersBillersProducts")
-                        .WithMany()
-                        .HasForeignKey("customersBillersProductsId");
+                    b.HasOne("SimpleInvoices.product", "product")
+                        .WithMany("ledgerDetails")
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SimpleInvoices.Taxes", "tax")
                         .WithMany()
                         .HasForeignKey("taxId");
                 });
 
-            modelBuilder.Entity("SimpleInvoices.ProductDesign", b =>
+            modelBuilder.Entity("SimpleInvoices.Ledgers", b =>
                 {
-                    b.HasOne("SimpleInvoices.Design", "design")
-                        .WithMany("productDesign")
-                        .HasForeignKey("designId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("SimpleInvoices.Payment")
+                        .WithMany("ledgers")
+                        .HasForeignKey("PaymentId");
 
-                    b.HasOne("SimpleInvoices.product", "product")
-                        .WithMany("productDesign")
-                        .HasForeignKey("productId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("SimpleInvoices.Billers", "biller")
+                        .WithMany()
+                        .HasForeignKey("billerId");
+
+                    b.HasOne("SimpleInvoices.Customer", "customer")
+                        .WithMany()
+                        .HasForeignKey("customerId");
+                });
+
+            modelBuilder.Entity("SimpleInvoices.Payment", b =>
+                {
+                    b.HasOne("SimpleInvoices.PaymentTypes", "paymentTypes")
+                        .WithMany()
+                        .HasForeignKey("paymentTypesId");
                 });
         }
     }

@@ -5,10 +5,6 @@
     <title>Bootstrap Example</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
-    <!--<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">-->
-    <!--<link rel="stylesheet" href="css/stylesheet.css">-->
-
 </head>
 
 <body ng-app="customerModule">
@@ -21,8 +17,9 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>EDIT</th>
                             <th>Name</th>
-                            <th ng-repeat="customField in Customers[0].customfields">{{customField.fieldName}}</th>
+                            <th>Address</th>
                             <th>Total</th>
                             <th>Paid</th>
                             <th>Owing</th>
@@ -32,9 +29,10 @@
                     <!--{{$index+1}}-->
                     <tbody ng-repeat="cust in Customers">
                         <tr>
-                            <td> <span>{{cust.id}}</span></td>
+                            <td> <span>{{cust.id}}<a href="#" ng-click="deleteCustomer(cust.id)"><img src="../images/delete.png"alt="" style="width:20px; height:auto;" /></a></span></td>
+                            <td> <span><a href="#view" ng-click="setRoot(cust.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#edit" ng-click="setRoot(cust.id)"><img src="../images/edit.ico"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(cust.id)"><img src="../images/mail.png"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(cust.id)"><img src="../images/print.ico"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(cust.id)"><img src="../images/pdf.png"alt="" style="width:20px; height:auto;" /></a></span></td>
                             <td> <span>{{cust.name}}</span></td>
-                            <td ng-repeat="customField in cust.customfields"> <span>{{customField.fieldValue}}</span></td>
+                            <td>  <span>{{cust.email}}</span></td></td>
                             <td> <span>{{cust.total}}</span></td>
                             <td> <span>{{cust.paid}}</span></td>
                             <td> <span>{{cust.owing}}</span></td>

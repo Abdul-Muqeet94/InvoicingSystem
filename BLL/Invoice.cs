@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SimpleInvoices;
 using SimpleInvoices.ViewModels;
 
 namespace SimpleInvoices.BLL{
     public class Invoice {
         public readonly InvoiceContext _db;
+        double total=0;
         public Invoice (InvoiceContext context){
             _db=context;
         }
@@ -45,57 +47,113 @@ namespace SimpleInvoices.BLL{
             return dropdownRes;
             
         }
+
         public BaseResponse createInvoice(InvoiceReq invoice){
             BaseResponse toReturn=new BaseResponse();
-            CustomersBillersProducts customerBillerProduct=new CustomersBillersProducts();
-            var db=_db;
-            try{
-            var customer=db.customer.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
-            var biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
-            var product=db.products.Where(c=>c.Id.Equals(invoice.productId)).FirstOrDefault();
-            if(product==null){
-                int productId=new SimpleInvoices.BLL.Products(db).addProduct(invoice.product).status;
-                if(productId >0){
-                    product=db.products.Where(c=>c.Id==productId).FirstOrDefault();
-                } 
-            }
-            if(customer!=null && biller!=null && product!=null ){
-                customerBillerProduct.customers=customer;
-                customerBillerProduct.billers=biller;
-                customerBillerProduct.product=product;
-                customerBillerProduct.enable=Constant.USER_ACTIVE;
-                db.customersBillersProducts.Add(customerBillerProduct);
-                Double bal=(product.price*invoice.quantity)-invoice.amount;
-                db.ledgers.Add(new Ledgers{
-                    quantity=invoice.quantity,
-                    createdDate=invoice.createdDate,
-                    dueDate=invoice.dueDate,
-                    amount=invoice.amount,
-                    balance=bal,
-                    customersBillersProducts=customerBillerProduct,
-                    enable=Constant.USER_ACTIVE
-                });
-                
-            }
-                
-                if(db.SaveChanges()>0){
-                    toReturn.developerMessage="Invoice Created Successfully";
-                    toReturn.status=1;
-                }
-                else{
-                    toReturn.developerMessage="Unable to Create invoice";
-                    toReturn.status=2;
-                }
+           var db=_db;
+           Ledgers ledger=new Ledgers();
+           ledger.biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
+           ledger.customer=db.customer.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
+           ledger.dueDate=invoice.dueDate;
+           ledger.createdDate=DateTime.Now;
+           ledger.deliveryDate=invoice.deliveryDate;
+           ledger.enable=true;
+           ledger.ledgerDetails=getLedgerDetails(ledger,invoice,db);
+           ledger.amount=total;
+           ledger.balance=total;
+           ledger.invoiceName="Invoice-"+ledger.Id;
+            
+           if(db.SaveChanges()>0){
+               ledger.invoiceName="Invoice-"+ledger.Id;
+               db.SaveChanges();
+               toReturn.status=1;
+               toReturn.developerMessage="Invoice Created Successfully";
+           }
             return toReturn;
-            }
-            catch (Exception ex){
-                return new BaseResponse();
-            }
+           
             
         }
-        public List<InvoiceRes> getAllInvoice(){
-            List<InvoiceRes> toReturn=new List<InvoiceRes>();
+
+        public List<LedgerDetails> getLedgerDetails(Ledgers ledger,InvoiceReq invoice,InvoiceContext db){
             
+            List<LedgerDetails> toReturn=new List<LedgerDetails>();
+            foreach(var item in invoice.product){
+                var tax=db.taxes.Where(c=>c.Id.Equals(item.taxId)).FirstOrDefault();
+                 List<Design> designList=new List<Design>();
+                if(item.id==0){ 
+                    var result= new  BLL.Products(db).addProduct(item);  
+                    foreach(var design in item.designs)
+                    {
+                        Design _design=new Design();
+                        
+                            _design.name=design.name;
+                            _design.color=design.color;
+                            _design.cut=design.cut;
+                            _design.fabric=design.fabric;
+                            _design.note=design.note;
+                        designList.Add(_design);
+                    }
+                    item.id=result.status;
+                    var product=db.products.Where(c=>c.Id==item.id).FirstOrDefault();
+                    toReturn.Add(new LedgerDetails {
+                    ledgers=ledger,
+                    product=product,
+                    quantity=item.quantity,
+                    designs=designList,
+                    tax=tax
+                });
+                total+=(item.quantity*product.price);
+                
+                product.ledgerDetails=toReturn;
+                }
+                else
+                {
+                    var product = db.products.Where(c => c.Id == item.id).FirstOrDefault();
+                    foreach(var design in item.designs)
+                    {
+                        Design _design=new Design();
+                        
+                            _design.name=design.name;
+                            _design.color=design.color;
+                            _design.cut=design.cut;
+                            _design.fabric=design.fabric;
+                            _design.note=design.note;
+                        designList.Add(_design);
+                    }
+                    toReturn.Add(new LedgerDetails
+                    {
+                        ledgers = ledger,
+                        product = product,
+                        quantity=item.quantity,
+                        designs=designList,
+                        tax=tax
+                    });
+                    product.ledgerDetails=toReturn;
+                    total+=(item.quantity*product.price);
+                }
+            }
+            db.ledgerDetails.AddRange(toReturn);
+            return toReturn;
+        }
+        public List<InvoiceRes> getAllInvoice(int id){
+            List<InvoiceRes> toReturn=new List<InvoiceRes>();
+            List<Ledgers> ledgers=new List<Ledgers>();
+            var db=_db;
+            if(id==0){
+                 ledgers=db.ledgers.Include(c=>c.biller).Include(c=>c.customer).Include(c=>c.ledgerDetails).ThenInclude(c=>c.product).Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax).Include(c=>c.ledgerDetails).ThenInclude(c=>c.designs).ToList();
+            }
+            else{
+                ledgers=db.ledgers.Where(c=>c.Id==id).ToList();
+            }
+            foreach(var entity in ledgers){
+                InvoiceRes res=new InvoiceRes();
+                res.billerId=entity.biller.Id;
+                res.billerName=entity.biller.name;
+                res.customerId=entity.customer.Id;
+                res.custName=entity.customer.name;
+                res.price=entity.amount;
+        toReturn.Add(res);
+            }
             return toReturn;
         }
 

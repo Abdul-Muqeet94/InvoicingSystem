@@ -82,9 +82,9 @@
 	 								</select>
 									 <input type="file" ng-model="picture" base-sixty-four-input>
 
-<div ng-repeat="input in fields">
- <label for="craditCardNumber">{{input}}</label>
-  <input type="text" class="form-control" ng-model="{{input}}"> 
+<div ng-repeat="input in customFields">
+ <label for="phone">{{input.fieldName}}</label>
+  <input type="text" class="form-control" ng-model="input.fieldValue"> 
 </div>
 
 	 							</fieldset>

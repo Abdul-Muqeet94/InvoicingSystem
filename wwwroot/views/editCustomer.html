@@ -12,26 +12,27 @@
 
 <body ng-app="customerModule">
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-      
+       <h3>Edit Customer</h3>
             <div ng-controller="crudController">
-                 <H2 class="H2">customers</H2>
 			<ul ng-repeat="item in Customers">
-  <li class="li" ng-repeat="(key, val) in item" ng-if="key!='customfields'">
-   <div class="a" > {{key}}</div> <div class="a">{{val}}</div>
-
-   
+  <li  ng-repeat="(key, val) in item" ng-hide="(key=='total' || key=='paid' || key=='owing')" ng-if="key!='customfields'">
+   <label class="label"> {{key}}</label> <input type="text" value='{{val}}'/> 
   </li>
  
- 
+ <!--div ng-repeat="(key, val) in item" ng-hide="(key=='name' || key=='id' || key=='address' || key=='contact'|| key=='email' || key=='city')" ng-if="key!='customfields'">
+      <label class="label"> {{key}}</label> <input type="text" value='{{val}}'/> 
+ </div-->
 </ul>
 
 
 
-<ul ng-repeat="item in customs">
-  <li class="li" ng-repeat="(key, val) in item">
-     {{val}}
-  </li>
-</ul>
+<div ng-repeat="item in customs">
+ 
+  <label class="label">{{item.fieldName}}</label>
+ 
+   <input type=text value='{{item.fieldValue}}'/>
+
+</div>
 
 
 

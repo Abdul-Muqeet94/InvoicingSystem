@@ -1,5 +1,11 @@
 (function(){
     var app = angular.module("sideModule", ['ngRoute','customerModule','productModule','invoiceModule', 'serviceModule']);
+app.run(function($rootScope) {
+
+    $rootScope.customerId = 0;
+//console.log($rootScope.customerId);
+});
+
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -51,6 +57,12 @@ app.config(function($routeProvider) {
 
       .when("/addproduct", {
         templateUrl : "../views/Addproduct.html"
+    })
+    .when("/view", {
+        templateUrl : "../views/viewCustomer.html"
+    })
+ .when("/edit", {
+        templateUrl : "../views/editCustomer.html"
     })
 
 });

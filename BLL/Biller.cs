@@ -22,12 +22,12 @@ namespace SimpleInvoices.BLL{
             if(id==0)
             {
               userList=db.biller.Where(c=>c.enable==true).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).ThenInclude(c=>c.billers).ToList();
             }
             else
             {
              userList=db.biller.Where(c=>c.Id.Equals(id)  && c.enable==true).ToList();
-             fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).ToList();
+             fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).ThenInclude(c=>c.billers).ToList();
             }
             
             if(userList.Count>0)

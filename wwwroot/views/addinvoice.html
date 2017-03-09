@@ -1,79 +1,57 @@
 <div ng-app="invoiceModule" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-    <div class="area1">
-        <input type="button" name="" value="Itemisend style">
-        <input type="button" name="" value="Totle style">
-
+  <h2>Invoice</h2>
+    <fieldset class="form-group" ng-controller="billerController">
         <label class="label">Biller</label>
-        <select name="">
-								<option  ng-repeat="biller in billers" value="{{biller.id}}">{{biller.name}}</option>
-							</select>
+        
+                    <input type="text" ng-model="invoice.quantity" />
         <label class="label ">Customer</label>
-        <select name="">
-								<option ng-repeat="customer in customers" value="{{customer.id}}">{{customer.name}}</option>
-							</select>
+        
+                    <input type="text" ng-model="invoice.qantity" />
         <label class="label">Delivery Date </label>
-        <input type="datetime-local" ng-model="string"></input>
-        <label class="label">Due Date </label>
-        <input type="datetime"></input>
-    </div>
+        <input type="date" ng-model="string"></input>
+        <!--<label class="label">Shipment Date </label>
+        <input type="date" ng-model="strng"></input>-->
+   
+ <!--<button ng-click="addProduct()">Add Product</button>-->
+  </fieldset>    
+    
+      
+            <div ng-controller="createInvoiceController" >
+                <fieldset class="form-group row" data-ng-repeat="invoice in invoices">
+                    
+                   <!--h3>Product {{invoices.indexOf(invoice)+1}}</h3-->
+                   
+                    
+                    
+                    <h3>Designs</h3>
+    
 
 
-    <form class="form-group" ng-controller="billerController">
 
-        <label class="label ">Product</label>
-        <select name="" ng-change="update()" ng-model="value">
-			
-								<option ng-repeat="product in products" value="{{product.id}}">{{product.name}}</option>
-							</select>
-        <label class="label ">Taxes</label>
-        <select name="" ng-model="value">
-			
-								<option ng-repeat="tax in taxes" value="{{tax.id}}">{{tax.name}}</option>
-							</select>
-
-
-        <label class="label">Quantity </label>
-        <input type="text" ng-model="invoice.name" name="" placeholder="Quantity"></input>
-        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-8 col-lg-offset-2">
-            <div ng-controller="createInvoiceController">
-                <fieldset data-ng-repeat="invoice in invoices">
-                    <div ng-if="$index>0">
-                        <select name="" ng-change="update()" ng-model="value">
-			
-								<option ng-repeat="product in products" value="{{product.id}}">{{product.name}}</option>
-							</select>
-                        <label class="label ">Taxes</label>
-                        <select name="" ng-model="value">
-			
-								<option ng-repeat="tax in taxes" value="{{tax.id}}">{{tax.name}}</option>
-							</select>
-                    </div>
-
-                    <label class="label">Quantity </label>
-                    <input type="text" ng-model="invoice.name" name="" placeholder="Quantity"></input>
-                    <input type="text" ng-model="invoice.name" name="" placeholder="Enter Product Name">Product Name</input>
-                    <input type="text" ng-model="invoice.color" name="" placeholder="Enter Product Color ">Product Color</input>
-                    <input type="text" ng-model="invoice.note" name="" placeholder="Enter Product Note">Product Note</input>
-                    <input type="text" ng-model="invoice.description" name="" placeholder="Enter Product description">Product Description</input>
-                    <input type="text" ng-model="invoice.price" name="" placeholder="Enter Product Price"> Product Price</input>
-                    <div ng-repeat="design in invoice.designs">
-                        <h1>Designs</h1>
-                        <form>
-                            <input type="text" ng-model="design.name" name="" placeholder="Enter design name "> Name</input>
-                            <input type="text" ng-model="design.cut" name="" placeholder="Enter design name "> cut</input>
-                            <input type="text" ng-model="design.color" name="" placeholder="Enter design name "> color</input>
-                            <input type="text" ng-model="design.fabric" name="" placeholder="Enter design name "> fabric</input>
-                        </form>
-
-                    </div>
-                    <button class="addfields" ng-show="$last" ng-click="removeDesign($index)">Remove Design fields</button>
-                    <button class="addfields" ng-click="addDesigns($index)">Add Design fields</button>
-
-
-                    <button class="remove" ng-show="$last" ng-click="removeinvoice($index-1)">Remove</button>
-
-                    <button class="addfields" ng-click="createnewInvoice($index+1)">Add fields</button>
                 </fieldset>
+<div class="nn">
+                       <label >Product</label>
+                       <select name=""  ng-model="value">
+								<option  value="Product1">Product 1</option>
+							</select>
+                    <label >Tax</label>
+                    <input type="text"  ng-model="rtrtr" />
+                    <label >Quantity</label>
+                    <input type="text" ng-model="invoice.quaity" />
+                    <label> Name </label>  <input type="text" ng-disabled="True" value="Product1">  </input> 
+                      <label> Price </label>  <input type="text" ng-disabled="True" value="20">  </input> 
+                        <!--<li class="label" ng-repeat="(key,val) in invoice.customField[0]" ng-if="invoice.id!='0'">
+                             {{val}}
+                        </li>-->
+                        <!--<li class="label" ng-repeat="(key,val) in invoice.designs[0]" ng-hide="key=='id'" ng-if="invoice.id!='0'">
+                           {{key}}:  {{val}}
+                        </li>-->
+                        <div  ng-repeat="(key,val) in invoice" ng-if="invoice.id=='0'">
+                           <LABEL>{{key}}</LABEL>
+                            <input type="text" ng-model=""/>
+                        </div>
+                        </div>
+                <!--//I have not edited below this line -->
                 <button class="btn bth-primary" ng-click="addLedger()">Save</button>
                 <div ng-repeat="invoi in ledgers">{{invoi.name}}</div>
                 <div id="choicesDisplay">
@@ -82,13 +60,41 @@
                 <div id="choicesDisplay">
                     {{ invoi.products }}
                 </div>
+                <table>
+    <tr>
+        <td>Type</td>
+        <td>Color</td>
+        <td>Cut/Length
+        </td>
+        <td>Fabric</td>
+        <td>Note</td>
+    </tr>
+    <tr>
+        <td>Shirt</td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+    </tr>
+    <tr>
+        <td>Pant</td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+    </tr>
+    <tr>
+        <td>Dupatta</td>
+         <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+        <td><input type="text" value=""/></td>
+    </tr>
+</table>
             </div>
 
-            <div class="area">
-                <input class="btn btn-primary" type="button" value="save">
-                <input class="btn btn-danger" type="button" value="Cancel">
-            </div>
-        </div>
+
+       
 
 
 </div>
@@ -96,4 +102,3 @@
 
 
 
-</form>

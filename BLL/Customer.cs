@@ -12,7 +12,8 @@ namespace SimpleInvoices.BLL{
         public Customers (InvoiceContext context){
             _db=context;
         }
-       
+      
+       #region get invoice 
         public List<UserViewRes> getCustomers (int id)
         {
             var db=_db;
@@ -22,13 +23,13 @@ namespace SimpleInvoices.BLL{
             if(id==0)
             {
               userList=db.customer.Where(c=>c.enable==true).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ThenInclude(c=>c.customer).ToList();
               
             }
             else
             {
              userList=db.customer.Where(c=>c.Id.Equals(id)  && c.enable==true).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ThenInclude(c=>c.customer).ToList();
             }
             
             if(userList.Count>0)
@@ -39,16 +40,15 @@ namespace SimpleInvoices.BLL{
                     double total=0;
                     double paid=0;
                     double owing=0;
-                    var legder=db.ledgers.Include(c=>c.customersBillersProducts).ThenInclude(c=>c.customers).Where(c=>c.customersBillersProducts.customers==entity).ToList();
-                   foreach(var values in legder)
-                   {
-                    paid+=values.amount;
-                    owing+=values.balance;
-                   }
-                   total=paid+owing;
+                    var ledger=db.ledgers.Include(c=>c.customer).Where(c=>c.customer==entity).FirstOrDefault();
+                  
+                    total=ledger.amount;
+                    owing=ledger.balance;
+                   
+                   paid=total-owing;
                   Console.WriteLine("Customer added"); 
                     
-                    var getCustom=bll_getcustomFields(fields,entity);
+                    
                     toReturn.Add(new UserViewRes(){
                         name=entity.name,
                         contact=entity.contact,
@@ -67,6 +67,7 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
+        #endregion
         public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,Customer customer){
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             

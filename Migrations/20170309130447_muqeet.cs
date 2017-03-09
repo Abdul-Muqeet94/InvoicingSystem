@@ -72,24 +72,6 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "design",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    color = table.Column<string>(nullable: true),
-                    cut = table.Column<string>(nullable: true),
-                    enable = table.Column<bool>(nullable: false),
-                    fabric = table.Column<string>(nullable: true),
-                    name = table.Column<string>(nullable: true),
-                    note = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_design", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "paymentTypes",
                 columns: table => new
                 {
@@ -154,7 +136,7 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ledgerDetails",
+                name: "payment",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -165,45 +147,11 @@ namespace invoicingSystem.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ledgerDetails", x => x.Id);
+                    table.PrimaryKey("PK_payment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ledgerDetails_paymentTypes_paymentTypesId",
+                        name: "FK_payment_paymentTypes_paymentTypesId",
                         column: x => x.paymentTypesId,
                         principalTable: "paymentTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "customersBillersProducts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    billersId = table.Column<int>(nullable: true),
-                    customersId = table.Column<int>(nullable: true),
-                    enable = table.Column<bool>(nullable: false),
-                    productId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_customersBillersProducts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_customersBillersProducts_biller_billersId",
-                        column: x => x.billersId,
-                        principalTable: "biller",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_customersBillersProducts_customer_customersId",
-                        column: x => x.customersId,
-                        principalTable: "customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_customersBillersProducts_products_productId",
-                        column: x => x.productId,
-                        principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -231,65 +179,41 @@ namespace invoicingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "productDesign",
-                columns: table => new
-                {
-                    productId = table.Column<int>(nullable: false),
-                    designId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_productDesign", x => new { x.productId, x.designId });
-                    table.ForeignKey(
-                        name: "FK_productDesign_design_designId",
-                        column: x => x.designId,
-                        principalTable: "design",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_productDesign_products_productId",
-                        column: x => x.productId,
-                        principalTable: "products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ledgers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LedgerDetailsId = table.Column<int>(nullable: true),
+                    PaymentId = table.Column<int>(nullable: true),
                     amount = table.Column<double>(nullable: false),
                     balance = table.Column<double>(nullable: false),
+                    billerId = table.Column<int>(nullable: true),
                     createdDate = table.Column<DateTime>(nullable: false),
-                    customersBillersProductsId = table.Column<int>(nullable: true),
+                    customerId = table.Column<int>(nullable: true),
                     deliveryDate = table.Column<DateTime>(nullable: false),
                     dueDate = table.Column<DateTime>(nullable: false),
                     enable = table.Column<bool>(nullable: false),
-                    quantity = table.Column<int>(nullable: false),
-                    taxId = table.Column<int>(nullable: true)
+                    invoiceName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ledgers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ledgers_ledgerDetails_LedgerDetailsId",
-                        column: x => x.LedgerDetailsId,
-                        principalTable: "ledgerDetails",
+                        name: "FK_ledgers_payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "payment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ledgers_customersBillersProducts_customersBillersProductsId",
-                        column: x => x.customersBillersProductsId,
-                        principalTable: "customersBillersProducts",
+                        name: "FK_ledgers_biller_billerId",
+                        column: x => x.billerId,
+                        principalTable: "biller",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ledgers_taxes_taxId",
-                        column: x => x.taxId,
-                        principalTable: "taxes",
+                        name: "FK_ledgers_customer_customerId",
+                        column: x => x.customerId,
+                        principalTable: "customer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -336,25 +260,73 @@ namespace invoicingSystem.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_customersBillersProducts_billersId",
-                table: "customersBillersProducts",
-                column: "billersId");
+            migrationBuilder.CreateTable(
+                name: "ledgerDetails",
+                columns: table => new
+                {
+                    ledgersId = table.Column<int>(nullable: false),
+                    productId = table.Column<int>(nullable: false),
+                    quantity = table.Column<double>(nullable: false),
+                    taxId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ledgerDetails", x => new { x.ledgersId, x.productId });
+                    table.ForeignKey(
+                        name: "FK_ledgerDetails_ledgers_ledgersId",
+                        column: x => x.ledgersId,
+                        principalTable: "ledgers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ledgerDetails_products_productId",
+                        column: x => x.productId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ledgerDetails_taxes_taxId",
+                        column: x => x.taxId,
+                        principalTable: "taxes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_customersBillersProducts_customersId",
-                table: "customersBillersProducts",
-                column: "customersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_customersBillersProducts_productId",
-                table: "customersBillersProducts",
-                column: "productId");
+            migrationBuilder.CreateTable(
+                name: "design",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LedgerDetailsledgersId = table.Column<int>(nullable: true),
+                    LedgerDetailsproductId = table.Column<int>(nullable: true),
+                    color = table.Column<string>(nullable: true),
+                    cut = table.Column<string>(nullable: true),
+                    enable = table.Column<bool>(nullable: false),
+                    fabric = table.Column<string>(nullable: true),
+                    name = table.Column<string>(nullable: true),
+                    note = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_design", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_design_ledgerDetails_LedgerDetailsledgersId_LedgerDetailsproductId",
+                        columns: x => new { x.LedgerDetailsledgersId, x.LedgerDetailsproductId },
+                        principalTable: "ledgerDetails",
+                        principalColumns: new[] { "ledgersId", "productId" },
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_customFields_productId",
                 table: "customFields",
                 column: "productId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_design_LedgerDetailsledgersId_LedgerDetailsproductId",
+                table: "design",
+                columns: new[] { "LedgerDetailsledgersId", "LedgerDetailsproductId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_FieldValues_CustomFieldsId",
@@ -377,62 +349,64 @@ namespace invoicingSystem.Migrations
                 column: "productId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ledgerDetails_paymentTypesId",
+                name: "IX_ledgerDetails_productId",
                 table: "ledgerDetails",
-                column: "paymentTypesId");
+                column: "productId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ledgers_LedgerDetailsId",
-                table: "ledgers",
-                column: "LedgerDetailsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ledgers_customersBillersProductsId",
-                table: "ledgers",
-                column: "customersBillersProductsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ledgers_taxId",
-                table: "ledgers",
+                name: "IX_ledgerDetails_taxId",
+                table: "ledgerDetails",
                 column: "taxId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_productDesign_designId",
-                table: "productDesign",
-                column: "designId");
+                name: "IX_ledgers_PaymentId",
+                table: "ledgers",
+                column: "PaymentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ledgers_billerId",
+                table: "ledgers",
+                column: "billerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ledgers_customerId",
+                table: "ledgers",
+                column: "customerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_payment_paymentTypesId",
+                table: "payment",
+                column: "paymentTypesId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "design");
+
+            migrationBuilder.DropTable(
                 name: "FieldValues");
-
-            migrationBuilder.DropTable(
-                name: "ledgers");
-
-            migrationBuilder.DropTable(
-                name: "productDesign");
 
             migrationBuilder.DropTable(
                 name: "users");
 
             migrationBuilder.DropTable(
-                name: "customFields");
-
-            migrationBuilder.DropTable(
                 name: "ledgerDetails");
 
             migrationBuilder.DropTable(
-                name: "customersBillersProducts");
+                name: "customFields");
+
+            migrationBuilder.DropTable(
+                name: "ledgers");
 
             migrationBuilder.DropTable(
                 name: "taxes");
 
             migrationBuilder.DropTable(
-                name: "design");
+                name: "products");
 
             migrationBuilder.DropTable(
-                name: "paymentTypes");
+                name: "payment");
 
             migrationBuilder.DropTable(
                 name: "biller");
@@ -441,7 +415,7 @@ namespace invoicingSystem.Migrations
                 name: "customer");
 
             migrationBuilder.DropTable(
-                name: "products");
+                name: "paymentTypes");
         }
     }
 }

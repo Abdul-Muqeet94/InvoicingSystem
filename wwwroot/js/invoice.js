@@ -1,35 +1,48 @@
 (function() {
     var app = angular.module("invoiceModule", ['ngRoute']);
-
-
-
     app.controller('createInvoiceController', function($scope, createInvoice, getProductId) {
-        //$scope.invoices = [];
         $scope.ledgers = { id: "0", products: [] };
-        $scope.invoices = [id = "0"];
+        $scope.invoices = [];
+        $scope.newDesigns = [];
         $scope.$on('someEvent', function(event, args) {
-            // loadscope(args);'
             var fillScope = createInvoice.fillscope(args);
             fillScope.then(function(pl) {
-                    $scope.invoices[0].products.push(pl.data)
+
+                    pl.data[0].quantity = "";
+                    pl.data[0].taxId = "";
+                    $scope.invoices.push(pl.data[0]);
+                    console.log($scope.invoices);
                 },
                 function(errorpl) {
                     $log.error('fail to load data' + errorpl);
                 });
         });
-
-
-        $scope.addDesigns = function(idx) {
-            //  var productIndex = $scope.invoices.length - 1;
-            alert(idx);
-            $scope.invoices[idx].designs.push({ 'id': 0 });
-        }
-        $scope.removeDesign = function(idx) {
-            alert(idx);
-            var lastItem = $scope.invoices[0].designs.length - 1;
-            $scope.invoices[idx].designs.splice(lastItem);
-        }
-
+  $scope.add = function(x){
+      
+   var obj = {id:x, color:'', fabric:'',note:'',cut:''};
+  $scope.newDesigns.push(obj);
+  
+    }
+ $scope.remove = function(x){
+     var a=-1;
+     for(var i=0;i<$scope.newDesigns.length;i++){
+   if($scope.newDesigns[i].id==x)
+       a=i; 
+ }
+   if(a==-1){return}
+    $scope.newDesigns.splice(a,1);
+}
+        $scope.$on('addProduct', function(event, args) {
+    var obj = {id:0, taxId:'0', quantity:'',name:'',color:'',note:'',description:'',price:'',customField:'[]',design:'[]'};
+$scope.invoices.push(obj);
+        });
+        
+$scope.check = function(x,y){
+   if(x!=y){ 
+       return true;
+ }
+    return false;
+}
         $scope.createnewInvoice = function(idx) {
             alert(idx);
             //var newinvoiceNo = $scope.invoices.length - 1;
@@ -68,9 +81,14 @@
         loadCustomer();
         loadProduct();
         loadTax();
+        $scope.addProduct=function(){
+ $rootScope.$broadcast('addProduct');
+        }
+        
         $scope.update = function update() {
             alert("update");
             $rootScope.$broadcast('someEvent', $scope.value);
+            console.log($scope.value);
         }
 
         function loadTax() {

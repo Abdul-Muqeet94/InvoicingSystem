@@ -1,29 +1,42 @@
 (function(){
-    var app = angular.module("customerModule", ['ngRoute','customservice']);
-  app.controller('crudController', function($scope, getCustomerService) {
+    var app = angular.module("customerModule", ['ngRoute','customservice','naif.base64']);
+  app.controller('crudController', function($scope,$log,$rootScope,$http,$location) {
 
-        $scope.IsNewRecord = 1; //The flag for the new record
-
-        loadRecords();
-
-        //Function to load all Employee records
-        function loadRecords() {
-            var promiseGet = getCustomerService.getEmployees(); //The MEthod Call from service
-
-            promiseGet.then(function(pl) { $scope.Customers = pl.data },
-                function(errorPl) {
-                    $log.error('failure loading Employee', errorPl);
+ $scope.message =  $http.post('http://localhost:5000/api/customer/getCustomers',$rootScope.customerId).
+         then(function (response){        
+           $scope.Customers = response.data;
+           $scope.customs = $scope.Customers[0].customfields;
+               console.log(response.data);  
                 });
-        }
+       
+        $scope.setRoot = function(x){
+$rootScope.customerId=x;
+console.log($rootScope.customerId);
+        };
+        ///////
+        $scope.deleteCustomer = function(x){
+ $scope.message =  $http.post('http://localhost:5000/api/customer/delete',x).
+         then(function (response){        
+           $scope.response = response.data;
+            console.log(response.data);  
+           alert($scope.response.developerMessage);
+           //  route to customer.html
+           $location.path( "/customer" );
+                });
+        };
+        //////
 
     });
 app.controller("addCustomer", function($scope,$http,customfields){
 $scope.customFields = [];
-$scope.customFields =  customfields.get('customer');
+var getResult =  customfields.get('"Customer"');
+getResult.then(function(pl) { $scope.customFields = pl.data },
+                function(errorPl) {
+                    $log.error('failure loading customeFields', errorPl);
+                });
 console.log($scope.customFields);
-
 $scope.addCustomer = function(){
-
+   
 var customer = {
     id: '0',
     name:$scope.name,
@@ -56,12 +69,14 @@ var customer = {
     calf:$scope.calf,
     ankle:$scope.ankle,
     pantLength:$scope.pantLength,
-    picture:$scope.picture.base64,
+   imagePath:$scope.picture.base64,
     bodyType:$scope.select,
-    //
+    
     customFields:$scope.customFields
 }
 
+
+ console.log(customer);
     $scope.message =  $http.post('http://localhost:5000/api/customer/create',customer).
          then(function (response){
            console.log(response.data);

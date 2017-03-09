@@ -14,6 +14,10 @@ namespace SimpleInvoices.Controllers
         {
             return new BLL.Invoice(_db).createInvoice(invoice);
         } 
+        [Route("api/invoice/getinvoice"),HttpPost]
+        public List<InvoiceRes> getInvoice([FromBody] int id){
+            return new BLL.Invoice(_db).getAllInvoice(id);
+        }
         [Route("api/invoice/populatedropdown"),HttpPost]
         public List<UserDropdownRes> getDropDown([FromBody] String name)
         {
