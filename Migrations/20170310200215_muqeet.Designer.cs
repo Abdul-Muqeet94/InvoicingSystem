@@ -8,7 +8,7 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170309130447_muqeet")]
+    [Migration("20170310200215_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,6 +234,8 @@ namespace invoicingSystem.Migrations
                     b.Property<bool>("enable");
 
                     b.Property<string>("invoiceName");
+
+                    b.Property<string>("note");
 
                     b.HasKey("Id");
 

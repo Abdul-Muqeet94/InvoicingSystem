@@ -14,6 +14,7 @@ namespace SimpleInvoices {
         public Customer customer{get;set;}
         public Billers biller{get;set;}
         public List<LedgerDetails> ledgerDetails {get;set;}
+        public string note {get;set;}
         
     }
 }

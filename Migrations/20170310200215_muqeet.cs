@@ -193,7 +193,8 @@ namespace invoicingSystem.Migrations
                     deliveryDate = table.Column<DateTime>(nullable: false),
                     dueDate = table.Column<DateTime>(nullable: false),
                     enable = table.Column<bool>(nullable: false),
-                    invoiceName = table.Column<string>(nullable: true)
+                    invoiceName = table.Column<string>(nullable: true),
+                    note = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

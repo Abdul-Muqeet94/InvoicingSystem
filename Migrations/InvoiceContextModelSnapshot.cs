@@ -234,6 +234,8 @@ namespace invoicingSystem.Migrations
 
                     b.Property<string>("invoiceName");
 
+                    b.Property<string>("note");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PaymentId");

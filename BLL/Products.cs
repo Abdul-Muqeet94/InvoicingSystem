@@ -103,6 +103,7 @@ namespace SimpleInvoices.BLL{
                 prod.price=product.price;
                 prod.enable=Constant.USER_ACTIVE;
                 prod.createdOn=DateTime.Now;
+                prod.enable=true;
                 if(product.customField.Count>0)
                 {
                     Console.WriteLine("in first If");

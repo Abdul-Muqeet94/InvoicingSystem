@@ -54,14 +54,15 @@ namespace SimpleInvoices.BLL{
            Ledgers ledger=new Ledgers();
            ledger.biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
            ledger.customer=db.customer.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
-           ledger.dueDate=invoice.dueDate;
+          // ledger.dueDate=invoice.dueDate;
            ledger.createdDate=DateTime.Now;
-           ledger.deliveryDate=invoice.deliveryDate;
+           ledger.deliveryDate=invoice.date;
            ledger.enable=true;
            ledger.ledgerDetails=getLedgerDetails(ledger,invoice,db);
            ledger.amount=total;
            ledger.balance=total;
            ledger.invoiceName="Invoice-"+ledger.Id;
+           ledger.note=invoice.note;
             
            if(db.SaveChanges()>0){
                ledger.invoiceName="Invoice-"+ledger.Id;
@@ -78,7 +79,15 @@ namespace SimpleInvoices.BLL{
             
             List<LedgerDetails> toReturn=new List<LedgerDetails>();
             foreach(var item in invoice.product){
-                var tax=db.taxes.Where(c=>c.Id.Equals(item.taxId)).FirstOrDefault();
+                Taxes tax=new Taxes();        
+                if(item.taxId>0)
+                {
+                    tax=db.taxes.Where(c=>c.Id.Equals(item.taxId)).FirstOrDefault();
+                }
+                else{
+                    tax=null;
+                }
+                 
                  List<Design> designList=new List<Design>();
                 if(item.id==0){ 
                     var result= new  BLL.Products(db).addProduct(item);  
@@ -91,6 +100,7 @@ namespace SimpleInvoices.BLL{
                             _design.cut=design.cut;
                             _design.fabric=design.fabric;
                             _design.note=design.note;
+                            _design.enable=true;
                         designList.Add(_design);
                     }
                     item.id=result.status;
@@ -102,7 +112,11 @@ namespace SimpleInvoices.BLL{
                     designs=designList,
                     tax=tax
                 });
-                total+=(item.quantity*product.price);
+                double taxAmount=0;
+                    if(item.taxId>0){
+                    taxAmount=(item.quantity*item.price)*(tax.percent/100);
+                    }
+                total+=(item.quantity*product.price)+taxAmount;
                 
                 product.ledgerDetails=toReturn;
                 }
@@ -129,7 +143,11 @@ namespace SimpleInvoices.BLL{
                         tax=tax
                     });
                     product.ledgerDetails=toReturn;
-                    total+=(item.quantity*product.price);
+                     double taxAmount=0;
+                    if(item.taxId>0){
+                    taxAmount=(item.quantity*item.price)*(tax.percent/100);
+                    }
+                    total+=(item.quantity*product.price)+taxAmount;
                 }
             }
             db.ledgerDetails.AddRange(toReturn);
@@ -152,7 +170,16 @@ namespace SimpleInvoices.BLL{
                 res.customerId=entity.customer.Id;
                 res.custName=entity.customer.name;
                 res.price=entity.amount;
+                res.note=entity.note;
+                res.product=new BLL.Invoice(_db).getAllproduct(entity);
         toReturn.Add(res);
+            }
+            return toReturn;
+        }
+        public List<ProductViewRes> getAllproduct(Ledgers legers){
+            List<ProductViewRes> toReturn =new List<ProductViewRes>();
+            foreach(var entity in legers.ledgerDetails){
+
             }
             return toReturn;
         }

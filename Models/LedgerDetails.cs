@@ -4,6 +4,9 @@ namespace SimpleInvoices
 {
     public class LedgerDetails
     {
+        public LedgerDetails(){
+            designs=new List<Design>();
+        }
         public int ledgersId {get;set;}
         public Ledgers ledgers{get;set;}
         public int productId {get;set;}
