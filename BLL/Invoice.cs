@@ -157,7 +157,7 @@ namespace SimpleInvoices.BLL{
             List<Ledgers> ledgers=new List<Ledgers>();
             var db=_db;
             if(id==0){
-                 ledgers=db.ledgers.Include(c=>c.biller)
+                 ledgers=db.ledgers.Where(c=>c.enable==true).Include(c=>c.biller)
                  .Include(c=>c.customer)
                  .Include(c=>c.ledgerDetails).ThenInclude(c=>c.product)
                  .Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax)
@@ -165,10 +165,16 @@ namespace SimpleInvoices.BLL{
                  .ToList();
             }
             else{
-                ledgers=db.ledgers.Where(c=>c.Id==id).ToList();
+                ledgers=db.ledgers.Where(c=>c.Id.Equals(id) && c.enable==true).Include(c=>c.biller)
+                .Include(c=>c.customer)
+                 .Include(c=>c.ledgerDetails).ThenInclude(c=>c.product)
+                 .Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax)
+                 .Include(c=>c.ledgerDetails).ThenInclude(c=>c.designs)
+                 .ToList();
             }
             foreach(var entity in ledgers){
                 InvoiceRes res=new InvoiceRes();
+                res.id=entity.Id;
                 res.billerId=entity.biller.Id;
                 res.billerName=entity.biller.name;
                 res.customerId=entity.customer.Id;
@@ -189,6 +195,19 @@ namespace SimpleInvoices.BLL{
 
             }
             return toReturn;
+        }
+
+        public BaseResponse deleteInvoice(int id){
+            BaseResponse toReturn=new BaseResponse();
+            var db=_db;
+            var invoice=db.ledgers.Where(c=>c.Id.Equals(id)).Include(c=>c.ledgerDetails).FirstOrDefault();
+            invoice.enable=false;
+            if(db.SaveChanges()>0){
+                toReturn.status=1;
+                toReturn.developerMessage="invoice deleted Successfully";
+            }
+            return toReturn;
+            
         }
 
     }

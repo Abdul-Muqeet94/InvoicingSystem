@@ -6,21 +6,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body ng-app="billerModule">
+<body ng-app="customModule">
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-       <h3>View Biller</h3>
-            <div ng-controller="editBController">
+       <h3>Edit Custom Field</h3>
+            <div ng-controller="editCFController">
 <div>
-   
+                <form name="as" ng-submit="edit()">
   <ul>
-  <li  ng-repeat="(key, val) in billers  " ng-hide="(key=='customfields' || key=='enable' )" >
-   <label class="label">{{key}}</label> <input type="text" ng-model="billers[key]"/> 
+  <li  ng-repeat="(key, val) in Customs" ng-hide="(key=='enable' )" >
+   <label class="label">{{key}}</label> <input type="text" ng-model="customs[key]"/> 
   </li>
-<li  ng-repeat="(key, val) in billers.customfields">
-   <label class="label"> {{key}}</label> <input type="text" ng-model="billers.customfields[key]"/> 
-  </li>
-  
+  <button type="submit" ><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Edit Custom Field</span></button>
 <ul>
+</form>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>

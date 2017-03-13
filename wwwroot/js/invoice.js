@@ -32,7 +32,6 @@
             quantity: '',
             taxId: '',
             designs: [],
-            customField:[],
             color: '',
             note: '',
             description: ''
@@ -101,33 +100,27 @@
         $scope.save = function () {
 
             var addInvoice = { products: $scope.invoices, note: $scope.note, date: $scope.date, biller: $scope.biller, customer: $scope.customer }
+     var promiseGet = createInvoice.addInvoices(addInvoice);
+        promiseGet.then(function (pl) {
+            $scope.result = pl.data
+        },
+            function (errorpl) {
+                $log.error('Failure loading Tax', errorpl);
+                console.log($scope.result);
+            });  
+      };
+       
 
-            console.log(addInvoice);
-            /// add your service and take the $scope.invoices as parameter
-            var promiseGet = createInvoice.addInvoices(addInvoice);
-            promiseGet.then(function (pl) {
-                $scope.result = pl.data
-            },
-                function (errorpl) {
-                    $log.error('Failure loading Tax', errorpl);
-                });
-            console.log($scope.result);
 
-        };
+
         $scope.cancel = function () {
             $scope.invoices = [];
-
         };
-
-
-
-
         var product = "Product";
         var promiseGet = createInvoice.fillscope(0); //The MEthod Call from service
 
         promiseGet.then(function (pl) {
             $scope.products = pl.data
-            alert($scope.products);
         },
             function (errorPl) {
                 $log.error('failure loading products', errorPl);
@@ -141,22 +134,14 @@
                 $log.error('Failure loading Tax', errorpl);
             });
 
-        // });
-        // app.controller('invoiceController', function($scope, getBillerService, getTaxService, $rootScope,$log) {
-
-
         var biller = "biller";
         var promiseGet = getBillerService.getBiller(biller); //The MEthod Call from service
-
         promiseGet.then(function (pl) {
             $scope.billers = pl.data
         },
             function (errorPl) {
                 $log.error('failure loading Biller', errorPl);
             });
-
-
-
         var customer = "Customer";
         var promiseGet = getBillerService.getBiller(customer); //The MEthod Call from service
 
@@ -166,22 +151,40 @@
             function (errorPl) {
                 $log.error('failure loading Customers', errorPl);
             });
+    });
 
 
+    app.controller('viewinvoices', function ($scope, $rootScope, $http, log, location) {
+
+        $scope.message = $http.post('http://localhost:5000/api/for geting all invoices', $rootScope.invoiceId).
+            then(function (response) {
+                $scope.invoices = response.data[0];
+                //$scope.customs = $scope.Customers[0].customfields;
+                console.log(response.data[0]);
+                $rootScope.invoiceId = 0;
+            });
+
+        $scope.setRoot = function (x) {
+            $rootScope.invoiceId = x;
+            console.log($rootScope.invoiceId);
+        };
+
+
+        $scope.deleteInvoice = function (x) {
+            $scope.message = $http.post('http://localhost:5000/api/customer/delete', x).
+                then(function (response) {
+                    $scope.response = response.data;
+                    console.log(response.data);
+                    alert($scope.response.developerMessage);
+                    //  route to customer.html
+                    $location.path("/invoices");
+                });
+        };
 
 
 
     });
-
-
-
-
-
-
-
-
-
-
+    //controller ends here
 
 
 

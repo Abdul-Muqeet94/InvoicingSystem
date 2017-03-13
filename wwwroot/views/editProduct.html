@@ -6,21 +6,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body ng-app="billerModule">
+<body ng-app="productModule">
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-       <h3>View Biller</h3>
-            <div ng-controller="editBController">
+       <h3>Edit Product</h3>
+            <div ng-controller="editPController">
 <div>
-   
+                <form name="as" ng-submit="edit()">
   <ul>
-  <li  ng-repeat="(key, val) in billers  " ng-hide="(key=='customfields' || key=='enable' )" >
-   <label class="label">{{key}}</label> <input type="text" ng-model="billers[key]"/> 
+  <li  ng-repeat="(key, val) in products  " ng-hide="(key=='customField' || key=='designs' || key=='enable' )" >
+   <label class="label"> {{key}}</label> <input type="text" ng-model="products[key]"/> 
   </li>
-<li  ng-repeat="(key, val) in billers.customfields">
-   <label class="label"> {{key}}</label> <input type="text" ng-model="billers.customfields[key]"/> 
+<li  ng-repeat="(key, val) in products.customfields" >
+   <label class="label"> {{key}}</label> <input type="text" ng-model="products.customfields[key]"/> 
   </li>
-  
+  <button type="submit" ><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Edit Product</span></button>
 <ul>
+</form>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>

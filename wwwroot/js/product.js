@@ -53,6 +53,25 @@ console.log($rootScope.ProductId);
 });
 
         //controller ends here
-              }
+              
+     app.controller('editPController', function($scope,$rootScope,$http){
+$scope.message =  $http.post('http://localhost:5000/api/product/getproduct',$rootScope.ProductId).
+         then(function (response){        
+           $scope.products = response.data[0];
+               console.log(response.data[0]);  
+               $rootScope.ProductId=0;
+                });
+
+                $scope.edit = function()
+                {          
+$scope.message =  $http.post('http://localhost:5000/api/product/editproduct',$scope.products).
+         then(function (response){        
+               console.log(response.data);  
+                });
+                }
+
+     });        
+        
+    }
                   )
                        ();

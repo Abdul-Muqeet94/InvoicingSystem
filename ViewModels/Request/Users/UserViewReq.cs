@@ -36,7 +36,8 @@ namespace SimpleInvoices.ViewModels{
     public string ankle {get;set;}
     public string pantLength{get;set;}
     public string measurementType{get;set;}
-        public List<CustomFieldRes> customFields {get;set;}
+    public string imagePath {get;set;}
+    public List<CustomFieldRes> customFields {get;set;}
         
     }
 }

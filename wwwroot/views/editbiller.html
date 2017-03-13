@@ -8,10 +8,10 @@
 </head>
 <body ng-app="billerModule">
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-       <h3>View Biller</h3>
+       <h3>Edit Biller</h3>
             <div ng-controller="editBController">
 <div>
-   
+                <form name="as" ng-submit="edit()">
   <ul>
   <li  ng-repeat="(key, val) in billers  " ng-hide="(key=='customfields' || key=='enable' )" >
    <label class="label">{{key}}</label> <input type="text" ng-model="billers[key]"/> 
@@ -19,8 +19,9 @@
 <li  ng-repeat="(key, val) in billers.customfields">
    <label class="label"> {{key}}</label> <input type="text" ng-model="billers.customfields[key]"/> 
   </li>
-  
+  <button type="submit" ><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Edit Billers</span></button>
 <ul>
+</form>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>

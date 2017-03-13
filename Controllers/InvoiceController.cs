@@ -18,6 +18,10 @@ namespace SimpleInvoices.Controllers
         public List<InvoiceRes> getInvoice([FromBody] int id){
             return new BLL.Invoice(_db).getAllInvoice(id);
         }
+        [Route("api/invoice/deleteinvoice"),HttpPost]
+        public BaseResponse deleteInvoice([FromBody] int id){
+            return new BLL.Invoice(_db).deleteInvoice(id);
+        }
         [Route("api/invoice/populatedropdown"),HttpPost]
         public List<UserDropdownRes> getDropDown([FromBody] String name)
         {
