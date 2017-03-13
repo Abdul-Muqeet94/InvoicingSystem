@@ -1,104 +1,76 @@
-<div ng-app="invoiceModule" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-  <h2>Invoice</h2>
-    <fieldset class="form-group" ng-controller="billerController">
+<div ng-app="invoiceModule" ng-controller="createInvoiceController" class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+    <h2>Invoice</h2>
+    <fieldset class="form-group">
         <label class="label">Biller</label>
-        
-                    <input type="text" ng-model="invoice.quantity" />
+        <select   ng-model="biller">
+	<option ng-repeat="biller in billers" value="{{biller.id}}">{{biller.name}}</option>
+				</select>
         <label class="label ">Customer</label>
-        
-                    <input type="text" ng-model="invoice.qantity" />
+        <select  ng-model="customer">
+	<option ng-repeat="customer in customers" value="{{customer.id}}">{{customer.name}}</option>
+				</select>
         <label class="label">Delivery Date </label>
-        <input type="date" ng-model="string"></input>
-        <!--<label class="label">Shipment Date </label>
-        <input type="date" ng-model="strng"></input>-->
-   
- <!--<button ng-click="addProduct()">Add Product</button>-->
-  </fieldset>    
-    
-      
-            <div ng-controller="createInvoiceController" >
-                <fieldset class="form-group row" data-ng-repeat="invoice in invoices">
-                    
-                   <!--h3>Product {{invoices.indexOf(invoice)+1}}</h3-->
-                   
-                    
-                    
-                    <h3>Designs</h3>
-    
+        <input type="date" ng-model="date"></input>
 
-
-
-                </fieldset>
-<div class="nn">
-                       <label >Product</label>
-                       <select name=""  ng-model="value">
-								<option  value="Product1">Product 1</option>
-							</select>
-                    <label >Tax</label>
-                    <input type="text"  ng-model="rtrtr" />
-                    <label >Quantity</label>
-                    <input type="text" ng-model="invoice.quaity" />
-                    <label> Name </label>  <input type="text" ng-disabled="True" value="Product1">  </input> 
-                      <label> Price </label>  <input type="text" ng-disabled="True" value="20">  </input> 
-                        <!--<li class="label" ng-repeat="(key,val) in invoice.customField[0]" ng-if="invoice.id!='0'">
-                             {{val}}
-                        </li>-->
-                        <!--<li class="label" ng-repeat="(key,val) in invoice.designs[0]" ng-hide="key=='id'" ng-if="invoice.id!='0'">
-                           {{key}}:  {{val}}
-                        </li>-->
-                        <div  ng-repeat="(key,val) in invoice" ng-if="invoice.id=='0'">
-                           <LABEL>{{key}}</LABEL>
-                            <input type="text" ng-model=""/>
-                        </div>
-                        </div>
-                <!--//I have not edited below this line -->
-                <button class="btn bth-primary" ng-click="addLedger()">Save</button>
-                <div ng-repeat="invoi in ledgers">{{invoi.name}}</div>
-                <div id="choicesDisplay">
-                    {{ invoi }}
-                </div>
-                <div id="choicesDisplay">
-                    {{ invoi.products }}
-                </div>
-                <table>
-    <tr>
-        <td>Type</td>
-        <td>Color</td>
-        <td>Cut/Length
-        </td>
-        <td>Fabric</td>
-        <td>Note</td>
-    </tr>
-    <tr>
-        <td>Shirt</td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-    </tr>
-    <tr>
-        <td>Pant</td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-    </tr>
-    <tr>
-        <td>Dupatta</td>
-         <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-        <td><input type="text" value=""/></td>
-    </tr>
-</table>
-            </div>
-
-
-       
-
-
+        <!--<input type="text" ng-model="sal" list="browsers">-->
+    </fieldset>
+    <div>
+        <fieldset class="form-group" data-ng-repeat="(key,invoice) in invoices">
+            <table>
+                <tr>
+                    <td style="width:20%"> <label class="label ">Product</label></td>
+                    <td style="width:20%"><label class="label">Tax</label></td>
+                    <td style="width:20%"><label class="label ">Quantity</label></td>
+                    <td style="width:20%"><label class="label ">Price</label></td>
+                </tr>
+                <tr>
+                    <td style="width:20%">
+                        
+                        
+                         <input type="text" ng-model="invoice.name" ng-blur="updateProduct(key)" list="browsers" >
+                        <datalist id=browsers>
+                           
+                            <option ng-repeat="product in products"  value="{{product.name}}">
+                                {{product.name}}
+                                <option>
+                        </datalist>
+                    </td>
+                    <td style="width:20%">
+                       <select name="" ng-change="updateTax(value, key)" ng-model="value">
+	<option ng-repeat="tax in taxes" value="{{tax.id}}">{{tax.name}}</option>
+				</select>
+                    </td>
+                    <td style="width:20%">
+                        <input style="width:80%" type="text" ng-model="invoice.quantity" />
+                    </td>
+                    <td style="width:20%"> <input style="width:80%" type="text" ng-model="invoice.price" /></td>
+                </tr>
+            </table>
+            <h3>Designs</h3>
+            <table>
+                <tr>
+                    <td style="width:20%"><label>Type</label></td>
+                    <td style="width:20%"><label>Cut</label></td>
+                    <td style="width:20%"><label>Color</label></td>
+                    <td style="width:20%"><label>Note</label></td>
+                    <td style="width:20%"><label>Fabric</label></td>
+                </tr>
+                <tr ng-repeat="design in invoice.designs">
+                    <td style="width:20%"><label>{{design.name}}</label></td>
+                    <td style="width:20%"><input style="width:80%" type="text" ng-model="design.cut" /></td>
+                    <td style="width:20%"><input style="width:80%" type="text" ng-model="design.color" /></td>
+                    <td style="width:20%"><input style="width:80%" type="text" ng-model="design.note" /></td>
+                    <td style="width:20%"><input style="width:80%" type="text" ng-model="design.fabric" /></td>
+                </tr>
+            </table>
+        </fieldset>
+        <!--//I have not edited below this line -->
+        <div style="padding-right: 150px">
+            <button class="btn bth-primary" ng-click="addProduct()"><i class="fa fa-plus" aria-hidden="true"></i>Add New Row</button>
+            <button class="btn bth-primary" ng-click="removeProduct()"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete Row</button>
+        </div>
+        <textarea style="margin-top: 2% ; margin-left: 23%" ng-model="note" name="paragraph_text" cols="50" rows="5" placeholder="Description"></textarea>
+        <div style="padding-right: 80px"> <button class="btn btn-success" ng-click="save()"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+            <button class="btn btn-danger" ng-click="cancel()"><i class="fa fa-times" aria-hidden="true"></i>Cancel</button></div>
+    </div>
 </div>
-
-
-
-

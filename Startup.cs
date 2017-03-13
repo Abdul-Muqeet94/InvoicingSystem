@@ -35,7 +35,7 @@ namespace invoicingSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SimpleInvoices.InvoiceContext>(options =>
-    options.UseSqlite(Configuration.GetConnectionString("sqlLiteConnection")));
+    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<SimpleInvoices.Controllers.HomeController>();
             services.AddScoped<SimpleInvoices.Controllers.ValuesController>();
             services.AddScoped<SimpleInvoices.Controllers.UserController>();

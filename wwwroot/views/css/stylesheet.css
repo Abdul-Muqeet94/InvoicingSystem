@@ -1,15 +1,4 @@
 body{    background-color:beige;}
-div.nn label {
-    float: none;
-    display: inline-block;
-    vertical-align: middle;
-}
-div.nn input{
-    float: none;
-    display: inline-block;
-    vertical-align: middle;
-    width: 20%;
-}
 .logo {
     background: #f0f0f0;
     position: fixed;
@@ -110,10 +99,7 @@ li > ul > li > a {
 body::-webkit-scrollbar {
     width: 10px;
 }
- 
-body::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-}
+
  
 body::-webkit-scrollbar-thumb {
   background-color: blueviolet;

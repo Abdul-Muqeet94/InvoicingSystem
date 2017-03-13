@@ -67,6 +67,62 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
+public List<ProductViewRes> getProductsWithDesigns(int id)
+        {
+            var db=_db;
+            List<ProductViewRes> toReturn =new List<ProductViewRes>();
+            List<SimpleInvoices.product> productList=new List<SimpleInvoices.product>();
+            List<Design> designs=new List<Design>();
+            List<CustomFields> fields=new List<CustomFields>();
+            if(id==0)
+            {
+              productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
+              
+            }
+            else
+            {
+             productList=db.products.Where(c=>c.Id.Equals(id)  && c.enable==true).Include(c=>c.customFields).ToList();
+            fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
+            }
+            
+            if(productList.Count>0)
+            {
+                 foreach(var entity in productList)
+                 {
+                     var customFields =new List<CustomFieldRes>();
+                     var design=new List<DesignViewReq>();
+                     var ledgersDetails=db.ledgerDetails.Where(c=>c.productId==entity.Id).Include(c=>c.designs).ToList();
+                     foreach(var items in ledgersDetails){
+                        designs=items.designs;
+                        foreach(var des in designs){
+                            design.Add(new DesignViewReq{
+                                name=des.name,
+                                cut=des.cut,
+                                fabric=des.fabric,
+                                color=des.color,
+                                note=des.note
+                            });
+                        }
+                     }
+                     
+                     toReturn.Add(new ProductViewRes(){
+                         name=entity.name,
+                         id=entity.Id,
+                         color=entity.color,
+                         note=entity.note,
+                         description=entity.description,
+                         price=entity.price,
+                         customField=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>(),
+                         designs=design
+                     });
+                 }
+            }
+            else{
+                return toReturn;
+            }
+            return toReturn;
+        }
 
         public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,product customer){
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();

@@ -8,7 +8,7 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170310200215_muqeet")]
+    [Migration("20170313162654_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,8 +215,6 @@ namespace invoicingSystem.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("PaymentId");
-
                     b.Property<double>("amount");
 
                     b.Property<double>("balance");
@@ -239,8 +237,6 @@ namespace invoicingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentId");
-
                     b.HasIndex("billerId");
 
                     b.HasIndex("customerId");
@@ -253,6 +249,8 @@ namespace invoicingSystem.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("LedgersId");
+
                     b.Property<double>("amount");
 
                     b.Property<bool>("enable");
@@ -260,6 +258,8 @@ namespace invoicingSystem.Migrations
                     b.Property<int?>("paymentTypesId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LedgersId");
 
                     b.HasIndex("paymentTypesId");
 
@@ -390,10 +390,6 @@ namespace invoicingSystem.Migrations
 
             modelBuilder.Entity("SimpleInvoices.Ledgers", b =>
                 {
-                    b.HasOne("SimpleInvoices.Payment")
-                        .WithMany("ledgers")
-                        .HasForeignKey("PaymentId");
-
                     b.HasOne("SimpleInvoices.Billers", "biller")
                         .WithMany()
                         .HasForeignKey("billerId");
@@ -405,6 +401,10 @@ namespace invoicingSystem.Migrations
 
             modelBuilder.Entity("SimpleInvoices.Payment", b =>
                 {
+                    b.HasOne("SimpleInvoices.Ledgers")
+                        .WithMany("payment")
+                        .HasForeignKey("LedgersId");
+
                     b.HasOne("SimpleInvoices.PaymentTypes", "paymentTypes")
                         .WithMany()
                         .HasForeignKey("paymentTypesId");

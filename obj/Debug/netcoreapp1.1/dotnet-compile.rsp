@@ -222,6 +222,7 @@ E:\projects\invoicingSystem\BLL\Customer.cs
 E:\projects\invoicingSystem\BLL\CustomField.cs
 E:\projects\invoicingSystem\BLL\Designs.cs
 E:\projects\invoicingSystem\BLL\Invoice.cs
+E:\projects\invoicingSystem\BLL\Payment.cs
 E:\projects\invoicingSystem\BLL\Products.cs
 E:\projects\invoicingSystem\BLL\Tax.cs
 E:\projects\invoicingSystem\BLL\Users.cs
@@ -237,8 +238,8 @@ E:\projects\invoicingSystem\Controllers\ProductController.cs
 E:\projects\invoicingSystem\Controllers\TaxController.cs
 E:\projects\invoicingSystem\Controllers\UserController.cs
 E:\projects\invoicingSystem\Controllers\ValuesController.cs
-E:\projects\invoicingSystem\Migrations\20170310200215_muqeet.cs
-E:\projects\invoicingSystem\Migrations\20170310200215_muqeet.Designer.cs
+E:\projects\invoicingSystem\Migrations\20170313162654_muqeet.cs
+E:\projects\invoicingSystem\Migrations\20170313162654_muqeet.Designer.cs
 E:\projects\invoicingSystem\Migrations\InvoiceContextModelSnapshot.cs
 E:\projects\invoicingSystem\Models\Billers.cs
 E:\projects\invoicingSystem\Models\Customer.cs
@@ -260,7 +261,10 @@ E:\projects\invoicingSystem\Utils\Utils.cs
 E:\projects\invoicingSystem\ViewModels\BaseResponse.cs
 E:\projects\invoicingSystem\ViewModels\Request\RegisterUserReq.cs
 E:\projects\invoicingSystem\ViewModels\Request\CustomField\CustomFieldReq.cs
+E:\projects\invoicingSystem\ViewModels\Request\CustomField\CustomFieldRes.cs
 E:\projects\invoicingSystem\ViewModels\Request\Invoice\InvoiceReq.cs
+E:\projects\invoicingSystem\ViewModels\Request\Payment\PaymentReq.cs
+E:\projects\invoicingSystem\ViewModels\Request\Payment\PaymentTypeReq.cs
 E:\projects\invoicingSystem\ViewModels\Request\product\DesignViewReq.cs
 E:\projects\invoicingSystem\ViewModels\Request\product\productViewReq.cs
 E:\projects\invoicingSystem\ViewModels\Request\Tax\TaxViewReq.cs
@@ -274,3 +278,5 @@ E:\projects\invoicingSystem\ViewModels\Response\ProductViewRes.cs
 E:\projects\invoicingSystem\ViewModels\Response\TaxViewRes.cs
 E:\projects\invoicingSystem\ViewModels\Response\UserDropdownRes.cs
 E:\projects\invoicingSystem\ViewModels\Response\UserViewRes.cs
+E:\projects\invoicingSystem\ViewModels\Response\Payment\PaymentRes.cs
+E:\projects\invoicingSystem\ViewModels\Response\Payment\PaymentTypeRes.cs

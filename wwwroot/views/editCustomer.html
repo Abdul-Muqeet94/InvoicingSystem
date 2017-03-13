@@ -16,7 +16,7 @@
             <div ng-controller="crudController">
 			<ul ng-repeat="item in Customers">
   <li  ng-repeat="(key, val) in item" ng-hide="(key=='total' || key=='paid' || key=='owing')" ng-if="key!='customfields'">
-   <label class="label"> {{key}}</label> <input type="text" value='{{val}}'/> 
+   <label class="label"> {{key}}</label> <input type="text" value='{{val}}' ng-model="key"/> 
   </li>
  
  <!--div ng-repeat="(key, val) in item" ng-hide="(key=='name' || key=='id' || key=='address' || key=='contact'|| key=='email' || key=='city')" ng-if="key!='customfields'">
@@ -35,7 +35,7 @@
 </div>
 
 
-
+<button type="submit" ng-click="edit()"><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Edit Customer</span></button>
 
         </div>
     </div>

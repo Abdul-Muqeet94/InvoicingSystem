@@ -37,6 +37,7 @@ namespace SimpleInvoices.BLL{
             }
             else if(user.ToLower().Equals("product")){
                  var usersList=db.products.Where(c=>c.enable==true).ToList();
+                 
                 foreach (var entity in usersList){
                     dropdownRes.Add(new UserDropdownRes{
                         id=entity.Id,
@@ -51,9 +52,10 @@ namespace SimpleInvoices.BLL{
         public BaseResponse createInvoice(InvoiceReq invoice){
             BaseResponse toReturn=new BaseResponse();
            var db=_db;
-           Ledgers ledger=new Ledgers();
-           ledger.biller=db.biller.Where(c=>c.Id.Equals(invoice.billerId)).FirstOrDefault();
-           ledger.customer=db.customer.Where(c=>c.Id.Equals(invoice.customerId)).FirstOrDefault();
+           
+               Ledgers ledger=new Ledgers();
+           ledger.biller=db.biller.Where(c=>c.Id.Equals(invoice.biller)).FirstOrDefault();
+           ledger.customer=db.customer.Where(c=>c.Id.Equals(invoice.customer)).FirstOrDefault();
           // ledger.dueDate=invoice.dueDate;
            ledger.createdDate=DateTime.Now;
            ledger.deliveryDate=invoice.date;
@@ -63,22 +65,19 @@ namespace SimpleInvoices.BLL{
            ledger.balance=total;
            ledger.invoiceName="Invoice-"+ledger.Id;
            ledger.note=invoice.note;
-            
+           db.SaveChanges();
+           ledger.invoiceName="Invoice-"+ledger.Id;
            if(db.SaveChanges()>0){
-               ledger.invoiceName="Invoice-"+ledger.Id;
-               db.SaveChanges();
                toReturn.status=1;
                toReturn.developerMessage="Invoice Created Successfully";
            }
             return toReturn;
-           
-            
         }
 
         public List<LedgerDetails> getLedgerDetails(Ledgers ledger,InvoiceReq invoice,InvoiceContext db){
             
             List<LedgerDetails> toReturn=new List<LedgerDetails>();
-            foreach(var item in invoice.product){
+            foreach(var item in invoice.products){
                 Taxes tax=new Taxes();        
                 if(item.taxId>0)
                 {
@@ -158,7 +157,12 @@ namespace SimpleInvoices.BLL{
             List<Ledgers> ledgers=new List<Ledgers>();
             var db=_db;
             if(id==0){
-                 ledgers=db.ledgers.Include(c=>c.biller).Include(c=>c.customer).Include(c=>c.ledgerDetails).ThenInclude(c=>c.product).Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax).Include(c=>c.ledgerDetails).ThenInclude(c=>c.designs).ToList();
+                 ledgers=db.ledgers.Include(c=>c.biller)
+                 .Include(c=>c.customer)
+                 .Include(c=>c.ledgerDetails).ThenInclude(c=>c.product)
+                 .Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax)
+                 .Include(c=>c.ledgerDetails).ThenInclude(c=>c.designs)
+                 .ToList();
             }
             else{
                 ledgers=db.ledgers.Where(c=>c.Id==id).ToList();
@@ -170,8 +174,11 @@ namespace SimpleInvoices.BLL{
                 res.customerId=entity.customer.Id;
                 res.custName=entity.customer.name;
                 res.price=entity.amount;
+                foreach(var product in entity.ledgerDetails){
+                    res.product.AddRange(new BLL.Products(db).getProductsWithDesigns(product.productId));
+                }
+                
                 res.note=entity.note;
-                res.product=new BLL.Invoice(_db).getAllproduct(entity);
         toReturn.Add(res);
             }
             return toReturn;

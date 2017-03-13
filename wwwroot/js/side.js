@@ -1,8 +1,9 @@
 (function(){
-    var app = angular.module("sideModule", ['ngRoute','customerModule','productModule','invoiceModule', 'serviceModule']);
+    var app = angular.module("sideModule", ['ngRoute','customerModule','productModule','invoiceModule', 'serviceModule','taxModule']);
 app.run(function($rootScope) {
 
     $rootScope.customerId = 0;
+     $rootScope.ProductId = 0;
 //console.log($rootScope.customerId);
 });
 
@@ -63,7 +64,10 @@ app.config(function($routeProvider) {
     })
  .when("/edit", {
         templateUrl : "../views/editCustomer.html"
+    }).when("/addtax", {
+        templateUrl : "../views/addTax.html"
     })
+   
 
 });
     }

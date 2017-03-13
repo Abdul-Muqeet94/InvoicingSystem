@@ -1,177 +1,189 @@
-(function() {
+(function () {
     var app = angular.module("invoiceModule", ['ngRoute']);
-    app.controller('createInvoiceController', function($scope, createInvoice, getProductId) {
-        $scope.ledgers = { id: "0", products: [] };
+    app.controller('createInvoiceController', function ($scope, getBillerService, getTaxService, $rootScope, $log, createInvoice, getProductId) {
         $scope.invoices = [];
-        $scope.newDesigns = [];
-        $scope.$on('someEvent', function(event, args) {
-            var fillScope = createInvoice.fillscope(args);
-            fillScope.then(function(pl) {
+        $scope.invoice = [];
 
-                    pl.data[0].quantity = "";
-                    pl.data[0].taxId = "";
-                    $scope.invoices.push(pl.data[0]);
-                    console.log($scope.invoices);
-                },
-                function(errorpl) {
-                    $log.error('fail to load data' + errorpl);
-                });
-        });
-  $scope.add = function(x){
-      
-   var obj = {id:x, color:'', fabric:'',note:'',cut:''};
-  $scope.newDesigns.push(obj);
-  
-    }
- $scope.remove = function(x){
-     var a=-1;
-     for(var i=0;i<$scope.newDesigns.length;i++){
-   if($scope.newDesigns[i].id==x)
-       a=i; 
- }
-   if(a==-1){return}
-    $scope.newDesigns.splice(a,1);
-}
-        $scope.$on('addProduct', function(event, args) {
-    var obj = {id:0, taxId:'0', quantity:'',name:'',color:'',note:'',description:'',price:'',customField:'[]',design:'[]'};
-$scope.invoices.push(obj);
-        });
-        
-$scope.check = function(x,y){
-   if(x!=y){ 
-       return true;
- }
-    return false;
-}
-        $scope.createnewInvoice = function(idx) {
-            alert(idx);
-            //var newinvoiceNo = $scope.invoices.length - 1;
-            $scope.invoices.push({ 'id': 0, designs: [{ id: "0" }] });
-
-
-
-            /*
-                        
-                            */
-        }
-
-        $scope.addLedger = function() {
-            $scope.ledgers.products = $scope.invoices;
-            var getResponse = createInvoice.addInvoices($scope.invoice);
-            getResponse.then(function(pl) { $scope.response = pl.data },
-                function(errorpl) {
-                    $log.error('failure adding invoices', errorpl);
-                });
+        var d1 = {
+            color: '',
+            cut: '',
+            fabric: '',
+            note: '',
+            name: 'dupatta'
         };
-        $scope.removeinvoice = function(idx) {
-            alert(idx);
-            var lastItem = $scope.invoices.length - 1;
-            $scope.invoices.splice(lastItem);
+        var d2 = {
+            color: '',
+            cut: '',
+            fabric: '',
+            note: '',
+            name: 'pant'
         };
-    });
+        var d3 = {
+            color: '',
+            cut: '',
+            fabric: '',
+            note: '',
+            name: 'kurta'
+        };
+        var product = {
+            id: 0,
+            name: '',
+            price: '',
+            quantity: '',
+            taxId: '',
+            designs: [],
+            customField:[],
+            color: '',
+            note: '',
+            description: ''
+        };
+        product.designs.push(d1);
+        product.designs.push(d2);
+        product.designs.push(d3);
+        $scope.invoices.push(product);
+        $scope.addProduct = function () {
+            var d1 = {
+                color: '',
+                cut: '',
+                fabric: '',
+                note: '',
+                name: 'dupatta'
+            };
+            var d2 = {
+                color: '',
+                cut: '',
+                fabric: '',
+                note: '',
+                name: 'pant'
+            };
+            var d3 = {
+                color: '',
+                cut: '',
+                fabric: '',
+                note: '',
+                name: 'kurta'
+            };
+            var product = {
+                id: 0,
+                name: '',
+                price: '',
+                quantity: '',
+                taxId: '',
+                designs: [],
+                color: '',
+                note: '',
+                description: ''
+            };
+            product.designs.push(d1);
+            product.designs.push(d2);
+            product.designs.push(d3);
+            $scope.invoices.push(product);
+            console.log($scope.invoices);
+        };
 
+        $scope.removeProduct = function () {
+            $scope.invoices.splice(-1, 1);
+            console.log($scope.invoices);
+        };
 
-
-    app.controller('billerController', function($scope, getBillerService, getTaxService, $rootScope) {
-
-        $scope.model = { id: "0", product: [{}] };
-        $scope.IsNewRecord = 1; //The flag for the new record
-
-        loadRecords();
-        loadCustomer();
-        loadProduct();
-        loadTax();
-        $scope.addProduct=function(){
- $rootScope.$broadcast('addProduct');
+        $scope.updateProduct = function (index) {
+            for (var i = 0; i < $scope.products.length; i++) {
+                if ($scope.products[i].name == $scope.invoices[index].name) {
+                    $scope.invoices[index].price = $scope.products[i].price;
+                    $scope.invoices[index].id = $scope.products[i].id;
+                    return;
+                }
+            }
         }
-        
-        $scope.update = function update() {
-            alert("update");
-            $rootScope.$broadcast('someEvent', $scope.value);
-            console.log($scope.value);
-        }
+        $scope.updateTax = function (id, index) {
+            $scope.invoices[index].taxId = id;
+        };
+        $scope.save = function () {
 
-        function loadTax() {
-            var promiseGet = getTaxService.getTaxes();
-            promiseGet.then(function(pl) { $scope.taxes = pl.data },
-                function(errorpl) {
+            var addInvoice = { products: $scope.invoices, note: $scope.note, date: $scope.date, biller: $scope.biller, customer: $scope.customer }
+
+            console.log(addInvoice);
+            /// add your service and take the $scope.invoices as parameter
+            var promiseGet = createInvoice.addInvoices(addInvoice);
+            promiseGet.then(function (pl) {
+                $scope.result = pl.data
+            },
+                function (errorpl) {
                     $log.error('Failure loading Tax', errorpl);
                 });
-        }
-        //Function to load all Employee records
-        function loadRecords() {
-            var biller = "biller";
-            var promiseGet = getBillerService.getBiller(biller); //The MEthod Call from service
+            console.log($scope.result);
 
-            promiseGet.then(function(pl) { $scope.billers = pl.data },
-                function(errorPl) {
-                    $log.error('failure loading Employee', errorPl);
-                });
-        }
+        };
+        $scope.cancel = function () {
+            $scope.invoices = [];
 
-        function loadCustomer() {
-            var promiseGet = getBillerService.getBiller("customer"); //The MEthod Call from service
-
-            promiseGet.then(function(pl) { $scope.customers = pl.data },
-                function(errorPl) {
-                    $log.error('failure loading Employee', errorPl);
-                });
-        }
-
-        function loadProduct() {
-            var promiseGet = getBillerService.getBiller("product"); //The MEthod Call from service
-
-            promiseGet.then(function(pl) { $scope.products = pl.data },
-                function(errorPl) {
-                    $log.error('failure loading Employee', errorPl);
-                });
-        }
+        };
 
 
-    });
-
-    app.controller("addInvoice", function($scope, $http) {
-
-        $scope.addInvoice = function() {
-
-            var invoice = {
-                id: '0',
-                deliveryDate: $scope.deliveryDate,
-                createdDate: $scope.createdDate,
-                dueDate: $scope.dueDate,
-                amount: $scope.amount,
-                quantity: $scope.quantity,
-                customerId: $scope.customerId,
-                billerId: $scope.billerId,
-                productId: $scope.productId,
-                product: [{
-                    id: '0',
-                    name: $scope.product.name,
-                    color: $scope.product.color,
-                    note: $scope.product.note,
-                    description: $scope.product.description,
-                    price: $scope.product.price,
-                    customField: [],
-                    design: [{
-                        name: $scope.product.design,
-                        id: '0',
-                        fabric: $scope.product.fabric,
-                        cut: $scope.product.cut,
-                        color: $scope.product.color,
-                        note: $scope.product.note
-                    }]
-                }]
-            }
 
 
-            $scope.message = $http.post('http://localhost:5000/api/invoice/createInvoice', customer).
-            then(function(response) {
-                console.log(response.data);
-                $scope.message = response.data;
-                $log.info(response);
+        var product = "Product";
+        var promiseGet = createInvoice.fillscope(0); //The MEthod Call from service
+
+        promiseGet.then(function (pl) {
+            $scope.products = pl.data
+            alert($scope.products);
+        },
+            function (errorPl) {
+                $log.error('failure loading products', errorPl);
             });
 
-        }
+        var promiseGet = getTaxService.getTaxes();
+        promiseGet.then(function (pl) {
+            $scope.taxes = pl.data
+        },
+            function (errorpl) {
+                $log.error('Failure loading Tax', errorpl);
+            });
+
+        // });
+        // app.controller('invoiceController', function($scope, getBillerService, getTaxService, $rootScope,$log) {
+
+
+        var biller = "biller";
+        var promiseGet = getBillerService.getBiller(biller); //The MEthod Call from service
+
+        promiseGet.then(function (pl) {
+            $scope.billers = pl.data
+        },
+            function (errorPl) {
+                $log.error('failure loading Biller', errorPl);
+            });
+
+
+
+        var customer = "Customer";
+        var promiseGet = getBillerService.getBiller(customer); //The MEthod Call from service
+
+        promiseGet.then(function (pl) {
+            $scope.customers = pl.data
+        },
+            function (errorPl) {
+                $log.error('failure loading Customers', errorPl);
+            });
+
+
+
+
+
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
 })
-();
+    ();

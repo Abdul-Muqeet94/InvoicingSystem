@@ -8,6 +8,53 @@
            $scope.customs = $scope.Customers[0].customfields;
                console.log(response.data);  
                 });
+                $scope.edit = function()
+                {
+var customer = {
+id: '0',
+    name:$scope.name,
+    address:$scope.address,
+    contact:$scope.contact,
+    email:$scope.email,
+    city:$scope.city,
+    shoulder:$scope.shoulder,
+    chest:$scope.chest,
+    waist:$scope.waist,
+    upperWaist:$scope.upperWaist,
+    lowerWaist:$scope.lowerWaist,
+    hips:$scope.hips,
+    armHole:$scope.armHole,
+    fullSleeveLength:$scope.fullSleeveLength,
+    sleeveLength:$scope.sleeveLength,
+    bicep:$scope.bicep,
+    foreArm:$scope.foreArm,
+    wrist:$scope.wrist,
+    longShirtLength:$scope.longShirtLength,
+    shortShirtLength:$scope.shortShirtLength,
+    chaak:$scope.chaak,
+    daaman:$scope.daaman,
+    frontNeckDepth:$scope.frontNeckDepth,
+    frontNeckWidth:$scope.frontNeckWidth,
+    backNeckDepth:$scope.backNeckDepth,
+    backNeckWidth:$scope.backNeckWidth,
+    thigh:$scope.thigh,
+    kneeCap:$scope.kneeCap,
+    calf:$scope.calf,
+    ankle:$scope.ankle,
+    pantLength:$scope.pantLength,
+  // imagePath:$scope.picture.base64,
+    bodyType:$scope.select,
+    customFields:[]
+}
+console.log(customer);
+$scope.message =  $http.post('http://localhost:5000/api/customer/edit',customer).
+         then(function (response){        
+           $scope.Customers = response.data;
+           $scope.customs = $scope.Customers[0].customfields;
+               console.log(response.data);  
+                });
+
+                }
        
         $scope.setRoot = function(x){
 $rootScope.customerId=x;

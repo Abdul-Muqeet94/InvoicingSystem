@@ -16,6 +16,7 @@ namespace SimpleInvoices.BLL{
        #region get invoice 
         public List<UserViewRes> getCustomers (int id)
         {
+            try{
             var db=_db;
             List<UserViewRes> toReturn =new List<UserViewRes>();
             List<CustomFields> fields=new List<CustomFields>();
@@ -66,6 +67,10 @@ namespace SimpleInvoices.BLL{
                 return toReturn;
             }
             return toReturn;
+            }
+            catch(Exception ex){
+                return new List<UserViewRes>();
+            }
         }
         #endregion
         public List<CustomFieldRes> bll_getcustomFields(List<SimpleInvoices.CustomFields> customField,Customer customer){

@@ -1,0 +1,121 @@
+<html lang="en">
+	<head>
+	  <title>Bootstrap Example</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="css/bootstrap.min.css">
+	  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+	  <link rel="stylesheet" href="css/stylesheet.css">
+
+	</head>
+	<body>
+	 <div class="container-fluid">
+	 	<div class="row">
+	 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	 			<div class="row">
+	 				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+	 					<div class="row">
+	 						<div class="logo"></div>
+	 						<nav class="main-menu">
+							    <ul id="menu">
+							        <li class="dropdown" >
+							            <a href="#"><i class="fa fa-home fa-2x f"></i>Home<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+							            <ul class="sub-menu">
+									        <li>
+									            <a href="index.html"><i class="fa fa-tachometer "></i>Dashboard</a>
+									        </li>
+									        <li>
+									            <a href="Salesreport.html"><i class="fa fa-copy "></i>All Reports</a>
+									        </li>
+									    </ul>
+							        </li>
+							        <li class="dropdown">
+							            <a href="#"><i class="fa fa-money fa-2x f"></i>Money<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+							            <ul class="sub-menu">
+									        <li>
+									            <a href="invoices.html"><i class="fa fa-file "></i>Invoices</a>
+									        </li>
+									        <li>
+									            <a href="newinvoice.html"><i class="fa fa-file-text "></i>New Invoices</a>
+									        </li>
+									         <li>
+									            <a href=""><i class="fa fa-file-archive-o "></i>Receive invoice</a>
+									        </li>
+									        <li>
+									            <a href="#"><i class="fa fa-credit-card "></i>Payment</a>
+									        </li>
+									        <li>
+									            <a href="#"><i class="fa fa-clipboard "></i>Sales Reports</a>
+									        </li>
+									    </ul>
+							        </li>
+							         <li class="dropdown">
+							            <a href="#"><i class="fa fa-user fa-2x f"></i>People<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+							            <ul class="sub-menu">
+									        <li>
+									            <a href="Customer.html"><i class="fa fa-contao "></i>Customer</a>
+									        </li>
+									         <li>
+									            <a href="Biller.html"><i class="fa fa-book "></i> Biller</a>
+									        </li>
+									        <li>
+									            <a href="user.html"><i class="fa fa-user "></i>User</a>
+									        </li>
+									    </ul>
+							        </li>
+							         <li class="dropdown">
+							            <a href="#"><i class="fa fa-product-hunt fa-2x f"></i>Product<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+							            <ul class="sub-menu">
+									        <li>
+									            <a href="Addproduct.html"><i class="fa fa-product-hunt "></i>Manage Product</a>
+									        </li>
+									        
+									        <li>
+									            <a href="manageproduct.html"><i class="fa fa-podcast "></i>All Products</a>
+									        </li>
+									    </ul>
+							        </li>
+							    </ul>
+							</nav>
+	 					</div>
+	 				</div>
+	 				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+	 					<div class=" ">
+	 						<h3 class="h3">View</h3>
+			 				<button type=""><i class="fa fa-plus-circle" aria-hidden="true"></i><span>Add New Text</span></button>	
+						<table class=" table table-bordered" style="background: #f0f0f0">
+					    <thead>
+					      <tr>
+					       <th>Action</th>
+					        <th>Name</th>
+					        <th>Percentage</th>
+					        
+					        
+					      </tr>
+					    </thead>
+					    <tbody>
+					      <tr>
+					      <td></td>
+					        <td></td>
+					        <td> 1</td>
+					       
+					      </tr>
+					    </tbody>
+					  </table>
+					  	<!-- <button type="button" class="btn btn-success"><i class="fa fa-plus "></i>Save</button>
+	 					<button type="button" class="btn btn-danger"><i class="fa fa-trash "></i>Cancel</button>	 -->		
+	 				</div>
+	 			</div>
+	 		</div>
+	 	</div>
+	 </div>
+	  <script src="js/jquery.min.js"></script>
+	  <script src="js/bootstrap.min.js"></script>
+	  <script>
+$("#menu > li > a").click(function () {
+    // $('ul.sub-menu').not($(this).siblings()).slideUp();
+    $(this).siblings("ul.sub-menu").slideToggle();
+});
+</script>
+	</body>
+</html>
