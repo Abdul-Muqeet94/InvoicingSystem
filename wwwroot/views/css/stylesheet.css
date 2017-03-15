@@ -271,8 +271,8 @@ button >span {
 }
 .mrgn{margin: 3% 0 10%;}
 .h {
-    color: darkgray;
-    text-shadow: 5px 7px 4px #000;
+    color: black;
+    <!--text-shadow: 5px 7px 4px #000;-->
 }
 
 .area input.btn.btn-primary {

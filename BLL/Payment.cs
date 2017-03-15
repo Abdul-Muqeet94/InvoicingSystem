@@ -16,7 +16,7 @@ namespace SimpleInvoices.BLL
         {
             BaseResponse toReturn = new BaseResponse();
             var db = _db;
-            var invoice = db.ledgers.Where(c => c.enable && c.Id.Equals(req.invoiceId)).FirstOrDefault();
+            var invoice = db.ledgers.Where(c => c.enable && c.Id.Equals(req.invoiceId) && c.balance>0).FirstOrDefault();
             var payType = db.paymentTypes.Where(c => c.enable == true && c.Id.Equals(req.paymentTypeId)).FirstOrDefault();
             SimpleInvoices.Payment pay = new SimpleInvoices.Payment();
             pay.amount = req.amount;

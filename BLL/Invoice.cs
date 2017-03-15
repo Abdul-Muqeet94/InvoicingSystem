@@ -181,7 +181,7 @@ namespace SimpleInvoices.BLL{
                 res.custName=entity.customer.name;
                 res.price=entity.amount;
                 foreach(var product in entity.ledgerDetails){
-                    res.product.AddRange(new BLL.Products(db).getProductsWithDesigns(product.productId));
+                    res.product.AddRange(new BLL.Products(db).getProductsWithDesigns(product.productId,entity.Id));
                 }
                 
                 res.note=entity.note;

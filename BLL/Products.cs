@@ -67,7 +67,7 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
-public List<ProductViewRes> getProductsWithDesigns(int id)
+public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
         {
             var db=_db;
             List<ProductViewRes> toReturn =new List<ProductViewRes>();
@@ -92,7 +92,7 @@ public List<ProductViewRes> getProductsWithDesigns(int id)
                  {
                      var customFields =new List<CustomFieldRes>();
                      var design=new List<DesignViewReq>();
-                     var ledgersDetails=db.ledgerDetails.Where(c=>c.productId==entity.Id).Include(c=>c.designs).ToList();
+                     var ledgersDetails=db.ledgerDetails.Where(c=>c.productId==entity.Id && c.ledgersId==legder_id).Include(c=>c.designs).ToList();
                      foreach(var items in ledgersDetails){
                         designs=items.designs;
                         foreach(var des in designs){

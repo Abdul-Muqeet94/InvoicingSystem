@@ -41,14 +41,13 @@ namespace SimpleInvoices.BLL{
                     double total=0;
                     double paid=0;
                     double owing=0;
-                    var ledger=db.ledgers.Include(c=>c.customer).Where(c=>c.customer==entity).FirstOrDefault();
-                  
+                    var ledger=db.ledgers.Where(c=>c.enable==true).Include(c=>c.customer).Where(c=>c.customer==entity).FirstOrDefault();
+                  if(ledger!=null){
                     total=ledger.amount;
                     owing=ledger.balance;
-                   
-                   paid=total-owing;
-                  Console.WriteLine("Customer added"); 
-                    
+                    paid=total-owing;
+                    Console.WriteLine("Customer added"); 
+                    }
                     
                     toReturn.Add(new UserViewRes(){
                         name=entity.name,

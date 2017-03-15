@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1/",
-    "signature": "e4ec529b7f13c0f1d8424eead88b0a19a670a576"
+    "signature": "55a051fa4eb7a110a2bb676a7aedeff2e467c1d8"
   },
   "compilationOptions": {
     "defines": [
@@ -41,7 +41,8 @@
           "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.1.0",
           "Swashbuckle": "6.0.0-beta901",
           "SendGrid.NetCore": "1.0.0-rtm-00002",
-          "Swashbuckle.SwaggerUi": "6.0.0-beta901"
+          "Swashbuckle.SwaggerUi": "6.0.0-beta901",
+          "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0"
         },
         "compile": {
           "invoicingSystem.dll": {}
@@ -770,6 +771,16 @@
           "ref/netstandard1.0/Microsoft.CSharp.dll": {}
         }
       },
+      "Microsoft.Data.Sqlite/1.1.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "SQLite": "3.13.0",
+          "System.Data.Common": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.Data.Sqlite.dll": {}
+        }
+      },
       "Microsoft.DiaSymReader.Native/1.4.0": {},
       "Microsoft.DotNet.PlatformAbstractions/1.1.0": {
         "dependencies": {
@@ -812,6 +823,16 @@
         },
         "compile": {
           "lib/netstandard1.3/Microsoft.EntityFrameworkCore.Relational.dll": {}
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Sqlite/1.1.0": {
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "1.1.0",
+          "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+          "NETStandard.Library": "1.6.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.EntityFrameworkCore.Sqlite.dll": {}
         }
       },
       "Microsoft.EntityFrameworkCore.SqlServer/1.1.0": {
@@ -1485,6 +1506,7 @@
           "lib/netstandard1.3/SendGrid.NetCore.dll": {}
         }
       },
+      "SQLite/3.13.0": {},
       "Swashbuckle/6.0.0-beta901": {
         "dependencies": {
           "Swashbuckle.SwaggerGen": "6.0.0-beta901",
@@ -3125,7 +3147,8 @@
           "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.1.0",
           "Swashbuckle": "6.0.0-beta901",
           "SendGrid.NetCore": "1.0.0-rtm-00002",
-          "Swashbuckle.SwaggerUi": "6.0.0-beta901"
+          "Swashbuckle.SwaggerUi": "6.0.0-beta901",
+          "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0"
         },
         "runtime": {
           "invoicingSystem.dll": {}
@@ -3854,6 +3877,16 @@
           "lib/netstandard1.3/Microsoft.CSharp.dll": {}
         }
       },
+      "Microsoft.Data.Sqlite/1.1.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "SQLite": "3.13.0",
+          "System.Data.Common": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.Data.Sqlite.dll": {}
+        }
+      },
       "Microsoft.DiaSymReader.Native/1.4.0": {},
       "Microsoft.DotNet.PlatformAbstractions/1.1.0": {
         "dependencies": {
@@ -3896,6 +3929,16 @@
         },
         "runtime": {
           "lib/netstandard1.3/Microsoft.EntityFrameworkCore.Relational.dll": {}
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Sqlite/1.1.0": {
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "1.1.0",
+          "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.EntityFrameworkCore.Sqlite.dll": {}
         }
       },
       "Microsoft.EntityFrameworkCore.SqlServer/1.1.0": {
@@ -4560,6 +4603,7 @@
           "lib/netstandard1.3/SendGrid.NetCore.dll": {}
         }
       },
+      "SQLite/3.13.0": {},
       "Swashbuckle/6.0.0-beta901": {
         "dependencies": {
           "Swashbuckle.SwaggerGen": "6.0.0-beta901",
@@ -6356,6 +6400,11 @@
       "serviceable": true,
       "sha512": "sha512-z3/DEN2b1D9C+bHAsfIjKOR41dZVWTAFz1iJlm4rYkFt4BAh+RtUdbDafFjGmzb0UzUzc3JGk1tAbbM0WH8V/A=="
     },
+    "Microsoft.Data.Sqlite/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-T09U31d2uBe9bvECrz/5cgMPR3256D8SY/+bVDD+KqpX9kbLQuyunm8pR9aUDlsRrVOlSq5Gbg2vMOnBMRbJRQ=="
+    },
     "Microsoft.DiaSymReader.Native/1.4.0": {
       "type": "package",
       "serviceable": true,
@@ -6375,6 +6424,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-5LkSh1GHK/ZbI/2N6YxyofFKaAVe5/RBN38G6UQzOQVgfJxzucpJVyZt1mGHBkJ4yTlr4WQS9Wr3Ppa5X0opbw=="
+    },
+    "Microsoft.EntityFrameworkCore.Sqlite/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hfbLTqGyGui9ZkvrE7BYjSMOWMLTwINqhg7yU0h13/SG1crLkf2rbH9lSpi17fRlcygasuJXJFgONqHTRFknQQ=="
     },
     "Microsoft.EntityFrameworkCore.SqlServer/1.1.0": {
       "type": "package",
@@ -6735,6 +6789,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-nV9VH1z+QaQHGL2HAuPsz0Wi5+j28ECi7KJetR/CWQLekgknTvcLnVyifX9ti35jwU6vPwnqydn381Kf+6IKcA=="
+    },
+    "SQLite/3.13.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MJfRiz2p6aMVOxrxGMdVzhpzI0oxTgZSwC8eVuOpV8L7yYaFUu8q/OFYwv9P0/aZ/pdEu24O6gma6wZJMTun9A=="
     },
     "Swashbuckle/6.0.0-beta901": {
       "type": "package",

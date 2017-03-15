@@ -101,6 +101,8 @@ app.config(function($routeProvider) {
     })
  .when("/editcustomfields", {
         templateUrl : "../views/editcustomfields.html"
+    }).when("/tax", {
+        templateUrl : "../views/addTax.html"
     })
    
 });

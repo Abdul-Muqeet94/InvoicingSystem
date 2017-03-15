@@ -6,9 +6,7 @@ namespace SimpleInvoices.Controllers
     public class PaymentController : BaseController
     {
         public PaymentController(InvoiceContext context) : base(context)
-        {
-
-        }
+        { }
         [Route("api/payment/createpayment"), HttpPost]
         public BaseResponse createPayment([FromBody] PaymentReq payment)
         {
