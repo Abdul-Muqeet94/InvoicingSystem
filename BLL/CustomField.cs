@@ -37,8 +37,15 @@ namespace SimpleInvoices.BLL
         {
             List<CustomFieldEditRes> toReturn = new List<CustomFieldEditRes>();
             var db = _db;
-
-            var fields = db.customFields.Where(c => c.tableName.Equals(id)).Include(c => c.FieldValues).ToList();
+            List<CustomFields> fields=new List<CustomFields>();
+            if(id==0)
+            {
+             fields = db.customFields.Where(c=>c.enable==true).Include(c => c.FieldValues).ToList();
+            }
+        else
+        {
+             fields = db.customFields.Where(c => c.Id.Equals(id) && c.enable==true).Include(c => c.FieldValues).ToList();
+        }
             if (fields.Count > 0)
             {
                 foreach (var entity in fields)
@@ -70,7 +77,8 @@ namespace SimpleInvoices.BLL
         {
             BaseResponse toReturn = new BaseResponse();
             var db = _db;
-            var customField = db.customFields.Where(c => c.Id.Equals(id)).FirstOrDefault();
+            var customField = db.customFields.Where(c => c.Id.Equals(id)).Include(c=>c.FieldValues).FirstOrDefault();
+           
             customField.enable = false;
             foreach (var item in customField.FieldValues)
             {
@@ -88,6 +96,11 @@ namespace SimpleInvoices.BLL
         {
             BaseResponse toReturn = new BaseResponse();
             var db = _db;
+            var db_customField=db.customFields.Where(c=>c.fieldName.Equals(customField.fieldName) && c.tableName.Equals(customField.tableName)).FirstOrDefault();
+           if(db_customField!=null){
+               db_customField.enable=true;
+           }
+            else{
             db.customFields.Add(new CustomFields
             {
                 fieldName = customField.fieldName,
@@ -95,6 +108,7 @@ namespace SimpleInvoices.BLL
                 enable = Constant.USER_ACTIVE
 
             });
+            }
             if (db.SaveChanges() == 1)
             {
                 toReturn.developerMessage = "Custom Field Added Successfully";

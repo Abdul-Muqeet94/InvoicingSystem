@@ -89,7 +89,8 @@ namespace SimpleInvoices.BLL{
                         var field=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_BILLER) && c.fieldName.Equals(name)).FirstOrDefault();
                    field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
-                        billers=cust 
+                        billers=cust,
+                        enable=true 
                     });
                     
                    List<FieldValue> fieldValue=new List<FieldValue>();
@@ -131,7 +132,12 @@ namespace SimpleInvoices.BLL{
                 entity.city=customer.city;
                 entity.email=customer.email;
                 entity.name=customer.name;
-                if(db.SaveChanges()==1)
+                foreach(var item in customer.customFields){
+                    var customFields=db.customFields.Where(c=>c.fieldName.Equals(item.fieldName) && c.tableName.Equals(Constant.TABLE_BILLER)).Include(c=>c.FieldValues).FirstOrDefault();
+                    customFields.FieldValues.Where(c=>c.billers.Id.Equals(customer.id)).FirstOrDefault().value=item.fieldValue;
+
+                }
+                if(db.SaveChanges()>1)
                 {
                     toReturn.status=1;
                     toReturn.developerMessage="Edit customer Successfully";
@@ -157,6 +163,10 @@ namespace SimpleInvoices.BLL{
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
             var entity=db.biller.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
+            var fieldsvalues=db.FieldValues.Where(c=>c.billers==entity).ToList();
+            foreach(var item in fieldsvalues){
+                item.enable=false;
+            }
             if(entity!=null)
             {
             entity.enable=false;

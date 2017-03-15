@@ -8,14 +8,13 @@ using SimpleInvoices;
 namespace invoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20170313162654_muqeet")]
+    [Migration("20170315150405_muqeet")]
     partial class muqeet
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
 
             modelBuilder.Entity("SimpleInvoices.Billers", b =>
                 {

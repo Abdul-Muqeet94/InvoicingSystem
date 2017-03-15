@@ -154,9 +154,9 @@
     });
 
 
-    app.controller('viewinvoices', function ($scope, $rootScope, $http, log, location) {
-
-        $scope.message = $http.post('http://localhost:5000/api/for geting all invoices', $rootScope.invoiceId).
+    app.controller('viewinvoices', function ($scope, $rootScope, $http,  $log,$location) {
+$scope.invoices=[];
+        $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', $rootScope.invoiceId).
             then(function (response) {
                 $scope.invoices = response.data[0];
                 //$scope.customs = $scope.Customers[0].customfields;

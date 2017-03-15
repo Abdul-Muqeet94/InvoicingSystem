@@ -58,7 +58,34 @@ namespace SimpleInvoices.BLL{
                         customfields=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>(),
                         total=total,
                         paid=paid,
-                        owing=owing
+                        owing=owing,
+                        sholder =entity.sholder,
+                        chest=entity.chest,
+                        upperWaist=entity.upperWaist,
+                        waist=entity.waist,
+                        lowerWaist=entity.lowerWaist,
+                        hips=entity.hips,
+                        armHole=entity.armHole,
+                        fullSleveLength=entity.fullSleveLength,
+                        sleeveLength=entity.sleeveLength,
+                        bicep =entity.bicep,
+                        forearm=entity.forearm,
+                        wrist =entity.wrist,
+                        longShirtLength=entity.longShirtLength,
+                        shortShirtLength=entity.shortShirtLength,
+                        chaak=entity.chaak,
+                        daaman=entity.daaman,
+                        frontNeckDepth =entity.frontNeckDepth,
+                        frontNeckWidth=entity.frontNeckWidth,
+                           backNeckDepth=entity.backNeckDepth,
+                            backNeckWidth=entity.backNeckWidth,
+                            thigh =entity.thigh,
+                            kneeCap=entity.kneeCap,
+                            calf=entity.calf,
+                            ankle =entity.ankle,
+                            pantLength=entity.pantLength,
+                            measurementType=entity.measurementType,
+                            imagepath=entity.imagepath
                     });
                 }
             }
@@ -135,7 +162,8 @@ namespace SimpleInvoices.BLL{
                         var field=db.customFields.Where(c=>c.tableName.Equals("Customer") && c.fieldName.Equals(name) && c.enable==true).FirstOrDefault();
                    field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
-                        customer=cust 
+                        customer=cust ,
+                        enable=true
                     });
                     
                    List<FieldValue> fieldValue=new List<FieldValue>();
@@ -200,7 +228,12 @@ namespace SimpleInvoices.BLL{
                 entity.calf=customer.calf;
                 entity.ankle=customer.ankle;
                 entity.pantLength=customer.pantLength;
-                if(db.SaveChanges()==1)
+                foreach(var item in customer.customFields){
+                    var customFields=db.customFields.Where(c=>c.fieldName.Equals(item.fieldName) && c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).FirstOrDefault();
+                    customFields.FieldValues.Where(c=>c.customer.Id.Equals(customer.id)).FirstOrDefault().value=item.fieldValue;
+
+                }
+                if(db.SaveChanges()>0)
                 {
                     toReturn.status=1;
                     toReturn.developerMessage="Edit customer Successfully";
@@ -226,6 +259,10 @@ namespace SimpleInvoices.BLL{
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
             var entity=db.customer.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
+            var fieldsvalues=db.FieldValues.Where(c=>c.customer==entity).ToList();
+            foreach(var item in fieldsvalues){
+                item.enable=false;
+            }
             if(entity!=null)
             {
             entity.enable=false;

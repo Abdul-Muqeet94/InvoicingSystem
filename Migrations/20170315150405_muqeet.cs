@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace invoicingSystem.Migrations
 {
@@ -14,7 +13,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     address = table.Column<string>(nullable: true),
                     city = table.Column<string>(nullable: true),
                     contact = table.Column<string>(nullable: true),
@@ -32,7 +31,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     address = table.Column<string>(nullable: true),
                     ankle = table.Column<string>(nullable: true),
                     armHole = table.Column<string>(nullable: true),
@@ -76,7 +75,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     enable = table.Column<bool>(nullable: false),
                     name = table.Column<string>(nullable: true)
                 },
@@ -90,7 +89,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     color = table.Column<string>(nullable: true),
                     createdOn = table.Column<DateTime>(nullable: false),
                     description = table.Column<string>(nullable: true),
@@ -110,7 +109,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     enable = table.Column<bool>(nullable: false),
                     name = table.Column<string>(nullable: true),
                     percent = table.Column<double>(nullable: false)
@@ -125,7 +124,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     enable = table.Column<bool>(nullable: false),
                     name = table.Column<string>(nullable: true),
                     password = table.Column<string>(nullable: true)
@@ -140,7 +139,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     amount = table.Column<double>(nullable: false),
                     balance = table.Column<double>(nullable: false),
                     billerId = table.Column<int>(nullable: true),
@@ -174,7 +173,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     enable = table.Column<bool>(nullable: false),
                     fieldName = table.Column<string>(nullable: true),
                     productId = table.Column<int>(nullable: true),
@@ -228,7 +227,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     LedgersId = table.Column<int>(nullable: true),
                     amount = table.Column<double>(nullable: false),
                     enable = table.Column<bool>(nullable: false),
@@ -256,7 +255,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     CustomFieldsId = table.Column<int>(nullable: true),
                     billersId = table.Column<int>(nullable: true),
                     customerId = table.Column<int>(nullable: true),
@@ -298,7 +297,7 @@ namespace invoicingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySql:ValueGeneratedOnAdd", true),
                     LedgerDetailsledgersId = table.Column<int>(nullable: true),
                     LedgerDetailsproductId = table.Column<int>(nullable: true),
                     color = table.Column<string>(nullable: true),

@@ -169,7 +169,8 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
                         var field=db.customFields.Where(c=>c.tableName.Equals("Product") && c.fieldName.Equals(entity.fieldName)).FirstOrDefault();
                         field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
-                        product=prod
+                        product=prod,
+                        enable=true
                     });
                     List<FieldValue> fieldValue=new List<FieldValue>();
                    fieldValue=field.FieldValues;
@@ -216,6 +217,11 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
                 entity.description=product.description;
                 entity.price=product.price;
                 entity.color=product.color;
+                foreach(var item in product.customField){
+                    var customFields=db.customFields.Where(c=>c.fieldName.Equals(item.fieldName) && c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).FirstOrDefault();
+                    customFields.FieldValues.Where(c=>c.product.Id.Equals(product.id)).FirstOrDefault().value=item.fieldValue;
+
+                }
                 if(db.SaveChanges()==1)
                 {
                     toReturn.status=1;
@@ -242,6 +248,10 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
             var entity=db.products.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
+            var fieldsvalues=db.FieldValues.Where(c=>c.product==entity).ToList();
+            foreach(var item in fieldsvalues){
+                item.enable=false;
+            }
             if(entity!=null)
             {
             entity.enable=false;

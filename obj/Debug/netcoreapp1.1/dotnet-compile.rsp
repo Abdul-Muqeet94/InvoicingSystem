@@ -239,11 +239,12 @@ E:\projects\invoicingSystem\Controllers\HomeController.cs
 E:\projects\invoicingSystem\Controllers\InvoiceController.cs
 E:\projects\invoicingSystem\Controllers\PaymentController.cs
 E:\projects\invoicingSystem\Controllers\ProductController.cs
+E:\projects\invoicingSystem\Controllers\ReportsController.cs
 E:\projects\invoicingSystem\Controllers\TaxController.cs
 E:\projects\invoicingSystem\Controllers\UserController.cs
 E:\projects\invoicingSystem\Controllers\ValuesController.cs
-E:\projects\invoicingSystem\Migrations\20170313162654_muqeet.cs
-E:\projects\invoicingSystem\Migrations\20170313162654_muqeet.Designer.cs
+E:\projects\invoicingSystem\Migrations\20170315150405_muqeet.cs
+E:\projects\invoicingSystem\Migrations\20170315150405_muqeet.Designer.cs
 E:\projects\invoicingSystem\Migrations\InvoiceContextModelSnapshot.cs
 E:\projects\invoicingSystem\Models\Billers.cs
 E:\projects\invoicingSystem\Models\Customer.cs

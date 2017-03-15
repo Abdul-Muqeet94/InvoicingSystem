@@ -35,7 +35,7 @@ namespace SimpleInvoices.BLL
             List<SimpleInvoices.Payment> pay = new List<SimpleInvoices.Payment>();
             Ledgers invoice=new Ledgers();
             if(id==0){
-              pay=  db.payment.Where(c=>c.enable==true).ToList();
+              pay=  db.payment.Where(c=>c.enable==true).Include(c=>c.paymentTypes).ToList();
             }
             else{
                pay =db.payment.Where(c=>c.enable==true && c.Id.Equals(id)).Include(c=>c.paymentTypes).ToList();

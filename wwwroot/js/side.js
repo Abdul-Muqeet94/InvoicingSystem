@@ -104,8 +104,7 @@ app.config(function($routeProvider) {
     }).when("/tax", {
         templateUrl : "../views/addTax.html"
     })
-   
-});
+   });
     }
   )
   ();
