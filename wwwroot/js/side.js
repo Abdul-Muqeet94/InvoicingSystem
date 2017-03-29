@@ -1,5 +1,5 @@
 (function(){
-    var app = angular.module("sideModule", ['ngRoute','customerModule','productModule','invoiceModule', 'serviceModule','billerModule','customModule','taxModule']);
+    var app = angular.module("sideModule", ['ngRoute','customerModule','productModule','invoiceModule', 'serviceModule','billerModule','customModule','taxModule','paymentModule','loginModule','ReportModule']);
 app.run(function($rootScope) {
 
     $rootScope.customerId = 0;
@@ -7,9 +7,8 @@ app.run(function($rootScope) {
      $rootScope.billerId = 0;
      $rootScope.customId = 0;
      $rootScope.invoiceId=0;
-//console.log($rootScope.customerId);
+     $rootScope.taxId=0;
 });
-
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -59,6 +58,10 @@ app.config(function($routeProvider) {
 .when("/addinvoice", {
         templateUrl : "../views/addinvoice.html"
     })
+.when("/addpayment", {
+        templateUrl : "../views/addpayment.html"
+    })
+
     .when("/manageproduct", {
         templateUrl : "../views/manageproduct.html"
     })
@@ -88,7 +91,7 @@ app.config(function($routeProvider) {
     .when("/billers", {
         templateUrl : "../views/billers.html"
     })
-    //this is for customs
+    
     .when("/customfields", {
         templateUrl : "../views/customfields.html"
     })
@@ -99,12 +102,46 @@ app.config(function($routeProvider) {
     .when("/addcustoms", {
         templateUrl : "../views/addcustoms.html"
     })
- .when("/editcustomfields", {
-        templateUrl : "../views/editcustomfields.html"
-    }).when("/tax", {
-        templateUrl : "../views/addTax.html"
+    .when("/customs", {
+        templateUrl : "../views/customs.html"
     })
-   });
+ .when("/editcustoms", {
+        templateUrl : "../views/editcustoms.html"
+    })
+    .when("/tax", {
+        templateUrl : "../views/tax.html"
+    })
+    .when("/edittax", {
+        templateUrl : "../views/edittax.html"
+    }).when("/login", {
+        templateUrl : "../views/Login.html"
+    })
+    .when("/addtax", {
+        templateUrl : "../views/addtax.html"
+    })
+    .when("/totalSales", {
+        templateUrl : "../views/totalSales.html"
+    })
+    .when("/allReports", {
+        templateUrl : "../views/Allreports.html"
+    })
+    .when("/totalSalesCustomer", {
+        templateUrl : "../views/totalSalesCustomer.html"
+    })
+    .when("/totalTax", {
+        templateUrl : "../views/totalTax.html"
+    })
+    .when("/totalProduct", {
+        templateUrl : "../views/totalProduct.html"
+    })
+    .when("/billerSales", {
+        templateUrl : "../views/totalbiller.html"
+    })
+   
+
+   //billerSales
+//totalProduct
+});
     }
   )
   ();

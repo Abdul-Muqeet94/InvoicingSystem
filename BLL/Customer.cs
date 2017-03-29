@@ -30,7 +30,7 @@ namespace SimpleInvoices.BLL{
             else
             {
              userList=db.customer.Where(c=>c.Id.Equals(id)  && c.enable==true).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).ThenInclude(c=>c.customer).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_CUSTOMER)&&c.enable==true).Include(c=>c.FieldValues).ThenInclude(c=>c.customer).ToList();
             }
             
             if(userList.Count>0)
@@ -59,30 +59,27 @@ namespace SimpleInvoices.BLL{
                         total=total,
                         paid=paid,
                         owing=owing,
-                        sholder =entity.sholder,
+                        sholder=entity.sholder,
                         chest=entity.chest,
                         upperWaist=entity.upperWaist,
                         waist=entity.waist,
                         lowerWaist=entity.lowerWaist,
-                        hips=entity.hips,
-                        armHole=entity.armHole,
-                        fullSleveLength=entity.fullSleveLength,
-                        sleeveLength=entity.sleeveLength,
-                        bicep =entity.bicep,
-                        forearm=entity.forearm,
-                        wrist =entity.wrist,
-                        longShirtLength=entity.longShirtLength,
-                        shortShirtLength=entity.shortShirtLength,
-                        chaak=entity.chaak,
-                        daaman=entity.daaman,
-                        frontNeckDepth =entity.frontNeckDepth,
-                        frontNeckWidth=entity.frontNeckWidth,
-                           backNeckDepth=entity.backNeckDepth,
-                            backNeckWidth=entity.backNeckWidth,
-                            thigh =entity.thigh,
+                        hips=entity.lowerWaist,
+                           armHole=entity.armHole,
+                           fullSleveLength=entity.fullSleveLength,
+                           bicep=entity.bicep,
+                           forearm=entity.forearm,
+                           wrist=entity.wrist,
+                           longShirtLength=entity.longShirtLength,
+                           shortShirtLength=entity.shortShirtLength,
+                           chaak=entity.chaak,
+                            daaman=entity.daaman,
+                            frontNeckDepth=entity.frontNeckDepth,
+                            frontNeckWidth=entity.frontNeckWidth,
+                            thigh=entity.thigh,
                             kneeCap=entity.kneeCap,
                             calf=entity.calf,
-                            ankle =entity.ankle,
+                            ankle=entity.ankle,
                             pantLength=entity.pantLength,
                             measurementType=entity.measurementType,
                             imagepath=entity.imagepath
@@ -154,6 +151,7 @@ namespace SimpleInvoices.BLL{
                 cust.calf=customer.calf;
                 cust.ankle=customer.ankle;
                 cust.pantLength=customer.pantLength;
+                cust.imagepath=customer.imagepath;
                 if(customer.customFields.Count>0)
                 {
                     foreach(var entity in customer.customFields)
@@ -162,8 +160,8 @@ namespace SimpleInvoices.BLL{
                         var field=db.customFields.Where(c=>c.tableName.Equals("Customer") && c.fieldName.Equals(name) && c.enable==true).FirstOrDefault();
                    field.FieldValues.Add(new FieldValue {
                         value=entity.fieldValue,
-                        customer=cust ,
-                        enable=true
+                        customer=cust,
+                        enable=true 
                     });
                     
                    List<FieldValue> fieldValue=new List<FieldValue>();
@@ -228,12 +226,12 @@ namespace SimpleInvoices.BLL{
                 entity.calf=customer.calf;
                 entity.ankle=customer.ankle;
                 entity.pantLength=customer.pantLength;
-                foreach(var item in customer.customFields){
+                  foreach(var item in customer.customFields){
                     var customFields=db.customFields.Where(c=>c.fieldName.Equals(item.fieldName) && c.tableName.Equals(Constant.TABLE_CUSTOMER)).Include(c=>c.FieldValues).FirstOrDefault();
                     customFields.FieldValues.Where(c=>c.customer.Id.Equals(customer.id)).FirstOrDefault().value=item.fieldValue;
 
                 }
-                if(db.SaveChanges()>0)
+                if(db.SaveChanges()==1)
                 {
                     toReturn.status=1;
                     toReturn.developerMessage="Edit customer Successfully";
@@ -259,13 +257,14 @@ namespace SimpleInvoices.BLL{
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
             var entity=db.customer.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
-            var fieldsvalues=db.FieldValues.Where(c=>c.customer==entity).ToList();
-            foreach(var item in fieldsvalues){
-                item.enable=false;
-            }
             if(entity!=null)
             {
             entity.enable=false;
+             var entit = db.FieldValues.Where(c=>c.customer.Id.Equals(entity.Id)).ToList();
+            foreach(var item in entit)
+            {
+                item.enable=false;
+            }
             if(db.SaveChanges()==1)
             {
                 toReturn.status=1;

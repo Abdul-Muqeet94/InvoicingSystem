@@ -13,6 +13,9 @@ namespace SimpleInvoices.BLL{
         public Invoice (InvoiceContext context){
             _db=context;
         }
+
+        
+
         public List<UserDropdownRes> getDropdownRes(string user){
             var db=_db;
             List<UserDropdownRes> dropdownRes=new List<UserDropdownRes>();
@@ -153,11 +156,13 @@ namespace SimpleInvoices.BLL{
             return toReturn;
         }
         public List<InvoiceRes> getAllInvoice(int id){
+          //  Utils.Email em=new Utils.Email();
+           // em.sendEmail("","");
             List<InvoiceRes> toReturn=new List<InvoiceRes>();
             List<Ledgers> ledgers=new List<Ledgers>();
             var db=_db;
             if(id==0){
-                 ledgers=db.ledgers.Where(c=>c.enable==true).Include(c=>c.biller)
+                 ledgers=db.ledgers.Include(c=>c.biller)
                  .Include(c=>c.customer)
                  .Include(c=>c.ledgerDetails).ThenInclude(c=>c.product)
                  .Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax)
@@ -165,7 +170,7 @@ namespace SimpleInvoices.BLL{
                  .ToList();
             }
             else{
-                ledgers=db.ledgers.Where(c=>c.Id.Equals(id) && c.enable==true).Include(c=>c.biller)
+                ledgers=db.ledgers.Where(c=>c.Id.Equals(id)).Include(c=>c.biller)
                 .Include(c=>c.customer)
                  .Include(c=>c.ledgerDetails).ThenInclude(c=>c.product)
                  .Include(c=>c.ledgerDetails).ThenInclude(c=>c.tax)
@@ -180,12 +185,15 @@ namespace SimpleInvoices.BLL{
                 res.customerId=entity.customer.Id;
                 res.custName=entity.customer.name;
                 res.price=entity.amount;
-                foreach(var product in entity.ledgerDetails){
-                    res.product.AddRange(new BLL.Products(db).getProductsWithDesigns(product.productId,entity.Id));
-                }
+                res.balance=entity.balance;
+                res.delivery=entity.deliveryDate;
+                res.date=entity.createdDate;
                 
+                foreach(var product in entity.ledgerDetails){
+                    res.product.AddRange(new BLL.Products(db).getProductsWithDesigns(product.productId,product.quantity,product.tax, entity.Id));
+                }
                 res.note=entity.note;
-        toReturn.Add(res);
+                toReturn.Add(res);
             }
             return toReturn;
         }

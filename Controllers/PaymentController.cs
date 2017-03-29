@@ -6,7 +6,9 @@ namespace SimpleInvoices.Controllers
     public class PaymentController : BaseController
     {
         public PaymentController(InvoiceContext context) : base(context)
-        { }
+        {
+
+        }
         [Route("api/payment/createpayment"), HttpPost]
         public BaseResponse createPayment([FromBody] PaymentReq payment)
         {
@@ -16,6 +18,7 @@ namespace SimpleInvoices.Controllers
         public BaseResponse createPaymentType([FromBody] PaymentTypeReq PayTypeReq){
             return new BLL.Payment(_db).createPaymentType(PayTypeReq);
         }
+         [RouteAttribute("api/payment/listpayment"),HttpPost]
         public List<PaymentRes> getPaymentResponse([FromBody] int id ){
             return new BLL.Payment(_db).getPayment(id);
         }

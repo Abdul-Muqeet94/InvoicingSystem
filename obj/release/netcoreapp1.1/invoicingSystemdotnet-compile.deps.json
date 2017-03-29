@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1/",
-    "signature": "55a051fa4eb7a110a2bb676a7aedeff2e467c1d8"
+    "signature": "d7dd4514b879caf084f02d6d28343217431a26a1"
   },
   "compilationOptions": {
     "defines": [
@@ -15,7 +15,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v1.1": {
-      "invoicingSystem/1.0.0": {
+      "InvoicingSystem/1.0.0": {
         "dependencies": {
           "Microsoft.NETCore.App": "1.1.0",
           "Microsoft.AspNetCore.Mvc": "1.1.0",
@@ -42,10 +42,12 @@
           "Swashbuckle": "6.0.0-beta901",
           "SendGrid.NetCore": "1.0.0-rtm-00002",
           "Swashbuckle.SwaggerUi": "6.0.0-beta901",
-          "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0"
+          "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
+          "Pomelo.EntityFrameworkCore.MySql": "1.1.0",
+          "SshNet.Security.Cryptography": "1.1.0"
         },
         "compile": {
-          "invoicingSystem.dll": {}
+          "InvoicingSystem.dll": {}
         }
       },
       "Braintree/3.4.0": {
@@ -1315,6 +1317,31 @@
           "lib/netstandard1.3/MimeKit.dll": {}
         }
       },
+      "MySqlConnector/0.7.3": {
+        "dependencies": {
+          "System.Buffers": "4.3.0",
+          "System.Collections.Concurrent": "4.3.0",
+          "System.Data.Common": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.IO.Compression": "4.3.0",
+          "System.IO.FileSystem": "4.3.0",
+          "System.Linq": "4.3.0",
+          "System.Net.NameResolution": "4.3.0",
+          "System.Net.Security": "4.3.0",
+          "System.Net.Sockets": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.3.0",
+          "System.Security.Cryptography.Algorithms": "4.3.0",
+          "System.Text.RegularExpressions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/MySqlConnector.dll": {}
+        }
+      },
       "NETStandard.Library/1.6.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
@@ -1390,6 +1417,25 @@
         },
         "compile": {
           "lib/netstandard1.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+          "MySqlConnector": "0.7.3",
+          "Pomelo.JsonObject": "1.1.0",
+          "System.Threading.Thread": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/Pomelo.EntityFrameworkCore.MySql.dll": {}
+        }
+      },
+      "Pomelo.JsonObject/1.1.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.3/Pomelo.JsonObject.dll": {}
         }
       },
       "Portable.BouncyCastle/1.8.1.1": {
@@ -1507,6 +1553,15 @@
         }
       },
       "SQLite/3.13.0": {},
+      "SshNet.Security.Cryptography/1.1.0": {
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Security.Cryptography.Primitives": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/SshNet.Security.Cryptography.dll": {}
+        }
+      },
       "Swashbuckle/6.0.0-beta901": {
         "dependencies": {
           "Swashbuckle.SwaggerGen": "6.0.0-beta901",
@@ -3121,7 +3176,7 @@
       }
     },
     ".NETCoreApp,Version=v1.1/": {
-      "invoicingSystem/1.0.0": {
+      "InvoicingSystem/1.0.0": {
         "dependencies": {
           "Microsoft.NETCore.App": "1.1.0",
           "Microsoft.AspNetCore.Mvc": "1.1.0",
@@ -3148,10 +3203,12 @@
           "Swashbuckle": "6.0.0-beta901",
           "SendGrid.NetCore": "1.0.0-rtm-00002",
           "Swashbuckle.SwaggerUi": "6.0.0-beta901",
-          "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0"
+          "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
+          "Pomelo.EntityFrameworkCore.MySql": "1.1.0",
+          "SshNet.Security.Cryptography": "1.1.0"
         },
         "runtime": {
-          "invoicingSystem.dll": {}
+          "InvoicingSystem.dll": {}
         }
       },
       "Braintree/3.4.0": {
@@ -4412,6 +4469,31 @@
           "lib/netstandard1.3/MimeKit.dll": {}
         }
       },
+      "MySqlConnector/0.7.3": {
+        "dependencies": {
+          "System.Buffers": "4.3.0",
+          "System.Collections.Concurrent": "4.3.0",
+          "System.Data.Common": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.IO": "4.3.0",
+          "System.IO.Compression": "4.3.0",
+          "System.IO.FileSystem": "4.3.0",
+          "System.Linq": "4.3.0",
+          "System.Net.NameResolution": "4.3.0",
+          "System.Net.Security": "4.3.0",
+          "System.Net.Sockets": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Runtime.InteropServices.RuntimeInformation": "4.3.0",
+          "System.Security.Cryptography.Algorithms": "4.3.0",
+          "System.Text.RegularExpressions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Tasks.Extensions": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/MySqlConnector.dll": {}
+        }
+      },
       "NETStandard.Library/1.6.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
@@ -4487,6 +4569,25 @@
         },
         "runtime": {
           "lib/netstandard1.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+          "MySqlConnector": "0.7.3",
+          "Pomelo.JsonObject": "1.1.0",
+          "System.Threading.Thread": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Pomelo.EntityFrameworkCore.MySql.dll": {}
+        }
+      },
+      "Pomelo.JsonObject/1.1.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Pomelo.JsonObject.dll": {}
         }
       },
       "Portable.BouncyCastle/1.8.1.1": {
@@ -4604,6 +4705,15 @@
         }
       },
       "SQLite/3.13.0": {},
+      "SshNet.Security.Cryptography/1.1.0": {
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Security.Cryptography.Primitives": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/SshNet.Security.Cryptography.dll": {}
+        }
+      },
       "Swashbuckle/6.0.0-beta901": {
         "dependencies": {
           "Swashbuckle.SwaggerGen": "6.0.0-beta901",
@@ -6105,7 +6215,7 @@
     }
   },
   "libraries": {
-    "invoicingSystem/1.0.0": {
+    "InvoicingSystem/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -6665,6 +6775,11 @@
       "serviceable": true,
       "sha512": "sha512-aYKyFJAic0GLfXvRQYEowhv4ZmibwhwpsEK1B0mlkGsSRbnR94yFBhLbal5D6qgJEpEdDBZJOuInICEEwEfN0w=="
     },
+    "MySqlConnector/0.7.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-591Hw1pnh1rE/vD3SLep7mfDpDPnVa+kUlxskvhKLC28b168Gs+g4FPt9vA4lZJyEJzvrEVbQbAacOrfs2A/fQ=="
+    },
     "NETStandard.Library/1.6.1": {
       "type": "package",
       "serviceable": true,
@@ -6674,6 +6789,16 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw=="
+    },
+    "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PT6XpS5aCAnRB9PQhC1oXmwB/bOgJONJOzRLbXmAQX7fteQmOheIcoggYDabfX2QzFl9aSK9K1yDenfiGzlJPQ=="
+    },
+    "Pomelo.JsonObject/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RoVZSaGOiJ4FcCVM+oc5bYsL6dpXwMXk9LsfDFVgxy1BW5h+CGcaJTxEoOgGetSmcPqBP1mGyRYBv19cc8MOSw=="
     },
     "Portable.BouncyCastle/1.8.1.1": {
       "type": "package",
@@ -6794,6 +6919,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-MJfRiz2p6aMVOxrxGMdVzhpzI0oxTgZSwC8eVuOpV8L7yYaFUu8q/OFYwv9P0/aZ/pdEu24O6gma6wZJMTun9A=="
+    },
+    "SshNet.Security.Cryptography/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WWDLvpRVlReBAK84o5cdcHiOnspnkqJ5m//RJmaoXv4LNwYkl7jl5xNRhmchPd64BlQYbVk5A2owVMIqIN1U0g=="
     },
     "Swashbuckle/6.0.0-beta901": {
       "type": "package",

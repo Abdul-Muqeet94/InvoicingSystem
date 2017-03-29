@@ -16,8 +16,10 @@
   <li  ng-repeat="(key, val) in products  " ng-hide="(key=='customField' || key=='designs' || key=='enable' )" >
    <label class="label"> {{key}}</label> <input type="text" ng-model="products[key]"/> 
   </li>
-<li  ng-repeat="(key, val) in products.customfields" >
-   <label class="label"> {{key}}</label> <input type="text" ng-model="products.customfields[key]"/> 
+<li  ng-repeat="input in products.customField">
+ 
+   <label class="label"> {{input.fieldName}}</label> <input type="text" ng-model="input.fieldValue"/> 
+ 
   </li>
  
 <ul>

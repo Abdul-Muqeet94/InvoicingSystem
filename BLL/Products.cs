@@ -15,7 +15,7 @@ namespace SimpleInvoices.BLL{
         {
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             var db=_db;
-            var fields=db.customFields.Where(c=>c.tableName.Equals("Products")).ToList();
+            var fields=db.customFields.Where(c=>c.tableName.Equals("Products") && c.enable==true).ToList();
             if(fields.Count>0)
             {
                 foreach(var entity in fields)
@@ -58,6 +58,7 @@ namespace SimpleInvoices.BLL{
                          note=entity.note,
                          description=entity.description,
                          price=entity.price,
+                         createdOn=entity.createdOn,
                          customField=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>()
                      });
                  }
@@ -67,7 +68,7 @@ namespace SimpleInvoices.BLL{
             }
             return toReturn;
         }
-public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
+public List<ProductViewRes> getProductsWithDesigns(int id,double quantity,SimpleInvoices.Taxes tax,int ledger_id)
         {
             var db=_db;
             List<ProductViewRes> toReturn =new List<ProductViewRes>();
@@ -77,13 +78,13 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
             if(id==0)
             {
               productList=db.products.Where(c=> c.enable==true).Include(c=>c.customFields ).ToList();
-              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
+              fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT) && c.enable==true).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
               
             }
             else
             {
              productList=db.products.Where(c=>c.Id.Equals(id)  && c.enable==true).Include(c=>c.customFields).ToList();
-            fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
+            fields=db.customFields.Where(c=>c.tableName.Equals(Constant.TABLE_PRODUCT) && c.enable==true).Include(c=>c.FieldValues).ThenInclude(c=>c.product).ToList();
             }
             
             if(productList.Count>0)
@@ -92,7 +93,8 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
                  {
                      var customFields =new List<CustomFieldRes>();
                      var design=new List<DesignViewReq>();
-                     var ledgersDetails=db.ledgerDetails.Where(c=>c.productId==entity.Id && c.ledgersId==legder_id).Include(c=>c.designs).ToList();
+                     var ledgersDetails=db.ledgerDetails.Where(c=>c.productId==entity.Id && c.ledgersId==ledger_id).Include(c=>c.designs)
+                     .ToList();
                      foreach(var items in ledgersDetails){
                         designs=items.designs;
                         foreach(var des in designs){
@@ -104,8 +106,7 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
                                 note=des.note
                             });
                         }
-                     }
-                     
+                     }         
                      toReturn.Add(new ProductViewRes(){
                          name=entity.name,
                          id=entity.Id,
@@ -114,7 +115,10 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
                          description=entity.description,
                          price=entity.price,
                          customField=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>(),
-                         designs=design
+                         designs=design,
+                         quantity=quantity,
+                         taxPercent=tax.percent,
+                         createdOn=entity.createdOn
                      });
                  }
             }
@@ -128,7 +132,7 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
             List<CustomFieldRes> toReturn =new List<CustomFieldRes>();
             
             for(int i=0;i<customField.Count;i++){
-                var fieldValue=(customField[i].FieldValues.Where(c=> c.product.Id.Equals(customer.Id)).FirstOrDefault()!=null)?
+                var fieldValue=(customField[i].FieldValues.Where(c=> c.product.Id.Equals(customer.Id) && c.enable==true).FirstOrDefault()!=null)?
                 customField[i].FieldValues.Where(c=>c.product==customer).FirstOrDefault().value:" ";
                 toReturn.Add(new CustomFieldRes{
                     fieldName=customField[i].fieldName,
@@ -147,7 +151,7 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
             SimpleInvoices.product dbProduct=new SimpleInvoices.product();
             List<Design> designLists=new List<Design>();
             string name=product.name;
-            dbProduct=db.products.Where(c=>c.name.Equals(name)).FirstOrDefault();
+            dbProduct=db.products.Where(c=>c.name.Equals(name) && c.enable==true).FirstOrDefault();
             Console.WriteLine("get Product");
             if(dbProduct==null)
             {
@@ -217,11 +221,13 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
                 entity.description=product.description;
                 entity.price=product.price;
                 entity.color=product.color;
-                foreach(var item in product.customField){
+foreach(var item in product.customField){
                     var customFields=db.customFields.Where(c=>c.fieldName.Equals(item.fieldName) && c.tableName.Equals(Constant.TABLE_PRODUCT)).Include(c=>c.FieldValues).FirstOrDefault();
                     customFields.FieldValues.Where(c=>c.product.Id.Equals(product.id)).FirstOrDefault().value=item.fieldValue;
 
                 }
+
+
                 if(db.SaveChanges()==1)
                 {
                     toReturn.status=1;
@@ -248,13 +254,14 @@ public List<ProductViewRes> getProductsWithDesigns(int id,int legder_id)
             BaseResponse toReturn =new BaseResponse();
             var db=_db;
             var entity=db.products.Where(c=>c.Id.Equals(id) && c.enable==true).FirstOrDefault();
-            var fieldsvalues=db.FieldValues.Where(c=>c.product==entity).ToList();
-            foreach(var item in fieldsvalues){
-                item.enable=false;
-            }
             if(entity!=null)
             {
             entity.enable=false;
+             var entit = db.FieldValues.Where(c=>c.product.Id.Equals(entity.Id)).ToList();
+            foreach(var item in entit)
+            {
+                item.enable=false;
+            }
             if(db.SaveChanges()==1)
             {
                 toReturn.status=1;

@@ -20,5 +20,15 @@ namespace SimpleInvoices.Controllers{
         {
             return new BLL.Tax(_db).getAllTax(id);
         }
+        [Route("api/tax/edittaxes"), HttpPost]
+        public BaseResponse editTaxes ([FromBody] TaxViewReq tax)
+        {
+            return new BLL.Tax(_db).editTax(tax);
+        }
+        [Route("api/tax/deletetaxes"), HttpPost]
+        public BaseResponse deleteTaxes ([FromBody] int id)
+        {
+            return new BLL.Tax(_db).deleteTax(id);
+        }
     }
 }

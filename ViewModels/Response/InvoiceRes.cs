@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SimpleInvoices.ViewModels;
 namespace SimpleInvoices{
@@ -13,5 +14,8 @@ namespace SimpleInvoices{
         public List<ProductViewRes> product {get;set;}
         public double price {get;set;}
         public string note {get;set;}
+        public DateTime delivery{get;set;}
+        public DateTime date{get;set;}
+        public double balance{get;set;}
     }
 }

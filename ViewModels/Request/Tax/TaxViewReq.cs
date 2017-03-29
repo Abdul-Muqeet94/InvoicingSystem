@@ -1,6 +1,8 @@
 namespace SimpleInvoices.ViewModels{
     public class TaxViewReq{
-        public string name {get;set;}
-        public double percentage{get;set;}
+        public int id {get;set;}
+                public string name {get;set;}
+
+        public double percent{get;set;}
     }
 }

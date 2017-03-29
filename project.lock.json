@@ -58,11 +58,11 @@
           }
         }
       },
-      "MailKit/1.10.1": {
+      "MailKit/1.12.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
-          "MimeKit": "1.10.0",
+          "MimeKit": "1.12.0",
           "Portable.BouncyCastle": "1.8.1.1",
           "System.Collections": "4.0.11",
           "System.Data.Common": "4.1.0",
@@ -1762,7 +1762,7 @@
           }
         }
       },
-      "MimeKit/1.10.0": {
+      "MimeKit/1.12.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1",
@@ -1819,6 +1819,20 @@
         },
         "runtime": {
           "lib/netstandard1.3/MySqlConnector.dll": {}
+        }
+      },
+      "NETCore.MailKit/1.0.1": {
+        "type": "package",
+        "dependencies": {
+          "MailKit": "1.10.0",
+          "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.6/NETCore.MailKit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.6/NETCore.MailKit.dll": {}
         }
       },
       "NETStandard.Library/1.6.1": {
@@ -2228,6 +2242,19 @@
             "assetType": "native",
             "rid": "win7-x86"
           }
+        }
+      },
+      "SshNet.Security.Cryptography/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "System.IO": "4.1.0",
+          "System.Security.Cryptography.Primitives": "4.0.0"
+        },
+        "compile": {
+          "lib/netstandard1.3/SshNet.Security.Cryptography.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/SshNet.Security.Cryptography.dll": {}
         }
       },
       "Swashbuckle/6.0.0-beta901": {
@@ -3106,7 +3133,7 @@
           "lib/netstandard1.3/System.Linq.Queryable.dll": {}
         }
       },
-      "System.Net.Http/4.3.0": {
+      "System.Net.Http/4.3.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
@@ -4497,12 +4524,12 @@
         "runtimes/win7-x86/native/libuv.dll"
       ]
     },
-    "MailKit/1.10.1": {
-      "sha512": "d+uJ+KoH2b3uEUCQHKZSLWfJ+BOMJQpQovx0PMdQDCVrfbLP4AnmMsNB9x2D89GZv33n8YJw8IHNWfhxsGMgmg==",
+    "MailKit/1.12.0": {
+      "sha512": "6h6PkKAuMSaTEjXMVSgBqqMrhcRgtBfFwJwA0qxqpQ32IvtG4v2vphB3IBRa3UjX4g1GaWRC+tHwivXGlZ0CtA==",
       "type": "package",
-      "path": "MailKit/1.10.1",
+      "path": "MailKit/1.12.0",
       "files": [
-        "MailKit.1.10.1.nupkg.sha512",
+        "MailKit.1.12.0.nupkg.sha512",
         "MailKit.nuspec",
         "lib/MonoAndroid10/MailKit.dll",
         "lib/MonoAndroid10/MailKit.xml",
@@ -6189,12 +6216,12 @@
         "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll"
       ]
     },
-    "MimeKit/1.10.0": {
-      "sha512": "aYKyFJAic0GLfXvRQYEowhv4ZmibwhwpsEK1B0mlkGsSRbnR94yFBhLbal5D6qgJEpEdDBZJOuInICEEwEfN0w==",
+    "MimeKit/1.12.0": {
+      "sha512": "RxmmVI5vLiI7q54i5CK3WESv6e/sVI3sEJB2/PXdIbKWfHOkQywGoRkqiSqDRz+m5fU7D1H0RVkjTshONo0ZzA==",
       "type": "package",
-      "path": "MimeKit/1.10.0",
+      "path": "MimeKit/1.12.0",
       "files": [
-        "MimeKit.1.10.0.nupkg.sha512",
+        "MimeKit.1.12.0.nupkg.sha512",
         "MimeKit.nuspec",
         "lib/MonoAndroid10/BouncyCastle.dll",
         "lib/MonoAndroid10/MimeKit.dll",
@@ -6229,6 +6256,16 @@
         "MySqlConnector.nuspec",
         "lib/net45/MySqlConnector.dll",
         "lib/netstandard1.3/MySqlConnector.dll"
+      ]
+    },
+    "NETCore.MailKit/1.0.1": {
+      "sha512": "O+KP/w0ptAqCSG0C/e5gUTS1P3LcPYb2CmGxDI3o/YqC76fKj1w/8ks3tgXpeIg0gCnFb2GiNFWsGrUjbpGM7g==",
+      "type": "package",
+      "path": "NETCore.MailKit/1.0.1",
+      "files": [
+        "NETCore.MailKit.1.0.1.nupkg.sha512",
+        "NETCore.MailKit.nuspec",
+        "lib/netstandard1.6/NETCore.MailKit.dll"
       ]
     },
     "NETStandard.Library/1.6.1": {
@@ -6600,6 +6637,37 @@
         "runtimes/win7-x64/native/sqlite3.dll",
         "runtimes/win7-x86/native/sqlite3.dll",
         "sqlite-version.txt"
+      ]
+    },
+    "SshNet.Security.Cryptography/1.1.0": {
+      "sha512": "WWDLvpRVlReBAK84o5cdcHiOnspnkqJ5m//RJmaoXv4LNwYkl7jl5xNRhmchPd64BlQYbVk5A2owVMIqIN1U0g==",
+      "type": "package",
+      "path": "SshNet.Security.Cryptography/1.1.0",
+      "files": [
+        "SshNet.Security.Cryptography.1.1.0.nupkg.sha512",
+        "SshNet.Security.Cryptography.nuspec",
+        "lib/net20/SshNet.Security.Cryptography.dll",
+        "lib/net20/SshNet.Security.Cryptography.xml",
+        "lib/net40/SshNet.Security.Cryptography.dll",
+        "lib/net40/SshNet.Security.Cryptography.xml",
+        "lib/net45/SshNet.Security.Cryptography.dll",
+        "lib/net45/SshNet.Security.Cryptography.xml",
+        "lib/netstandard1.0/SshNet.Security.Cryptography.dll",
+        "lib/netstandard1.0/SshNet.Security.Cryptography.xml",
+        "lib/netstandard1.3/SshNet.Security.Cryptography.dll",
+        "lib/netstandard1.3/SshNet.Security.Cryptography.xml",
+        "lib/portable-net45+win8+wpa81/SshNet.Security.Cryptography.dll",
+        "lib/portable-net45+win8+wpa81/SshNet.Security.Cryptography.xml",
+        "lib/sl4/SshNet.Security.Cryptography.dll",
+        "lib/sl4/SshNet.Security.Cryptography.xml",
+        "lib/sl5/SshNet.Security.Cryptography.dll",
+        "lib/sl5/SshNet.Security.Cryptography.xml",
+        "lib/uap10.0/SshNet.Security.Cryptography.dll",
+        "lib/uap10.0/SshNet.Security.Cryptography.xml",
+        "lib/wp71/SshNet.Security.Cryptography.dll",
+        "lib/wp71/SshNet.Security.Cryptography.xml",
+        "lib/wp8/SshNet.Security.Cryptography.dll",
+        "lib/wp8/SshNet.Security.Cryptography.xml"
       ]
     },
     "Swashbuckle/6.0.0-beta901": {
@@ -8601,12 +8669,12 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "System.Net.Http/4.3.0": {
-      "sha512": "JB5wyH5Wy4OUBrATlyliHRrnqBkQ9hQJ6WvdSMzyT2J2vJSi0y7ZsvVzZlY+TmrVJkZcT9eQlG6gMWpi2FFo7Q==",
+    "System.Net.Http/4.3.1": {
+      "sha512": "UrTyRczM3ZvNk6oetBuwlu67MFKKRva+r7bw4JDVZ6Y2IukyZ24td5ppsieu/4yZlogVAIuZul9GIQ3hoiz0yA==",
       "type": "package",
-      "path": "System.Net.Http/4.3.0",
+      "path": "System.Net.Http/4.3.1",
       "files": [
-        "System.Net.Http.4.3.0.nupkg.sha512",
+        "System.Net.Http.4.3.1.nupkg.sha512",
         "System.Net.Http.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
@@ -11625,7 +11693,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Braintree >= 3.4.0",
-      "MailKit >= 1.10.1",
+      "MailKit >= 1.12.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 1.1.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 1.1.0",
       "Microsoft.AspNetCore.Mvc >= 1.1.0",
@@ -11647,11 +11715,15 @@
       "Microsoft.Extensions.Logging.Debug >= 1.1.0",
       "Microsoft.Extensions.Options.ConfigurationExtensions >= 1.1.0",
       "Microsoft.NETCore.App >= 1.1.0",
+      "NETCore.MailKit >= 1.0.1",
       "Newtonsoft.Json >= 9.0.1",
       "Pomelo.EntityFrameworkCore.MySql >= 1.1.0-*",
       "SendGrid.NetCore >= 1.0.0-rtm-00002",
+      "SshNet.Security.Cryptography >= 1.1.0",
       "Swashbuckle >= 6.0.0-beta901",
-      "Swashbuckle.SwaggerUi >= 6.0.0-beta901"
+      "Swashbuckle.SwaggerUi >= 6.0.0-beta901",
+      "System.Net.Http >= 4.3.1",
+      "System.Net.Mail >= 1.0.0-rtm-00002"
     ],
     ".NETCoreApp,Version=v1.1": []
   },

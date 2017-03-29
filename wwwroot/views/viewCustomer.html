@@ -8,24 +8,25 @@
 </head>
 <body ng-app="customerModule">
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-       <h3>View Customer</h3>
+       <h3>Edit Customer</h3>
             <div ng-controller="editCController">
-
 <div>
+                <form name="as" ng-submit="edit()">
   <ul>
-
-  <li  ng-repeat="(key, val) in Customers  " ng-hide="(key=='total' || key=='paid' || key=='customfields' || key=='owing')" ng-if="key!='customfields'">
-  
+  <li  ng-repeat="(key, val) in Customers" ng-hide="(key=='customfields' || key=='imagepath' || key=='enable' || key=='total' || key=='paid'||key=='owing')" >
    <label class="label"> {{key}}</label> <input type="text" ng-model="Customers[key]"/> 
   </li>
-
-<li  ng-repeat="(key, val) in Customers.customfields" >
+<li  ng-repeat="(key, val) in Customers.customFields">
    <label class="label"> {{key}}</label> <input type="text" ng-model="Customers.customfields[key]"/> 
-
   </li>
- 
-<ul>     
-       </div>
+
+<div align="center">
+  <img data-ng-src="{{getImage(Customers.imagepath)}}" height="200dp" width="200dp" />
+<div>
+    <!--<input type="file" ng-model="customer.picture" id="myfile">-->
+<ul>
+</form>
+        </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.min.js"></script>
 

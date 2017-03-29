@@ -1,26 +1,29 @@
 (function(){
-    var app = angular.module("productModule", ['ngRoute']);
+    var app = angular.module("productModule", ['ngRoute','customservice']);
 
 
-         app.controller("manageDesign",function($scope,$http,$log){
-
-$scope.counter = 0;
+         app.controller("manageDesign",function($scope,$http,$log,customfields){
+$scope.customFields = [];
+var getResult =  customfields.get('"Product"');
+getResult.then(function(pl) { 
+    $scope.customFields = pl.data 
+for(var i=0;i<$scope.customFields.length;i++)
+{
+    $scope.customFields[i].fieldValue="";
+}
+},
+                function(errorPl) {
+                    $log.error('failure loading customeFields', errorPl);
+                });
 $scope.save= function(){
-var product = {
-    id: '0',
-    name:$scope.name,
-    color:$scope.color,
-    price:$scope.price,
-    note:$scope.note,
-    description:$scope.description,
-    customFields:[]
-};
-console.log(product);
-    $scope.message =  $http.post('http://localhost:5000/api/product/addproduct',product).
+$scope.product.id=0;
+ $scope.product.customField=$scope.customFields;
+console.log($scope.product);
+    $scope.message =  $http.post('http://localhost:5000/api/product/addproduct',$scope.product).
          then(function (response){
            console.log(response.data);    
            $scope.message = response.data;
-           $log.info(response);
+          
  });
 
  
@@ -32,7 +35,7 @@ app.controller("getProduct",function($scope,$http,$log,$rootScope,$location){
     $scope.message =  $http.post('http://localhost:5000/api/product/getproduct',$rootScope.ProductId).
          then(function (response){        
            $scope.Products = response.data;
-           $scope.customs = $scope.Products[0].customfields;
+           
                console.log(response.data);  
                 });
  $scope.setRoot = function(x){

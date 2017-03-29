@@ -98,7 +98,6 @@
             $scope.invoices[index].taxId = id;
         };
         $scope.save = function () {
-
             var addInvoice = { products: $scope.invoices, note: $scope.note, date: $scope.date, biller: $scope.biller, customer: $scope.customer }
      var promiseGet = createInvoice.addInvoices(addInvoice);
         promiseGet.then(function (pl) {
@@ -154,13 +153,13 @@
     });
 
 
-    app.controller('viewinvoices', function ($scope, $rootScope, $http,  $log,$location) {
-$scope.invoices=[];
+    app.controller('viewinvoices', function ($scope, $rootScope, $http,$location) {
+
         $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', $rootScope.invoiceId).
             then(function (response) {
-                $scope.invoices = response.data[0];
+                $scope.invoices = response.data;
                 //$scope.customs = $scope.Customers[0].customfields;
-                console.log(response.data[0]);
+                console.log(response.data);
                 $rootScope.invoiceId = 0;
             });
 
@@ -169,14 +168,32 @@ $scope.invoices=[];
             console.log($rootScope.invoiceId);
         };
 
+$scope.checkedit = function(x)
+{
+$scope.message =  $http.post('http://localhost:5000/api/invoice/getinvoice',x).
+         then(function (response){        
 
+           $scope.customers = response.data[0];   
+               console.log(response.data[0]);  
+                
+                if($scope.customers.balance==0)
+                {
+               $location.path("/invoices");
+                }  
+                else
+                {
+   $rootScope.invoiceId = x;
+     $location.path("/editinvoices");
+                }
+                });
+
+}
         $scope.deleteInvoice = function (x) {
-            $scope.message = $http.post('http://localhost:5000/api/customer/delete', x).
+            $scope.message = $http.post('http://localhost:5000/api/invoice/deleteinvoice', x).
                 then(function (response) {
                     $scope.response = response.data;
                     console.log(response.data);
                     alert($scope.response.developerMessage);
-                    //  route to customer.html
                     $location.path("/invoices");
                 });
         };
@@ -184,9 +201,120 @@ $scope.invoices=[];
 
 
     });
-    //controller ends here
+//
+     app.controller('editIController', function($scope,$rootScope,$http){
+        
+   $scope.message =  $http.post('http://localhost:5000/api/invoice/getinvoice',$rootScope.invoiceId).
+         then(function (response){        
+
+           $scope.customers = response.data[0];   
+               console.log(response.data[0]);  
+                 $rootScope.invoiceId=0;
+       
+
+            
+         });
+                
+                $scope.edit = function()
+                {                   
+var file = document.getElementById('myfile').files[0];
+  if(file){var reader = new FileReader();
+     reader.readAsBinaryString(file);
+ reader.onload = function(e) {
+$scope.Customers.imagepath= btoa(reader.result);
+console.log($scope.Customers);
+$scope.message =  $http.post('http://localhost:5000/api/customer/edit',$scope.Customers).
+         then(function (response){        
+               console.log(response.data);  
+                });
+  } }
 
 
 
+
+                }
+
+     });
+//  edit invoice page directions are set here
+app.controller('editInvoice', function($scope,$rootScope,$http,getBillerService, getTaxService,createInvoice, getProductId){
+
+   $scope.message =  $http.post('http://localhost:5000/api/invoice/getinvoice',$rootScope.invoiceId).
+         then(function (response){        
+
+          $scope.customers = response.data[0];   
+                 $rootScope.invoiceId=0; 
+                 $scope.bille = $scope.customers.billerName;
+                 $scope.custome = $scope.customers.custName;
+                 $scope.tax= $scope.customers.taxPercent;
+                 $scope.quantity= $scope.customers.quantity;
+                 $scope.created = $scope.customers.date.substring(0,10);
+                 $scope.date = $scope.customers.delivery.substring(0,10);
+                 
+         });
+       
+////////
+//product
+var product = "Product";
+        var promiseGet = createInvoice.fillscope(0); //The MEthod Call from service
+        promiseGet.then(function (pl) {
+            $scope.products = pl.data
+             },
+            function (errorPl) {
+                $log.error('failure loading products', errorPl);
+            });
+//taxes
+        var promiseGet = getTaxService.getTaxes();
+        promiseGet.then(function (pl) {
+            $scope.taxes = pl.data
+        },
+            function (errorpl) {
+                $log.error('Failure loading Tax', errorpl);
+            });
+//billers
+        var biller = "biller";
+        var promiseGet = getBillerService.getBiller(biller); //The MEthod Call from service
+        promiseGet.then(function (pl) {
+            $scope.billers = pl.data
+        },
+            function (errorPl) {
+                $log.error('failure loading Biller', errorPl);
+            });
+       
+    //    customers
+        var customer = "Customer";
+        var promiseGet = getBillerService.getBiller(customer); //The MEthod Call from service
+
+        promiseGet.then(function (pl) {
+            $scope.customer = pl.data
+        },
+            function (errorPl) {
+                $log.error('failure loading Customers', errorPl);
+            });     
+            
+
+$scope.updatePrice= function(index, value)
+{
+for(var i=0;i<$scope.products.length;i++)
+ { 
+    if($scope.products[i].name==$scope.customers.product[index].name)
+   {         
+       $scope.customers.product[index].price = $scope.products[i].price;
+       //call function to update price and all other fields wrt product change
+    return;
+    }
+   }
+}
+//blur function editProd
+
+$scope.editProd = function(index,name)
+{
+//update quantity price and tax
+}
+
+
+
+
+     });
+//
 })
     ();

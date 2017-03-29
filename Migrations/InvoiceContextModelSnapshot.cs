@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using SimpleInvoices;
 
-namespace invoicingSystem.Migrations
+namespace InvoicingSystem.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
     partial class InvoiceContextModelSnapshot : ModelSnapshot
@@ -31,6 +31,8 @@ namespace invoicingSystem.Migrations
                     b.Property<bool>("enable");
 
                     b.Property<string>("name");
+
+                    b.Property<string>("password");
 
                     b.HasKey("Id");
 
@@ -164,11 +166,11 @@ namespace invoicingSystem.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CustomFieldsId");
-
                     b.Property<int?>("billersId");
 
                     b.Property<int?>("customerId");
+
+                    b.Property<int?>("customfieldsId");
 
                     b.Property<bool>("enable");
 
@@ -178,11 +180,11 @@ namespace invoicingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomFieldsId");
-
                     b.HasIndex("billersId");
 
                     b.HasIndex("customerId");
+
+                    b.HasIndex("customfieldsId");
 
                     b.HasIndex("productId");
 
@@ -250,6 +252,8 @@ namespace invoicingSystem.Migrations
                     b.Property<int?>("LedgersId");
 
                     b.Property<double>("amount");
+
+                    b.Property<DateTime>("createdDate");
 
                     b.Property<bool>("enable");
 
@@ -352,10 +356,6 @@ namespace invoicingSystem.Migrations
 
             modelBuilder.Entity("SimpleInvoices.FieldValue", b =>
                 {
-                    b.HasOne("SimpleInvoices.CustomFields")
-                        .WithMany("FieldValues")
-                        .HasForeignKey("CustomFieldsId");
-
                     b.HasOne("SimpleInvoices.Billers", "billers")
                         .WithMany()
                         .HasForeignKey("billersId");
@@ -363,6 +363,10 @@ namespace invoicingSystem.Migrations
                     b.HasOne("SimpleInvoices.Customer", "customer")
                         .WithMany()
                         .HasForeignKey("customerId");
+
+                    b.HasOne("SimpleInvoices.CustomFields", "customfields")
+                        .WithMany("FieldValues")
+                        .HasForeignKey("customfieldsId");
 
                     b.HasOne("SimpleInvoices.product", "product")
                         .WithMany()
