@@ -7,7 +7,7 @@ namespace SimpleInvoices {
 public class product:identity {
     public product(){
         customFields=new List<CustomFields>();
-        productDesign=new List<ProductDesign>();
+        ledgerDetails=new List<LedgerDetails>();
     }
     public string name {get;set;}
     public string color {get;set;}
@@ -16,7 +16,8 @@ public class product:identity {
     public string description {get;set;}
     public double unitPrice{get;set;}
     public List<CustomFields> customFields {get;set;}
-    public List<ProductDesign> productDesign {get;set;}
     public DateTime createdOn {get;set;}
+    public List<LedgerDetails> ledgerDetails{get;set;}
+    
     }
 }

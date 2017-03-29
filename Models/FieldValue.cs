@@ -4,5 +4,9 @@ namespace SimpleInvoices{
         public Customer customer{get;set;}
         public Billers billers {get;set;}
         public product product {get;set;}
+        
+        public CustomFields customfields {get;set;}
+      
+       
     }
 }

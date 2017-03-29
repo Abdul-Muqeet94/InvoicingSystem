@@ -25,10 +25,12 @@ namespace SimpleInvoices.Controllers{
         {
             return new BLL.Customers(_db).deleteCustomer(customer);
         }
+       
         [Route("api/customer/getCustomers"), HttpPost]
         public List<UserViewRes> getCustomers ([FromBody] int customer)
         {
             return new BLL.Customers(_db).getCustomers(customer);
         }
+        
     }
 }

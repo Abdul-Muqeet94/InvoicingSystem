@@ -8,5 +8,6 @@ namespace SimpleInvoices {
         public string fieldName {get;set;}
         public List<FieldValue> FieldValues{get;set;}
         public string tableName {get;set;}
+       
     }
 }

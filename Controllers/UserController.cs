@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SimpleInvoices.ViewModels;
 namespace SimpleInvoices.Controllers
@@ -12,6 +13,15 @@ namespace SimpleInvoices.Controllers
 		{
 			return new BLL.Users(_db).addUsers(user);
 		}
-        
+        [Route("api/users/get"), HttpPost]
+         public List<LoginUsersViewRes> GetUsers([FromBody] int id)
+		{
+			return new BLL.Users(_db).GetUsers(id);
+		}
+        [Route("api/users/delete"), HttpPost]
+         public BaseResponse deleteUsers([FromBody] int id)
+		{
+			return new BLL.Users(_db).deleteUser(id);
+		}
     }
 }
