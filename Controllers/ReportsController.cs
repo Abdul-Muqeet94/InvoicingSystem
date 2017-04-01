@@ -40,7 +40,27 @@ namespace SimpleInvoices.Controllers
         {
            return new BLL.Reports(_db).billerSales();
         }
-   /* 
+        [Route("api/reports/totalsalesbillercustomer"), HttpPost]
+        public List<BillerSalesCustomer> billerSalesCustomers ()
+        {
+           return new BLL.Reports(_db).billerSalesCustomerWise();
+        }
+        [Route("api/reports/debatorbyowned"), HttpPost]
+        public List<InvoiceRes> debatorByOwned ()
+        {
+           return new BLL.Reports(_db).debatorByOwned();
+        }
+         [Route("api/reports/debatorbyownedcustomer"), HttpPost]
+        public List<InvoiceRes> debatorByOwnedCustomer ()
+        {
+           return new BLL.Reports(_db).debatorByOwnedCustomer();
+        }
+         [Route("api/reports/invoicebyfilter"), HttpPost]
+        public List<InvoiceRes> getInvoiceByFilter([FromBody] invoiceFilter filter)
+        {
+           return new BLL.Reports(_db).getInvoicebyFilter(filter);
+        }
+   /* billerSalesCustomerWise  debatorByOwned
      [Route("api/reports/totalsales"), HttpPost]
         public InvoiceRes totalSales ()
         {

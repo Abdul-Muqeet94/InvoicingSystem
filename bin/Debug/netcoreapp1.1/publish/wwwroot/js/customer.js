@@ -1,11 +1,12 @@
 (function(){
-    var app = angular.module("customerModule", ['ngRoute','customservice','naif.base64']);
-  app.controller('crudController', function($scope,$log,$rootScope,$http,$location) {
+    var app = angular.module("customerModule", ['ngRoute','customservice']);
+  app.controller('crudController', function($scope,$log,$rootScope,$location,$http,$location) {
 
  $scope.message =  $http.post('http://localhost:5000/api/customer/getCustomers',$rootScope.customerId).
          then(function (response){        
+
            $scope.Customers = response.data;
-           $scope.customs = $scope.Customers[0].customfields;
+           
                console.log(response.data);  
                 });
                
@@ -24,28 +25,37 @@ console.log($rootScope.customerId);
            $location.path( "/customer" );
                 });
         };
-        //////
-
     });
 
-     app.controller('editCController', function($scope,$rootScope,$http){
-         console.log("ssssss");
-$scope.message =  $http.post('http://localhost:5000/api/customer/getCustomers',$rootScope.customerId).
+     app.controller('editCController', function($scope,$location,$rootScope,$http){
+        
+   $scope.message =  $http.post('http://localhost:5000/api/customer/getCustomers',$rootScope.customerId).
          then(function (response){        
-           $scope.Customers = response.data[0];
-           //$scope.customs = $scope.Customers[0].customfields;
+
+           $scope.Customers = response.data[0];   
                console.log(response.data[0]);  
                  $rootScope.customerId=0;
                 });
+                $scope.getImage = function(data){
+return 'data:image/jpeg;base64,' + data;
 
-
+                }
                 $scope.edit = function()
-                {
-                    
+                {                   
+var file = document.getElementById('myfile').files[0];
+  if(file){var reader = new FileReader();
+     reader.readAsBinaryString(file);
+ reader.onload = function(e) {
+$scope.Customers.imagepath= btoa(reader.result);
+console.log($scope.Customers);
 $scope.message =  $http.post('http://localhost:5000/api/customer/edit',$scope.Customers).
          then(function (response){        
                console.log(response.data);  
                 });
+  } }
+
+
+
 
                 }
 
@@ -53,60 +63,33 @@ $scope.message =  $http.post('http://localhost:5000/api/customer/edit',$scope.Cu
 app.controller("addCustomer", function($scope,$http,customfields){
 $scope.customFields = [];
 var getResult =  customfields.get('"Customer"');
-getResult.then(function(pl) { $scope.customFields = pl.data },
+getResult.then(function(pl) { 
+    $scope.customFields = pl.data },
                 function(errorPl) {
                     $log.error('failure loading customeFields', errorPl);
                 });
 console.log($scope.customFields);
+
+
 $scope.addCustomer = function(){
-   
-var customer = {
-    id: '0',
-    name:$scope.name,
-    address:$scope.address,
-    contact:$scope.contact,
-    email:$scope.email,
-    city:$scope.city,
-    shoulder:$scope.shoulder,
-    chest:$scope.chest,
-    waist:$scope.waist,
-    upperWaist:$scope.upperWaist,
-    lowerWaist:$scope.lowerWaist,
-    hips:$scope.hips,
-    armHole:$scope.armHole,
-    fullSleeveLength:$scope.fullSleeveLength,
-    sleeveLength:$scope.sleeveLength,
-    bicep:$scope.bicep,
-    foreArm:$scope.foreArm,
-    wrist:$scope.wrist,
-    longShirtLength:$scope.longShirtLength,
-    shortShirtLength:$scope.shortShirtLength,
-    chaak:$scope.chaak,
-    daaman:$scope.daaman,
-    frontNeckDepth:$scope.frontNeckDepth,
-    frontNeckWidth:$scope.frontNeckWidth,
-    backNeckDepth:$scope.backNeckDepth,
-    backNeckWidth:$scope.backNeckWidth,
-    thigh:$scope.thigh,
-    kneeCap:$scope.kneeCap,
-    calf:$scope.calf,
-    ankle:$scope.ankle,
-    pantLength:$scope.pantLength,
-    imagePath:$scope.picture.base64,
-    bodyType:$scope.select,
-    
-    customFields:$scope.customFields
-}
-
-
- console.log(customer);
-    $scope.message =  $http.post('http://localhost:5000/api/customer/create',customer).
+  //
+  var file = document.getElementById('myfile').files[0];
+ 
+  var reader = new FileReader();
+     reader.readAsBinaryString(file);
+ reader.onload = function(e) {
+$scope.customer.imagepath= btoa(reader.result);
+ $scope.customer.id= '0';
+    $scope.customer.customFields=$scope.customFields;
+console.log($scope.customer.imagepath);
+    $scope.message =  $http.post('http://localhost:5000/api/customer/create',$scope.customer).
          then(function (response){
-           console.log(response.data);
-           $scope.message = response.data;
-           $scope.customer={};
-           $log.info(response);
- });
+           console.log(response.data);  
+           $location.path('customer');       
+ });   
+     };
+   //
+   
     
      }
 });

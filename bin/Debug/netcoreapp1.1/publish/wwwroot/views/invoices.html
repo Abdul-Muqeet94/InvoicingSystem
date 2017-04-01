@@ -17,28 +17,32 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>EDIT</th>
-                            <th>Invoice Name</th>
+                            <th>ACTIONS</th>
                             <th>Customer</th>
                             <th>Biller</th>
                             <th>Paid</th>
                             <th>Owing</th>
-                            <th>Total</th>
-                          <th>Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                  
+
                     <tbody ng-repeat="inv in invoices">
                         <tr>
                             <td> <span>{{inv.id}}<a href="#" ng-click="deleteInvoice(inv.id)"><img src="../images/delete.png"alt="" style="width:20px; height:auto;" /></a></span></td>
-                            <td> <span><a href="#viewinvoices" ng-click="setRoot(inv.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#editinvoices" ng-click="setRoot(inv.id)"><img src="../images/edit.ico"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(inv.id)"><img src="../images/mail.png"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(inv.id)"><img src="../images/print.ico"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(inv.id)"><img src="../images/pdf.png"alt="" style="width:20px; height:auto;" /></a></span></td>
+                            <td> <span><a href="#viewinvoices" ng-click="setRoot(inv.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#" ng-click="checkedit(inv.id)"><img src="../images/edit.ico"alt="" style="width:20px; height:auto;" /></a><a href="" ng-click="sendEmail(inv.id)"><img src="../images/mail.png"alt="" style="width:20px; height:auto;" /></a></span></td>
                             <td> <span>{{inv.custName}}</span></td>
-                            <td>  <span>{{inv.billerName}}</span></td></td>
-                            <td> <span>{{inv.price}}</span></td>
-                            <td> <span>{{inv.date}}</span></td>
-                            <td> <span>{{inv.owing}}</span></td>
-                            
+                            <td> <span>{{inv.billerName}}</span></td>
+                            </td>
+                            <td> <span>{{inv.price-inv.balance}}</span></td>
+                            <td> <span>{{inv.balance}}</span></td>
+                            <td> <span>{{inv.date | date:'medium' }}</span></td>
+                            <td ng-if="inv.balance==0"><i class="fa fa-check" aria-hidden="false"></i></td>
+                            <td ng-if="inv.balance!=0"><i class="fa fa-cog" aria-hidden="false"></i></td>
                         </tr>
+                        <div ng-show="check" class="alert alert-success">
+                            <strong>Success!</strong> Email Send Successfully
+                        </div>
                     </tbody>
                 </table>
             </div>
@@ -58,7 +62,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
-        $("#menu > li > a").click(function() {
+        $("#menu > li > a").click(function () {
             // $('ul.sub-menu').not($(this).siblings()).slideUp();
             $(this).siblings("ul.sub-menu").slideToggle();
         });

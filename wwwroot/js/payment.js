@@ -1,7 +1,7 @@
 (function () {
   var app = angular.module("paymentModule", ['ngRoute']);
 
-  app.controller("addpayment", function ($scope, $http) {
+  app.controller("addpayment", function ($scope, $http,$location) {
 
     $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', 0).
       then(function (response) {
@@ -14,6 +14,7 @@
           $scope.message = $http.post('http://localhost:5000/api/payment/createpayment', $scope.pay).
             then(function (response) {
               $scope.invoices = response.data[0];
+             $location.path("/invoices");
             });
         };
 

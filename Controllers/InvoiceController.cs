@@ -13,7 +13,8 @@ namespace SimpleInvoices.Controllers
         public BaseResponse createInvoice([FromBody] InvoiceReq invoice)
         {
             return new BLL.Invoice(_db).createInvoice(invoice);
-        } 
+        }
+        
         [Route("api/invoice/getinvoice"),HttpPost]
         public List<InvoiceRes> getInvoice([FromBody] int id){
             return new BLL.Invoice(_db).getAllInvoice(id);
@@ -26,6 +27,17 @@ namespace SimpleInvoices.Controllers
         public List<UserDropdownRes> getDropDown([FromBody] String name)
         {
             return new BLL.Invoice(_db).getDropdownRes(name);
+        } 
+        [Route("api/invoice/editInvoice"),HttpPost]
+        public BaseResponse editInvoice([FromBody] InvoiceRes res)
+        {
+            return new BLL.Invoice(_db).editInvoice(res);
+        }
+        [Route("api/invoice/sendemail"),HttpPost]
+        public BaseResponse sendEmail([FromBody] int id)
+        {
+            //Console.WriteLine(id +"sending email ID ................................");
+            return new BLL.Invoice(_db).sendEmail(id);
         } 
     }
 }

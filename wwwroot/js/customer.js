@@ -1,6 +1,6 @@
 (function(){
     var app = angular.module("customerModule", ['ngRoute','customservice']);
-  app.controller('crudController', function($scope,$log,$rootScope,$http,$location) {
+  app.controller('crudController', function($scope,$log,$rootScope,$location,$http,$location) {
 
  $scope.message =  $http.post('http://localhost:5000/api/customer/getCustomers',$rootScope.customerId).
          then(function (response){        
@@ -27,7 +27,7 @@ console.log($rootScope.customerId);
         };
     });
 
-     app.controller('editCController', function($scope,$rootScope,$http){
+     app.controller('editCController', function($scope,$location,$rootScope,$http){
         
    $scope.message =  $http.post('http://localhost:5000/api/customer/getCustomers',$rootScope.customerId).
          then(function (response){        
@@ -84,7 +84,8 @@ $scope.customer.imagepath= btoa(reader.result);
 console.log($scope.customer.imagepath);
     $scope.message =  $http.post('http://localhost:5000/api/customer/create',$scope.customer).
          then(function (response){
-           console.log(response.data);         
+           console.log(response.data);  
+           $location.path('customer');       
  });   
      };
    //

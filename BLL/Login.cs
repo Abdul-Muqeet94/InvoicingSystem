@@ -16,11 +16,11 @@ namespace SimpleInvoices.BLL
             var biller=db.biller.Where(c=>c.email.Equals(login.email) && c.password.Equals(login.password)).FirstOrDefault();
             if(biller !=null)
             {
-                toReturn.status=1;
+                toReturn.status=biller.Id;
                 toReturn.developerMessage="User Exists";
             }
             else{
-                toReturn.status=0;
+                toReturn.status=-1;
                 toReturn.developerMessage="biller with this name and id does not exists";
             }
             return toReturn;

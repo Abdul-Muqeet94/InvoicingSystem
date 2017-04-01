@@ -1,6 +1,6 @@
 (function(){
     var app = angular.module("billerModule", ['ngRoute']);
-         app.controller("addBiller",function($scope,$http,$log,customfields){
+         app.controller("addBiller",function($scope,$http,$log,customfields,$location){
 $scope.customFields = [];
 var getResult =  customfields.get('"Biller"');
 getResult.then(function(pl) { 
@@ -21,6 +21,7 @@ $scope.biller.customFields=$scope.customFields;
 console.log($scope.biller);
     $scope.message =  $http.post('http://localhost:5000/api/biller/create',$scope.biller).
       then(function (response){
+          $location.url('billers');
         
  });
 }    

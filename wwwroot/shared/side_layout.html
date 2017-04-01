@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Bootstrap Example</title>
+	<title>Simple invoices</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../views/css/bootstrap.min.css">
@@ -12,91 +12,91 @@
 </head>
 
 <body ng-app="sideModule">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<div class="row">
-					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-						<div class="row">
-							<div class="logo"></div>
-							<nav class="main-menu">
-								<ul id="menu">
-									<li class="dropdown">
-										<a href="#"><i class="fa fa-home fa-2x f"></i>Home<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-										<ul class="sub-menu">
-											<li>
-												<a href="#allReports"><i class="fa fa-tachometer "></i>Dash board</a>
-											</li>
-											<li>
-												<a href="#allReports"><i class="fa fa-copy "></i>All Reports</a>
-											</li>
-										</ul>
-									</li>
-									<li class="dropdown">
-										<a href="#"><i class="fa fa-money fa-2x f"></i>Money<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-										<ul class="sub-menu">
-											<li>
-												<a href="#invoices"><i class="fa fa-file "></i>Invoices</a>
-											</li>
-											<li>
-												<a href="#addinvoice"><i class="fa fa-file-text "></i>New Invoices</a>
-											</li>
-											<li>
-												<a href="#tax"><i class="fa fa-file-archive-o "></i>Tax Management</a>
-											</li>
-											<li>
-												<a href="#reccurence"><i class="fa fa-credit-card "></i>Payment</a>
-											</li>
-											<li>
-												<a href="#"><i class="fa fa-clipboard "></i>Sales Reports</a>
-											</li>
-										</ul>
-									</li>
-									<li class="dropdown">
-										<a href="#"><i class="fa fa-user fa-2x f"></i>People<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-										<ul class="sub-menu">
-											<li>
-												<a href="#customer"><i class="fa fa-contao "></i>Customer</a>
-											</li>
-											<li>
-												<a href="#"><i class="fa fa-book "></i> Recive invoice</a>
-											</li>
-											<li>
-												<a href="#Adduser"><i class="fa fa-user "></i>User</a>
-											</li>
-											<li>
-												<a href="#billers"><i class="fa fa-user "></i>Billers</a>
+	<div >
+	</div>
 
-											</li>
-											<li>
-												<a href="#login"><i class="fa fa-user "></i>Login</a>
-
-											</li>
-										</ul>
-									</li>
-									<li class="dropdown">
-										<a href="#"><i class="fa fa-product-hunt fa-2x f"></i>Product<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-										<ul class="sub-menu">
-											<li>
-												<a href="#manageproduct"><i class="fa fa-product-hunt "></i>Manage Product</a>
-											</li>
-											<li>
-												<a href="#addproduct"><i class="fa fa-podcast "></i>All Products</a>
-											</li>
-											<li>
-												<a href="#customs"><i class="fa fa-podcast "></i>Manage Custom Fields</a>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</nav>
-						</div>
+	<div ng-app="loginModule" ng-controller="loginController"  class="container-fluid">
+		<div class="row" >
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+				<div ng-init="getSession()">
 					</div>
-					<!--add work as views in this simultaneous layout-->
-					<div ng-view></div>
+
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-print">
+					<div class="row" >
+						<div class="logo">
+						<div class="brand"><img src="../images/logo.png"/></div> 
+						</div>
+						<nav class="main-menu">
+							<ul id="menu">
+								<li class="dropdown">
+									<a href="#"><i class="fa fa-home fa-2x f"></i>Home<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+									<ul class="sub-menu">
+										<li>
+											<a href="#index2"><i class="fa fa-tachometer "></i>Dashboard</a>
+										</li>
+										<li>
+											<a href="#allReports"><i class="fa fa-copy "></i>All Reports</a>
+										</li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="#"><i class="fa fa-money fa-2x f"></i>Money<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+									<ul class="sub-menu">
+										<li>
+											<a href="#invoices"><i class="fa fa-file "></i>Invoices</a>
+										</li>
+										<li>
+											<a href="#addinvoice"><i class="fa fa-file-text "></i>New Invoices</a>
+										</li>
+										<li>
+											<a href="#tax"><i class="fa fa-file-archive-o "></i>Tax Management</a>
+										</li>
+										<li>
+											<a href="#reccurence"><i class="fa fa-credit-card "></i>Payment</a>
+										</li>
+										<li>
+											<a href="#"><i class="fa fa-clipboard "></i>Sales Reports</a>
+										</li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="#"><i class="fa fa-user fa-2x f"></i>People<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+									<ul class="sub-menu">
+										<li>
+											<a href="#customer"><i class="fa fa-contao "></i>Customer</a>
+										</li>
+										
+									
+										<li>
+											<a href="#billers"><i class="fa fa-user "></i>Billers</a>
+
+										</li>
+										
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="#"><i class="fa fa-product-hunt fa-2x f"></i>Product<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+									<ul class="sub-menu">
+										<li>
+											<a href="#manageproduct"><i class="fa fa-product-hunt "></i>Manage Product</a>
+										</li>
+										<li>
+											<a href="#addproduct"><i class="fa fa-podcast "></i>All Products</a>
+										</li>
+										<li>
+											<a href="#customs"><i class="fa fa-podcast "></i>Manage Custom Fields</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</div>
 				</div>
+				<!--add work as views in this simultaneous layout-->
+				<div ng-view></div>
 			</div>
 		</div>
+	</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.9/angular.js"></script>
 
@@ -115,7 +115,7 @@
 	<script src="../js/payment.js"></script>
 	<script src="../js/login.js"></script>
 	<script src="../js/report.js"></script>
-	
+
 	<script src="../js/side.js"></script>
 
 	<!-- <script   src="../controllers/customer.js"></script> -->
@@ -127,7 +127,6 @@
 			// $('ul.sub-menu').not($(this).siblings()).slideUp();
 			$(this).siblings("ul.sub-menu").slideToggle();
 		});
-
 	</script>
 </body>
 

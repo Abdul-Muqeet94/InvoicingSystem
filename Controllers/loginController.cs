@@ -1,17 +1,43 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using SimpleInvoices.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace SimpleInvoices.Controllers
 {
-    public class loginController:BaseController
+
+
+    public class loginController : BaseController
     {
-        public loginController(InvoiceContext context):base(context){}
+        public const string sessionId="id";
+        public loginController(InvoiceContext context) : base(context) { }
 
         [Route("api/login/biller"), HttpPost]
-        public BaseResponse loginUser ([FromBody] loginReq req){
-            Console.WriteLine(req.email+"    "+ req.password);
+        public BaseResponse loginUser([FromBody] loginReq req)
+        {
             return new BLL.Login(_db).loginUser(req);
         }
+        [Route("api/login/savesession"), HttpPost]
+        public int? StoreSession([FromBody] int id)
+        {
+           // HttpContext
+           // SessionClass _session=new SessionClass();
+        
+            HttpContext.Session.SetInt32(sessionId, id);
+            Console.WriteLine(HttpContext.Session.GetInt32(sessionId));
+            
+            return HttpContext.Session.GetInt32(sessionId);
+        }
+        [Route("api/login/getsession"), HttpPost]
+        public int? getSession()
+        {
+            // Console.WriteLine(req.email + "    " + req.password);
+            int? sesionid = HttpContext.Session.GetInt32(sessionId);
+            Console.WriteLine(sesionid);
+            return sesionid;
+        }
     }
+
+
+
 }

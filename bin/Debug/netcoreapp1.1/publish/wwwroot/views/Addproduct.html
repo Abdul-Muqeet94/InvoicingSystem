@@ -17,23 +17,24 @@
 	 							<fieldset class="form-group">
 	 								<legend>Add Product</legend>
 									 <label for="description">Name</label>
-	 								<input type="text" class="form-control" ng-model="name" id="name" placeholder="Name">
+	 								<input type="text" class="form-control" ng-model="product.name" id="name" placeholder="Name">
 	 								<label for="description">Description</label>
-	 								<input type="text" class="form-control" ng-model="description" id="description" placeholder="Description">
+	 								<input type="text" class="form-control" ng-model="product.description" id="description" placeholder="Description">
 	 								<label for="unitPrice">Unit Price</label>
-	 								<input type="number" class="form-control" ng-model="price" id="unitPrice" placeholder="Unit Price">
+	 								<input type="number" class="form-control" ng-model="product.price" id="unitPrice" placeholder="Unit Price">
 									 <label for="description">Color</label>
-	 								<input type="text" class="form-control" ng-model="color" id="Color" placeholder="Color">
+	 								<input type="text" class="form-control" ng-model="product.color" id="Color" placeholder="Color">
 									<label for="description">Note</label>
-									<input type="text" class="form-control" ng-model="note" id="note" placeholder="Note">	 	
+									<input type="text" class="form-control" ng-model="product.note" id="note" placeholder="Note">	 	
 	 								
-	 								<!--<input class="btn btn-primary" type="button" value="save">
-	 								<input class="btn btn-danger" type="button" value="Cancel">-->
+	 					<div ng-repeat="input in customFields">
+ <label for="phone">{{input.fieldName}}</label>
+  <input type="text" class="form-control" ng-model="input.fieldValue"> 
+</div>
 	 							</fieldset>
 					 
-						<button type="submit" class="btn btn-primary"><span> Save Product</span></button>
-						 <!--<input class="btn btn-primary" type="button" value="save">-->
-	 	<button type="submit" class="btn btn-danger"><span> Cancel</span></button>
+						<button type="submit" class="btn btn-success"><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Save Product</span></button>
+						
 							 </form>
 
 	 					</div>

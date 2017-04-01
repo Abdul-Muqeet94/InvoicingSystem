@@ -12,6 +12,7 @@ using Swashbuckle.Swagger.Model;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace invoicingSystem
 {
@@ -25,8 +26,8 @@ namespace invoicingSystem
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-            
-            
+
+
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -40,19 +41,34 @@ namespace invoicingSystem
             services.AddScoped<SimpleInvoices.Controllers.ValuesController>();
             services.AddScoped<SimpleInvoices.Controllers.UserController>();
             services.AddDirectoryBrowser();
-            
-           // services.AddScoped<SimpleInvoices.Controllers.AuditFormsController>();
+            services.AddMvc();
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
+            // services.AddScoped<SimpleInvoices.Controllers.AuditFormsController>();
             // Add framework services.
+            services.AddSession(options =>
+        {
+            // Set a short timeout for easy testing.
+            options.IdleTimeout = TimeSpan.FromSeconds(120);
+            options.CookieHttpOnly = true;
+        });
             services.AddMvc();
             /*Adding swagger generation with default settings*/
-    services.AddSwaggerGen(options => {
-        options.SingleApiVersion(new Info{
-            Version="v1",
-            Title="Auth0 Swagger Sample API",
-            Description="API Sample made for Auth0",
-            TermsOfService = "None"
-        });
-    });
+            services.AddSwaggerGen(options =>
+            {
+                options.SingleApiVersion(new Info
+                {
+                    Version = "v1",
+                    Title = "Auth0 Swagger Sample API",
+                    Description = "API Sample made for Auth0",
+                    TermsOfService = "None"
+                });
+            });
+
+             services.Configure<IISOptions>(options => {
+
+              options.ForwardWindowsAuthentication = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,25 +76,25 @@ namespace invoicingSystem
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseSession();
 
-            
             /*Enabling swagger file*/
-             app.UseSwagger();
-             /*Enabling Swagger ui, consider doing it on Development env only*/
+            app.UseSwagger();
+            /*Enabling Swagger ui, consider doing it on Development env only*/
             app.UseSwaggerUi();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-           
-       /*     app.UseMvc(routes =>
-   {
-       routes.MapRoute(
-           name: "default",
-           template: "{controller=Home}/{action=Index}");
-   });*/
+
+            /*     app.UseMvc(routes =>
+        {
+            routes.MapRoute(
+                name: "default",
+                template: "{controller=Home}/{action=Index}");
+        });*/
             app.UseMvc();
 
-       
-            
+
+
         }
     }
 }

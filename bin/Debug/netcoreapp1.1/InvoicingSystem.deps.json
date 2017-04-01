@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "835772586c43b80965caa623dbf68246f50b1c4e"
+    "signature": "5add50cde273d154ad544e1c0eaf6bb65815a472"
   },
   "compilationOptions": {
     "defines": [
@@ -47,7 +47,8 @@
           "SshNet.Security.Cryptography": "1.1.0",
           "System.Net.Http": "4.3.1",
           "System.Net.Mail": "1.0.0-rtm-00002",
-          "NETCore.MailKit": "1.0.1"
+          "NETCore.MailKit": "1.0.1",
+          "Microsoft.AspNetCore.Session": "1.1.0"
         },
         "runtime": {
           "InvoicingSystem.dll": {}
@@ -803,6 +804,22 @@
         },
         "compile": {
           "lib/netstandard1.3/Microsoft.AspNetCore.Server.Kestrel.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Session/1.1.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.DataProtection": "1.1.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "1.1.0",
+          "Microsoft.Extensions.Caching.Abstractions": "1.1.0",
+          "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
+          "Microsoft.Extensions.Options": "1.1.0",
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.AspNetCore.Session.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.AspNetCore.Session.dll": {}
         }
       },
       "Microsoft.AspNetCore.StaticFiles/1.0.0": {
@@ -4053,6 +4070,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-PbVYQUVxOwtrl9YCnw8ykXSufELVeEuASYahVh1F7B4LYVtcqwyV5+FhXlJkboGM4ozKMrdhB5w/tlLLcmHxNA=="
+    },
+    "Microsoft.AspNetCore.Session/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-69jU5B/xMqHqSN5e/57hGB2NdFMlYp6ATrXJGeAkWqcrRBuMuD4z/Sc22iq4qeI13kdcJ+bIDYNmK5gPNik2xQ=="
     },
     "Microsoft.AspNetCore.StaticFiles/1.0.0": {
       "type": "package",

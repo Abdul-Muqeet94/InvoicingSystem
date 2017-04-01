@@ -10,7 +10,6 @@
 
 	</head>
 	<body>
-
 	 				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 	 					<div class="" ng-controller="addcustom" >
 	 						<form ng-submit="save()">
@@ -19,12 +18,12 @@
 									 <label for="description">Field Name</label>
 	 								<input type="text" class="form-control" ng-model="custom.fieldName" id="name" placeholder="Field Name">
 	 								<label for="description">Table Name</label>
-	 								<input type="text" class="form-control" ng-model="custom.tableName" eid="description" placeholder="Table Name">
+	 								<select ng-model="custom.tableName" ng-options="x for x in names">
+</select>
 	 							</fieldset>
 					 
-						<button type="submit" class="btn btn-primary"><span> Save Cusutom Field</span></button>
-						 <!--<input class="btn btn-primary" type="button" value="save">-->
-	 	<button type="submit" class="btn btn-danger"><span> Cancel</span></button>
+						<button type="submit" class="btn btn-success"><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Save Cusutom Field</span></button>
+						 
 							 </form>
 
 	 					</div>

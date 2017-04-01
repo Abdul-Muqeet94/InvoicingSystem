@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
 <body ng-app="customModule">
     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
        <h3>Edit Custom Field</h3>
@@ -13,7 +6,7 @@
 <div>
                 <form name="as" ng-submit="edit()">
   <ul>
-  <li  ng-repeat="(key, val) in Customs" ng-hide="(key=='enable' )" >
+  <li  ng-repeat="(key, val) in customs" >
    <label class="label">{{key}}</label> <input type="text" ng-model="customs[key]"/> 
   </li>
   <button type="submit" ><i class="fa fa-plus-circle" aria-hidden="true"></i><span> Edit Custom Field</span></button>
@@ -40,5 +33,3 @@
         });
     </script>
 </body>
-
-</html>

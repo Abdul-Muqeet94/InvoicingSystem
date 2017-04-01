@@ -9,14 +9,14 @@
 											<th>Name</th>
 							        <th>Email</th>
 							        <th>Address</th>
-											<th>Contact</th>
+											<th>Password</th>
 											<th>Enable</th>
 							      </tr>
 							    </thead>
 							   <tbody ng-repeat="bill in billers">
                         <tr>
                             <td> <span>{{bill.id}}<a href="#" ng-click="deleteBiller(bill.id)"><img src="../images/delete.png"alt="" style="width:20px; height:auto;" /></a></span></td>
-                            <td> <span><a href="#viewBiller" ng-click="setRoot(bill.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#editBiller" ng-click="setRoot(bill.id)"><img src="../images/edit.ico"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(bill.id)"><img src="../images/mail.png"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(bill.id)"><img src="../images/print.ico"alt="" style="width:20px; height:auto;" /></a><a href="#view" ng-click="setRoot(bill.id)"><img src="../images/pdf.png"alt="" style="width:20px; height:auto;" /></a></span></td>
+                            <td> <span><a href="#viewBiller" ng-click="setRoot(bill.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#editBiller" ng-click="setRoot(bill.id)"><img src="../images/edit.ico"alt="" style="width:20px; height:auto;" /></a></span></td>
                             <td> <span>{{bill.name}}</span></td>
                             <td> <span>{{bill.email}}</span></td>
 														<td>  <span>{{bill.address}}</span></td></td>
