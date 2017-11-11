@@ -24,7 +24,6 @@ namespace SimpleInvoices.Controllers
            // SessionClass _session=new SessionClass();
         
             HttpContext.Session.SetInt32(sessionId, id);
-            Console.WriteLine(HttpContext.Session.GetInt32(sessionId));
             
             return HttpContext.Session.GetInt32(sessionId);
         }
@@ -33,7 +32,6 @@ namespace SimpleInvoices.Controllers
         {
             // Console.WriteLine(req.email + "    " + req.password);
             int? sesionid = HttpContext.Session.GetInt32(sessionId);
-            Console.WriteLine(sesionid);
             return sesionid;
         }
     }

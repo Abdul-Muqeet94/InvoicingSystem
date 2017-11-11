@@ -13,8 +13,8 @@
 <div>
                 
   <ul>
-  <li  ng-repeat="(key, val) in products  " ng-hide="(key=='customField' || key=='designs' || key=='enable' )" >
-   <label class="label"> {{key}}</label> <input type="text" ng-model="products[key]"/> 
+  <li  ng-repeat="(key, val) in products  " ng-hide="(key=='customField' || key=='designs' || key=='enable' || key=='quantity' || key=='taxId' || key=='taxPercent' )" >
+   <label class="label"> {{key}}</label> <input type="text" ng-model="products[key] "/> 
   </li>
 <li  ng-repeat="input in products.customField">
  

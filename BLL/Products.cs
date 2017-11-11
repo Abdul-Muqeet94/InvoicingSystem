@@ -58,7 +58,7 @@ namespace SimpleInvoices.BLL{
                          note=entity.note,
                          description=entity.description,
                          price=entity.price,
-                         createdOn=entity.createdOn,
+                         createdOn=entity.createdOn.Date.ToString(),
                          customField=(fields!=null)?bll_getcustomFields(fields,entity):new List<CustomFieldRes>()
                      });
                  }
@@ -118,7 +118,7 @@ public List<ProductViewRes> getProductsWithDesigns(int id,double quantity,Simple
                          designs=design,
                          quantity=quantity,
                          taxPercent=tax.percent,
-                         createdOn=entity.createdOn
+                         createdOn=entity.createdOn.ToString()
                      });
                  }
             }

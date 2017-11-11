@@ -34,6 +34,8 @@ namespace InvoicingSystem.Migrations
 
                     b.Property<string>("password");
 
+                    b.Property<string>("salt");
+
                     b.HasKey("Id");
 
                     b.ToTable("biller");
@@ -43,6 +45,8 @@ namespace InvoicingSystem.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("additionalNotes");
 
                     b.Property<string>("address");
 

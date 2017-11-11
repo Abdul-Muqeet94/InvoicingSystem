@@ -9,7 +9,7 @@ namespace SimpleInvoices.Controllers
       
         public BaseController (InvoiceContext context){
  
-            _db=context;
+        _db=context;
         }
 
     }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SimpleInvoices.ViewModels;
-
+using MySql.Data.MySqlClient;
 namespace SimpleInvoices.BLL
 {
     public class Reports
@@ -12,14 +12,48 @@ namespace SimpleInvoices.BLL
         {
             _db = context;
         }
+        public string dbBackUp()
+        {
+            return "";
+            //  var db=_db;
+            // db.Database.
+            //   try{
+            //         var db = _db;
+            //         string query = "mysqldump -u 'root' -p '' 'simpleinvoices' > 'dbBackup'";
+            //         db.Database.ExecuteSqlCommand(query);
+            //     }
+            //     catch(Exceptions.InvalidApiRequestException ex)
+            //     {
+            //         return "";
+            //     }
+            //     return "db backup Successfull";
+            // string constring = "server=localhost;user=root;pwd=qwerty;database=test;";
 
+            // // Important Additional Connection Options
+            // constring += "charset=utf8;convertzerodatetime=true;";
+
+            // string file = "C:\\backup.sql";
+            // using ( MySqlConnection conn = new MySqlConnection(constring))
+            // {
+            //     using (MySqlCommand cmd = new MySqlCommand())
+            //     {
+            //         using (MySqlBackup mb = new MySqlBackup(cmd))
+            //         {
+            //             cmd.Connection = conn;
+            //             conn.Open();
+            //             mb.ExportToFile(file);
+            //             conn.Close();
+            //         }
+            //     }
+            // }
+        }
         public ToSalesRes totalSales()
         {
             int quantity = 0;
             double total = 0;
             ToSalesRes toReturn = new ToSalesRes();
             var db = _db;
-            var invoice = db.ledgers.ToList();
+            var invoice = db.ledgers.Where(c => c.enable == true).ToList();
             quantity = invoice.Count;
             foreach (var item in invoice)
             {
@@ -37,7 +71,7 @@ namespace SimpleInvoices.BLL
             TotalSalesCustomerRes toReturn = new TotalSalesCustomerRes();
 
             var db = _db;
-            var invoices = db.ledgers.Include(c => c.customer).GroupBy(c => c.customer).ToList();
+            var invoices = db.ledgers.Where(c => c.enable == true).Include(c => c.customer).GroupBy(c => c.customer).ToList();
             foreach (var item in invoices)
             {
                 CustomerAmount customers = new CustomerAmount();
@@ -75,7 +109,7 @@ namespace SimpleInvoices.BLL
             List<productCustomerRes> toReturn = new List<productCustomerRes>();
             var db = _db;
 
-            var ledger = db.ledgers.Include(c => c.customer).Include(c => c.ledgerDetails).ThenInclude(c => c.product).GroupBy(c => c.customer);
+            var ledger = db.ledgers.Where(c => c.enable == true).Include(c => c.customer).Include(c => c.ledgerDetails).ThenInclude(c => c.product).GroupBy(c => c.customer);
 
             foreach (var items in ledger)
             {
@@ -121,7 +155,7 @@ namespace SimpleInvoices.BLL
         {
             BillerSalesRes toReturn = new BillerSalesRes();
             var db = _db;
-            var invoices = db.ledgers.Include(c => c.biller).GroupBy(c => c.biller);
+            var invoices = db.ledgers.Where(c => c.enable == true).Include(c => c.biller).GroupBy(c => c.biller);
             foreach (var item in invoices)
             {
                 BillerNameAmount biller = new BillerNameAmount();
@@ -171,7 +205,7 @@ namespace SimpleInvoices.BLL
         {
             List<InvoiceRes> toReturn = new List<InvoiceRes>();
             var db = _db;
-            var invoices = db.ledgers.Where(c => c.balance > 0).Include(c => c.customer).Include(c => c.biller);
+            var invoices = db.ledgers.Where(c => c.balance > 0 && c.enable == true).Include(c => c.customer).Include(c => c.biller);
             foreach (var entity in invoices)
             {
                 toReturn.Add(new InvoiceRes
@@ -189,7 +223,8 @@ namespace SimpleInvoices.BLL
         {
             List<InvoiceRes> toReturn = new List<InvoiceRes>();
             var db = _db;
-            var invoices = db.ledgers.Where(c => c.balance > 0).Include(c => c.customer).GroupBy(c => c.customer);
+            var invoices = db.ledgers.Where(c => c.balance > 0 && c.enable == true
+            ).Include(c => c.customer).GroupBy(c => c.customer);
             foreach (var entity in invoices)
             {
 
@@ -201,29 +236,32 @@ namespace SimpleInvoices.BLL
                     price = entity.Sum(c => c.amount),
                     balance = entity.Sum(c => c.balance)
                 });
-                
+
             }
             return toReturn;
         }
 
-        public List<InvoiceRes> getInvoicebyFilter(invoiceFilter filter){
-            List<InvoiceRes> toReturn=new List<InvoiceRes>();
-            var db=_db;
-            var invoices=db.ledgers.Include(c=>c.customer).Include(c=>c.biller).Where(c=>c.createdDate>= filter.fromDate && c.createdDate<=filter.toDate || c.deliveryDate>=filter.fromDate && c.deliveryDate<=filter.toDate);
-            foreach(var entity in invoices){
-                toReturn.Add(new InvoiceRes{
-                    id=entity.Id,
-                    billerName=entity.biller.name,
-                    custName=entity.customer.name,
-                    balance=entity.balance,
-                    price=entity.amount,
-                    delivery=entity.deliveryDate,
-                    date=entity.createdDate
+        public List<InvoiceRes> getInvoicebyFilter(invoiceFilter filter)
+        {
+            List<InvoiceRes> toReturn = new List<InvoiceRes>();
+            var db = _db;
+            var invoices = db.ledgers.Where(c => c.enable == true).Include(c => c.customer).Include(c => c.biller).Where(c => c.createdDate >= filter.fromDate && c.createdDate <= filter.toDate || c.deliveryDate >= filter.fromDate && c.deliveryDate <= filter.toDate);
+            foreach (var entity in invoices)
+            {
+                toReturn.Add(new InvoiceRes
+                {
+                    id = entity.Id,
+                    billerName = entity.biller.name,
+                    custName = entity.customer.name,
+                    balance = entity.balance,
+                    price = entity.amount,
+                    delivery = entity.deliveryDate,
+                    date = entity.createdDate
                 });
 
             }
             return toReturn;
 
-        } 
+        }
     }
 }

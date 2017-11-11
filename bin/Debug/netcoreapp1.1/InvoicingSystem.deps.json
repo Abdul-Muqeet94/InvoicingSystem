@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "5add50cde273d154ad544e1c0eaf6bb65815a472"
+    "signature": "5479fe320d8458b17c4a95b7122805cfb1a55af4"
   },
   "compilationOptions": {
     "defines": [
@@ -48,7 +48,9 @@
           "System.Net.Http": "4.3.1",
           "System.Net.Mail": "1.0.0-rtm-00002",
           "NETCore.MailKit": "1.0.1",
-          "Microsoft.AspNetCore.Session": "1.1.0"
+          "Microsoft.AspNetCore.Session": "1.1.0",
+          "pdfmake": "0.1.18",
+          "SweetAlert": "1.0.0"
         },
         "runtime": {
           "InvoicingSystem.dll": {}
@@ -1511,6 +1513,7 @@
           "lib/netstandard1.0/Newtonsoft.Json.dll": {}
         }
       },
+      "pdfmake/0.1.18": {},
       "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
@@ -1698,6 +1701,7 @@
           "lib/netstandard1.6/Swashbuckle.SwaggerUi.dll": {}
         }
       },
+      "SweetAlert/1.0.0": {},
       "System.Collections.NonGeneric/4.3.0": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.3.0",
@@ -4326,6 +4330,11 @@
       "serviceable": true,
       "sha512": "sha512-U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw=="
     },
+    "pdfmake/0.1.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Oewm9jZIHLJj8DaISRCDInkOsT2orzoF+AGc+0RoMWzNssSsgMogc2bBXu63BNJMHs3Ch7jiJSLDkw6igJ87tw=="
+    },
     "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
       "type": "package",
       "serviceable": true,
@@ -4395,6 +4404,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-qqYh14nwLQI4NCTYQXjtoXoAjv1Fonio5LFRLlbQ8vfDUMOjEzBw94oLUF7uRBivrY6NEEqTmBasSdujveCCeA=="
+    },
+    "SweetAlert/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eaHJph59CQhNUf5h6k02LaWM31az2t8JBHcJuVXW2dZ+QU2TDkHCxOUSNdAVIgfj+ivQsBTp6laWt8H0nKAydQ=="
     },
     "System.Collections.NonGeneric/4.3.0": {
       "type": "package",

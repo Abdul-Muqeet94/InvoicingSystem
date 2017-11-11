@@ -13,6 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using SimpleInvoices;
 
 namespace invoicingSystem
 {
@@ -27,7 +28,6 @@ namespace invoicingSystem
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
 
-
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -41,18 +41,24 @@ namespace invoicingSystem
             services.AddScoped<SimpleInvoices.Controllers.ValuesController>();
             services.AddScoped<SimpleInvoices.Controllers.UserController>();
             services.AddDirectoryBrowser();
-            services.AddMvc();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, Microsoft.AspNetCore.Http.HttpContextAccessor>();
             // services.AddScoped<SimpleInvoices.Controllers.AuditFormsController>();
             // Add framework services.
-            services.AddSession(options =>
-        {
-            // Set a short timeout for easy testing.
-            options.IdleTimeout = TimeSpan.FromSeconds(120);
-            options.CookieHttpOnly = true;
-        });
+            //   services.AddDbContext<SimpleInvoices.InvoiceContext>(ServiceLifetime.Scoped);
+            //     services.AddSession(options =>
+            // {
+            //     // Set a short timeout for easy testing.
+            //     options.IdleTimeout = TimeSpan.FromSeconds(120);
+            //     options.CookieHttpOnly = true;
+            // });
+            // services.AddCaching();
+
+
+
             services.AddMvc();
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
             /*Adding swagger generation with default settings*/
             services.AddSwaggerGen(options =>
             {
@@ -65,9 +71,10 @@ namespace invoicingSystem
                 });
             });
 
-             services.Configure<IISOptions>(options => {
+            services.Configure<IISOptions>(options =>
+            {
 
-              options.ForwardWindowsAuthentication = true;
+                options.ForwardWindowsAuthentication = true;
             });
         }
 
@@ -76,8 +83,9 @@ namespace invoicingSystem
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseSession();
 
+            // this.Seed();
+             app.UseSession();
             /*Enabling swagger file*/
             app.UseSwagger();
             /*Enabling Swagger ui, consider doing it on Development env only*/
@@ -91,10 +99,12 @@ namespace invoicingSystem
                 name: "default",
                 template: "{controller=Home}/{action=Index}");
         });*/
+           
             app.UseMvc();
 
 
 
         }
+
     }
 }

@@ -88,7 +88,7 @@ namespace SimpleInvoices.BLL
                 cust.contact = customer.contact;
                 cust.email = customer.email;
                 cust.enable = Constant.USER_ACTIVE;
-                cust.password=customer.password;
+                Passwords.setPassword(cust,customer.password);
                 if (customer.customFields.Count > 0)
                 {
                     foreach (var entity in customer.customFields)
@@ -141,7 +141,7 @@ namespace SimpleInvoices.BLL
                 entity.city = customer.city;
                 entity.email = customer.email;
                 entity.name = customer.name;
-                entity.password=customer.password;
+                Passwords.setPassword(entity,customer.password);
 
                 foreach (var item in customer.customFields)
                 {

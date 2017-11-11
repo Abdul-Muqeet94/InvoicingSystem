@@ -17,7 +17,7 @@ namespace SimpleInvoices.ViewModels{
         public double taxPercent{get;set;}
         public int taxId{get;set;}
         public string enable {get;set;}
-        public DateTime createdOn {get;set;}
+        public string createdOn {get;set;}
         public List<CustomFieldRes> customField {get;set;}
         public List<DesignViewReq> designs{get;set;}
     }

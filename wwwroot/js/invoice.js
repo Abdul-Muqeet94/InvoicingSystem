@@ -1,6 +1,6 @@
 (function () {
     var app = angular.module("invoiceModule", ['ngRoute']);
-    app.controller('createInvoiceController', function ($scope,$location, getBillerService, getTaxService, $rootScope, $log, createInvoice, getProductId) {
+    app.controller('createInvoiceController', function ($scope, $location, getBillerService, getTaxService, $rootScope, $log, createInvoice, getProductId) {
         $scope.invoices = [];
         $scope.invoice = [];
 
@@ -102,7 +102,20 @@
             var promiseGet = createInvoice.addInvoices(addInvoice);
             promiseGet.then(function (pl) {
                 $scope.result = pl.data
-                $location.path('invoices');
+                swal({
+                    title: 'Saved',
+                    text: 'Invoice added Successfully',
+                    timer: 2000
+                }).then(
+                    function () { },
+                    // handling the promise rejection
+                    function (dismiss) {
+                        if (dismiss === 'timer') {
+                            console.log('.............')
+                        }
+                    }
+                    )
+                $location.path("/invoices");
             },
                 function (errorpl) {
                     $log.error('Failure loading Tax', errorpl);
@@ -115,6 +128,44 @@
 
         $scope.cancel = function () {
             $scope.invoices = [];
+            $scope.invoice = [];
+
+            var d1 = {
+                color: '',
+                cut: '',
+                fabric: '',
+                note: '',
+                name: 'dupatta'
+            };
+            var d2 = {
+                color: '',
+                cut: '',
+                fabric: '',
+                note: '',
+                name: 'pant'
+            };
+            var d3 = {
+                color: '',
+                cut: '',
+                fabric: '',
+                note: '',
+                name: 'kurta'
+            };
+            var product = {
+                id: 0,
+                name: '',
+                price: '',
+                quantity: '',
+                taxId: '',
+                designs: [],
+                color: '',
+                note: '',
+                description: ''
+            };
+            product.designs.push(d1);
+            product.designs.push(d2);
+            product.designs.push(d3);
+            $scope.invoices.push(product);
         };
         var product = "Product";
         var promiseGet = createInvoice.fillscope(0); //The MEthod Call from service
@@ -154,45 +205,168 @@
     });
 
 
-    app.controller('viewinvoices', function ($scope, $rootScope, $http, $location) {
-
-        $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', $rootScope.invoiceId).
+    app.controller('viewinvoices', function ($scope, $rootScope, $http, $location, $timeout) {
+        var filter_model = { id: 0, type: "all" };
+        $scope.invoices = [];
+        $scope.selecteditem = 1;
+        $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
             then(function (response) {
-                $scope.invoices = response.data;
+
+                $scope.invoicess = response.data;
+
+                //Pagination
+                $scope.totalItems = $scope.invoicess.length;
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = 15;
+
+                $scope.$watch("currentPage", function () {
+                    setPagingData($scope.currentPage);
+                });
+
+                function setPagingData(page) {
+                    var pagedData = $scope.invoicess.slice(
+                        (page - 1) * $scope.itemsPerPage,
+                        page * $scope.itemsPerPage
+                    );
+                    $scope.invoices = pagedData;
+                }
+                //Invoice DropDown
+                console.log($scope.invoicess);
+                $scope.updateInvoice = function (index) {
+
+                    // for (var i = 0; i < $scope.invoicess.length; i++) {
+                    //     if ($scope.invoicess[i].name == $scope.invoicess[index].name) {
+                    //         $scope.invoicess[index].id = $scope.invoicess[i].id;
+                    //         return;
+                    //     }
+                    // }
+                }
+                $scope.nameFilter=function(){
+                    var filter_model = { id: $scope.inId, type: "all" };
+                    
+                    $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
+            then(function (response) {
+                  $scope.invoices = response.data;
+                  console.log("Invoice created for "+$scope.invoices);
+            
+            });
+                };
+
+                //end here invoice DropDown
+                //Pagination
                 //$scope.customs = $scope.Customers[0].customfields;
-                console.log(response.data);
+                console.log($scope.invoices);
                 $rootScope.invoiceId = 0;
             });
 
+        //pagination 
+
+        // $scope.totalItems = $scope.invoices.length;
+        // $scope.currentPage = 1;
+        // $scope.numPerPage = 5;
+
+        // $scope.paginate = function (value) {
+        //     var begin, end, index;
+        //     begin = ($scope.currentPage - 1) * $scope.numPerPage;
+        //     end = begin + $scope.numPerPage;
+        //     index = $scope.invoices.indexOf(value);
+        //     return (begin <= index && index < end);
+        // };
+        // Pagination End Here
+        //print here
+
+        $scope.print = function () {
+            $rootScope.printPdfCheck = true;
+            var printContents = document.getElementById(viewInvoices).innerHTML;
+            var popupWin = window.open('', '_blank', 'width=150,height=150');
+            popupWin.document.open();
+            popupWin.document.write('<html><head>  <link rel="stylesheet" href="css/bootstrap.min.css"><link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"><link rel="stylesheet" href="views/css/stylesheet.css"></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.close();
+        };
+
+
+
+
+        //end here print
+        $scope.dueDate = function () {
+
+            $scope.selecteditem = 2;
+            filter_model = { id: 0, type: "due" };
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
+                then(function (response) {
+                    $scope.invoices = response.data;
+                    //$scope.customs = $scope.Customers[0].customfields;
+                    console.log(response.data);
+                    $rootScope.invoiceId = 0;
+                });
+        };
+        $scope.paid = function () {
+            $scope.selecteditem = 3;
+            filter_model = { id: 0, type: "paid" };
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
+                then(function (response) {
+                    $scope.invoices = response.data;
+                    //$scope.customs = $scope.Customers[0].customfields;
+                    console.log(response.data);
+                    $rootScope.invoiceId = 0;
+                });
+        };
+        $scope.delivery = function () {
+            $scope.selecteditem = 4;
+            filter_model = { id: 0, type: "delivery" };
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
+                then(function (response) {
+                    $scope.invoices = response.data;
+                    //$scope.customs = $scope.Customers[0].customfields;
+                    console.log(response.data);
+                    $rootScope.invoiceId = 0;
+                });
+        };
+        $scope.created = function () {
+            $scope.selecteditem = 5;
+            filter_model = { id: 0, type: "date" };
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
+                then(function (response) {
+                    $scope.invoices = response.data;
+                    //$scope.customs = $scope.Customers[0].customfields;
+                    console.log(response.data);
+                    $rootScope.invoiceId = 0;
+                });
+        };
         $scope.setRoot = function (x) {
             $rootScope.invoiceId = x;
             console.log($rootScope.invoiceId);
         };
+
+
         $scope.sendEmail = function (x) {
-            $rootScope.invoiceId=x;
+
+            $rootScope.invoiceId = x;
             console.log("sending Email");
-            $scope.message = $http.post('http://localhost:5000/api/invoice/sendemail', $rootScope.invoiceId).
-            then(function (response) {
-                $scope.res = response.data;
-                //$scope.customs = $scope.Customers[0].customfields;
-                console.log(response.res);
-                if(response.res.status>0){
-                    $rootScope.check=true;
-                }
-                $rootScope.invoiceId = 0;
-            });
-            
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/sendemail', $rootScope.invoiceId).
+                then(function (response) {
+                    $scope.res = response.data;
+                    //$scope.customs = $scope.Customers[0].customfields;
+                    console.log(response.res);
+                    $timeout(function () { $rootScope.emailCheck = true; }, 1000);
+                    $rootScope.emailCheck = false;
+
+                    $rootScope.invoiceId = 0;
+                });
+
         };
 
 
         $scope.checkedit = function (x) {
-            $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', x).
+            filter_model = { id: x, type: "null" };
+            console.log(filter_model);
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
                 then(function (response) {
 
                     $scope.customers = response.data[0];
                     console.log(response.data[0]);
 
-                    if ($scope.customers.balance == 0) {
+                    if ($scope.customers.balance <= 0) {
                         $location.path("/invoices");
                     }
                     else {
@@ -203,7 +377,7 @@
 
         }
         $scope.deleteInvoice = function (x) {
-            $scope.message = $http.post('http://localhost:5000/api/invoice/deleteinvoice', x).
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/deleteinvoice', x).
                 then(function (response) {
                     $scope.response = response.data;
                     console.log(response.data);
@@ -214,33 +388,44 @@
 
 
     });
-    //
-    app.controller('editIController', function ($scope, $rootScope, $http,$location) {
 
-        $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', $rootScope.invoiceId).
+    //Print controller here 
+
+
+    app.controller('pdfController', function ($scope, $rootScope, $http, $location, $timeout) {
+        var filter_model = { id: $rootScope.invoiceId, type: "null" };
+        $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
             then(function (response) {
 
                 $scope.customers = response.data[0];
                 $scope.customers.date = $scope.customers.date.substring(0, 10);
                 $scope.customers.delivery = $scope.customers.delivery.substring(0, 10);
                 console.log(response.data[0]);
+                if (response.data.length > 0) {
+                    $scope.exports();
+                    if ($rootScope.pdfcheck) {
+                        $timeout(function () { $location.path('/invoiceReport'); }, 500);
+
+                    }
+                    else {
+                        $timeout(function () { $location.path('/invoices'); }, 500);
+                    }
+                }
+
                 $rootScope.invoiceId = 0;
-
-
-
             });
 
         //print function here
         $scope.print = function () {
-            var printContents = document.getElementById(viewInvoices).innerHTML;
+            var printContents = document.getElementById('exportThis').innerHTML;
             var popupWin = window.open('', '_blank', 'width=150,height=150');
             popupWin.document.open();
             popupWin.document.write('<html><head>  <link rel="stylesheet" href="css/bootstrap.min.css"><link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"><link rel="stylesheet" href="views/css/stylesheet.css"></head><body onload="window.print()">' + printContents + '</body></html>');
             popupWin.document.close();
-        }
+        };
         $scope.exports = function () {
-            console.log("sdsd");
-            html2canvas(document.getElementById('exportthis'), {
+            $rootScope.printPdfCheck = true;
+            html2canvas(document.getElementById('exportThis'), {
                 onrendered: function (canvas) {
                     var data = canvas.toDataURL();
                     var docDefinition = {
@@ -249,10 +434,54 @@
                             width: 500,
                         }]
                     };
-                    pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+                    pdfMake.createPdf(docDefinition).download("Invoice.pdf");
                 }
             });
-        }
+            $rootScope.printPdfCheck = false;
+        };
+
+
+    });
+
+    // print controller end here
+    app.controller('editIController', function ($scope, $rootScope, $http, $location) {
+        var filter_model = { id: $rootScope.invoiceId, type: "null" };
+        $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
+            then(function (response) {
+
+                $scope.customers = response.data[0];
+                $scope.customers.date = $scope.customers.date.substring(0, 10);
+                $scope.customers.delivery = $scope.customers.delivery.substring(0, 10);
+                console.log(response.data[0]);
+                $rootScope.invoiceId = 0;
+            });
+
+        //print function here
+        $scope.print = function () {
+            $rootScope.printPdfCheck = true;
+            var printContents = document.getElementById('exportThis').innerHTML;
+            var popupWin = window.open('', '_blank', 'width=150,height=150');
+            popupWin.document.open();
+            popupWin.document.write('<html><head>  <link rel="stylesheet" href="css/bootstrap.min.css"><link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"><link rel="stylesheet" href="views/css/stylesheet.css"></head><body onload="window.print()">' + printContents + '</body></html>');
+            popupWin.document.close();
+            $rootScope.printPdfCheck = false;
+        };
+        $scope.exports = function () {
+            $rootScope.printPdfCheck = true;
+            html2canvas(document.getElementById('exportThis'), {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500,
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Invoice.pdf");
+                }
+            });
+            $rootScope.printPdfCheck = false;
+        };
 
         $scope.edit = function () {
             var file = document.getElementById('myfile').files[0];
@@ -262,23 +491,21 @@
                 reader.onload = function (e) {
                     $scope.Customers.imagepath = btoa(reader.result);
                     console.log($scope.Customers);
-                    $scope.message = $http.post('http://localhost:5000/api/customer/edit', $scope.Customers).
+                    $scope.message = $http.post('http://danishtest.ml/api/customer/edit', $scope.Customers).
                         then(function (response) {
                             console.log(response.data);
+
                         });
                 }
             }
-
-
-
 
         }
 
     });
     //  edit invoice page directions are set here
     app.controller('editInvoice', function ($scope, $rootScope, $http, $location, getBillerService, getTaxService, createInvoice, getProductId) {
-
-        $scope.message = $http.post('http://localhost:5000/api/invoice/getinvoice', $rootScope.invoiceId).
+        var filter_model = { id: $rootScope.invoiceId, type: "null" };
+        $scope.message = $http.post('http://danishtest.ml/api/invoice/getinvoice', filter_model).
             then(function (response) {
 
                 $scope.customers = response.data[0];
@@ -328,7 +555,7 @@
 
             //here take your $scope.customers invoice  variable :) have fun
 
-            $scope.message = $http.post('http://localhost:5000/api/invoice/editInvoice', $scope.customers).
+            $scope.message = $http.post('http://danishtest.ml/api/invoice/editInvoice', $scope.customers).
                 then(function (response) {
                     $scope.sales = response.data;
                     console.log($scope.sales);
@@ -423,9 +650,6 @@
             }
 
         }
-
-
-
     });
     //
 })

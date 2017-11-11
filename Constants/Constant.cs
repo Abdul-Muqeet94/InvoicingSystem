@@ -1,4 +1,8 @@
-﻿namespace SimpleInvoices
+﻿using System;
+using System.Security.Cryptography;
+using System.Security.Cryptography;
+
+namespace SimpleInvoices
 {
     public static class Constant
     {
@@ -37,4 +41,71 @@
 
 
     }
+
+
+     public class Passwords
+        {
+            public static string[] generatePasswordAndSalt(string value)
+            {
+                // generate a 128-bit salt using a secure PRNG
+                byte[] salt = new byte[128 / 8];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(salt);
+                }
+
+                string sal = Convert.ToBase64String(salt);
+
+                string password = System.Text.Encoding.UTF8.GetString(getHash(value, sal));
+
+                return new string[] { password,sal };
+            }
+
+            public static void setPassword(SimpleInvoices.Billers emp, string value)
+            {
+                // generate password and salt for the requested values.
+                string[] passwordAndSalt = generatePasswordAndSalt(value);
+
+                // If there was no error in generation.
+                // proceed and assign password and salt.
+                if (passwordAndSalt.Length == 2)
+                {
+                    emp.password = passwordAndSalt[0];
+
+                    emp.salt = passwordAndSalt[1];
+                }
+            }
+
+            public static bool validateHash(string attemptedPassword, string storedHash, string storedSalt)
+            {
+                string hashed = System.Text.Encoding.UTF8.GetString(getHash(attemptedPassword, storedSalt));
+
+                return storedHash.Equals(hashed);
+            }
+
+            public static bool validate(SimpleInvoices.Billers emp,string attemptedPassword)
+            {
+                return validateHash(attemptedPassword, emp.password, emp.salt);
+            }
+
+            #region Helpers
+            private static byte[] getHash(string password, string salt)
+            {
+                byte[] unhashedBytes = System.Text.Encoding.Unicode.GetBytes(String.Concat(salt, password));
+
+                var sha256 =  SHA256.Create();
+                byte[] hashedBytes = sha256.ComputeHash(unhashedBytes);
+
+                return hashedBytes;
+            }
+
+            private static bool compareHash(string attemptedPassword, byte[] hash, string salt)
+            {
+                string base64Hash = Convert.ToBase64String(hash);
+                string base64AttemptedHash = Convert.ToBase64String(getHash(attemptedPassword, salt));
+
+                return base64Hash == base64AttemptedHash;
+            }
+            #endregion
+        }
 }

@@ -7,7 +7,6 @@ namespace SimpleInvoices.Controllers
     public class ReportsController:BaseController
     {
         public ReportsController(InvoiceContext context):base(context){
-
         }
 
         [Route("api/reports/totalsales"), HttpPost]
@@ -60,12 +59,31 @@ namespace SimpleInvoices.Controllers
         {
            return new BLL.Reports(_db).getInvoicebyFilter(filter);
         }
+
+         [Route("api/reports/backupdb"), HttpPost]
+        public string DbBackup()
+        {
+            return new BLL.Reports(_db).dbBackUp();
+        }
+
+
    /* billerSalesCustomerWise  debatorByOwned
      [Route("api/reports/totalsales"), HttpPost]
         public InvoiceRes totalSales ()
         {
            // return new BLL.Biller(_db).addBiller(biller);
         }
+
+        string dbname = _dbContext.Database.Connection.Database;
+
+const string sqlCommand = @"BACKUP DATABASE [{0}] TO  DISK = N'{1}' WITH NOFORMAT,
+    NOINIT,  NAME = N'MajesticDb-Ali-Full Database Backup',
+    SKIP, NOREWIND, NOUNLOAD,  STATS = 10";
+
+int path = _dbContext.Database.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior
+    .DoNotEnsureTransaction,
+    string.Format(sqlCommand, dbname, "MajesticDB"));
+       
         */
     }
 }

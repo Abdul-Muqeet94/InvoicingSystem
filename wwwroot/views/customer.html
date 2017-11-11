@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Bootstrap Example</title>
+    <title>AJ IncoicingSystem</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -13,7 +13,7 @@
             <a href="#add"> <button type=""><i class="fa fa-plus-circle" aria-hidden="true"></i><span>Add New Customer</span></button></a>
 
             <div ng-controller="crudController">
-                <table class="table table-striped table table-bordered table-striped table-responsive" style="background: #f0f0f0">
+                <table class="table table-striped table table-bordered table-striped" style="background: #f0f0f0">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -30,7 +30,7 @@
                     <tbody ng-repeat="cust in Customers">
                         <tr>
                             <td> <span>{{cust.id}}<a href="#" ng-click="deleteCustomer(cust.id)"><img src="../images/delete.png"alt="" style="width:20px; height:auto;" /></a></span></td>
-                            <td> <span><a href="#viewCustomer" ng-click="setRoot(cust.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#editCustomer" ng-click="setRoot(cust.id)"><img src="../images/edit.ico"alt="" style="width:20px; height:auto;" /></a></span></td>
+                            <td> <span><a href="#viewCustomer" ng-click="setRoot(cust.id)"><img src="../images/view.png"alt="" style="width:20px; height:auto;" /></a><a href="#editCustomer" ng-click="setRoot(cust.id)"><img src="../images/edit.png"alt="" style="width:20px; height:auto;" /></a></span></td>
                             <td> <span>{{cust.name}}</span></td>
                             <td>  <span>{{cust.email}}</span></td></td>
                             <td> <span>{{cust.total}}</span></td>
@@ -40,6 +40,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <uib-pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage"></uib-pagination>
             </div>
 
         </div>

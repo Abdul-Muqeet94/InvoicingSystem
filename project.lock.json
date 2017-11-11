@@ -1934,6 +1934,9 @@
           "lib/netstandard1.0/Newtonsoft.Json.dll": {}
         }
       },
+      "pdfmake/0.1.18": {
+        "type": "package"
+      },
       "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
         "type": "package",
         "dependencies": {
@@ -2324,6 +2327,9 @@
         "runtime": {
           "lib/netstandard1.6/Swashbuckle.SwaggerUi.dll": {}
         }
+      },
+      "SweetAlert/1.0.0": {
+        "type": "package"
       },
       "System.AppContext/4.3.0": {
         "type": "package",
@@ -6333,6 +6339,17 @@
         "tools/install.ps1"
       ]
     },
+    "pdfmake/0.1.18": {
+      "sha512": "Oewm9jZIHLJj8DaISRCDInkOsT2orzoF+AGc+0RoMWzNssSsgMogc2bBXu63BNJMHs3Ch7jiJSLDkw6igJ87tw==",
+      "type": "package",
+      "path": "pdfmake/0.1.18",
+      "files": [
+        "content/Scripts/pdfmake/pdfmake.min.js",
+        "content/Scripts/pdfmake/vfs_fonts.js",
+        "pdfmake.0.1.18.nupkg.sha512",
+        "pdfmake.nuspec"
+      ]
+    },
     "Pomelo.EntityFrameworkCore.MySql/1.1.0": {
       "sha512": "PT6XpS5aCAnRB9PQhC1oXmwB/bOgJONJOzRLbXmAQX7fteQmOheIcoggYDabfX2QzFl9aSK9K1yDenfiGzlJPQ==",
       "type": "package",
@@ -6740,6 +6757,26 @@
         "Swashbuckle.SwaggerUi.nuspec",
         "lib/net451/Swashbuckle.SwaggerUi.dll",
         "lib/netstandard1.6/Swashbuckle.SwaggerUi.dll"
+      ]
+    },
+    "SweetAlert/1.0.0": {
+      "sha512": "eaHJph59CQhNUf5h6k02LaWM31az2t8JBHcJuVXW2dZ+QU2TDkHCxOUSNdAVIgfj+ivQsBTp6laWt8H0nKAydQ==",
+      "type": "package",
+      "path": "SweetAlert/1.0.0",
+      "files": [
+        "SweetAlert.1.0.0.nupkg.sha512",
+        "SweetAlert.nuspec",
+        "content/Content/bootstrap/mixins.less",
+        "content/Content/bootstrap/variables.less",
+        "content/Content/sweetalert/bootstrap-sweetalert.png",
+        "content/Content/sweetalert/docs.css",
+        "content/Content/sweetalert/sweet-alert-animations.less",
+        "content/Content/sweetalert/sweet-alert-combine.less",
+        "content/Content/sweetalert/sweet-alert.css",
+        "content/Content/sweetalert/sweet-alert.less",
+        "content/Content/sweetalert/thumbs-up.jpg",
+        "content/Controllers/SweetController.cs",
+        "content/Views/Sweet/Alert.cshtml"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -11753,8 +11790,10 @@
       "SshNet.Security.Cryptography >= 1.1.0",
       "Swashbuckle >= 6.0.0-beta901",
       "Swashbuckle.SwaggerUi >= 6.0.0-beta901",
+      "SweetAlert >= 1.0.0",
       "System.Net.Http >= 4.3.1",
-      "System.Net.Mail >= 1.0.0-rtm-00002"
+      "System.Net.Mail >= 1.0.0-rtm-00002",
+      "pdfmake >= 0.1.18"
     ],
     ".NETCoreApp,Version=v1.1": []
   },

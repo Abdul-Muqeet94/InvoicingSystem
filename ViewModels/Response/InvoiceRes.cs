@@ -6,6 +6,7 @@ namespace SimpleInvoices{
         public InvoiceRes(){
             product=new List<ProductViewRes>();
         }
+        public string name{get;set;}
         public int id {get;set;}
         public int customerId {get;set;}
         public string custName{get;set;}

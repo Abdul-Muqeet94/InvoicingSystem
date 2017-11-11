@@ -38,7 +38,9 @@
     "System.Net.Http": "4.3.1",
     "System.Net.Mail": "1.0.0-rtm-00002",
     "NETCore.MailKit": "1.0.1",
-    "Microsoft.AspNetCore.Session": "1.1.0"
+    "Microsoft.AspNetCore.Session": "1.1.0",
+    "pdfmake": "0.1.18",
+    "SweetAlert": "1.0.0"
   },
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
@@ -48,8 +50,7 @@
     "netcoreapp1.1": {
       "imports": [
         "dotnet5.6",
-        "portable-net45+win8",
-        "dnxcore50"
+        "portable-net45+win8"
       ]
     }
   },

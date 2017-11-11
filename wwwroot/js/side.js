@@ -1,5 +1,5 @@
 (function () {
-    var app = angular.module("sideModule", ['ngRoute', 'loginModule', 'customerModule', 'productModule', 'invoiceModule', 'serviceModule', 'billerModule', 'customModule', 'taxModule', 'paymentModule', 'ReportModule']);
+    var app = angular.module("sideModule", ['ngRoute', 'ui.bootstrap','loginModule', 'customerModule', 'productModule', 'invoiceModule', 'serviceModule', 'billerModule', 'customModule', 'taxModule', 'paymentModule', 'ReportModule']);
     app.run(function ($rootScope, $location) {
 
 
@@ -11,6 +11,8 @@
         $rootScope.taxId = 0;
         $rootScope.check = false;
         $rootScope.sessionId = 0;
+        $rootScope.printPdfCheck=false;
+        $rootScope.emailCheck=false;
         console.log($rootScope.sessionId);
 
 
@@ -159,6 +161,8 @@
             })
             .when("/invoiceReport", {
                 templateUrl: "../views/invoiceReport.html"
+            }).when("/pdf", {
+                templateUrl: "../views/pdf.html"
             })
 
 

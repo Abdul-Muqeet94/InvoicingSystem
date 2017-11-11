@@ -157,7 +157,7 @@ form > fieldset > legend {
     letter-spacing: 0.5px;
     clear: left;
 }
-form > fieldset > .form-control,input.ng-pristine.ng-untouched.ng-valid.ng-empty {
+form > fieldset > .form-control,input {
     width: 50%;
     float: left;
     margin-bottom: 10px;
@@ -240,6 +240,7 @@ button >span {
     float: right;
     width: 66%;
     margin-top: 2%;
+  margin-bottom: 2%;
 } 
 .menu_filter > ul {
     display: block;
@@ -268,7 +269,7 @@ button >span {
     font-weight: normal;
     display: block;
     padding:0px 15px;
-    color: #555 !important;
+    color: #C0C0C0 !important;
     border-radius: 10px;
     border: 1px solid ;
 }
@@ -302,9 +303,9 @@ button >span {
     color: #000;
 }
 fieldset.form-group {
-    width: 50%;
+    width: 70%;
     display: block;
-    left: 30%;
+    left: 9%;
     position: relative;
 }
 .form-group > label, .label {
@@ -322,7 +323,7 @@ input[type="Email"] {
     float: left;
 }
 td > input[type="text"] {
-    width: 100%;
+    width: 80%;
    
 }
 textarea.ng-pristine.ng-untouched.ng-valid.ng-not-empty {
@@ -455,4 +456,12 @@ li.li.ng-scope {
 h2.H2 {
     margin-bottom: 2%;
     font-weight: 600;
+}
+
+button#abc {
+    margin-top:47px;
+        left: -30%; 
+    float: left!important;
+    position: relative!important;
+    
 }

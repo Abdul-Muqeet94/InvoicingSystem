@@ -5,7 +5,7 @@
         $scope.save = function () {
             $scope.tax.id = 0;
             console.log($scope.tax);
-            $scope.message = $http.post('http://localhost:5000/api/tax/create', $scope.tax).
+            $scope.message = $http.post('http://danishtest.ml/api/tax/create', $scope.tax).
                 then(function (response) {
                     console.log(response.data);
                     $location.path('tax');
@@ -17,7 +17,7 @@
 
     app.controller("gettax", function ($scope, $http, $rootScope, $location) {
 
-        $scope.message = $http.post('http://localhost:5000/api/tax/gettaxes', $rootScope.taxId).
+        $scope.message = $http.post('http://danishtest.ml/api/tax/gettaxes', $rootScope.taxId).
             then(function (response) {
                 $scope.taxes = response.data;
                 console.log(response.data);
@@ -28,7 +28,7 @@
             console.log($rootScope.taxId);
         };
         $scope.deletetax = function (x) {
-            $scope.message = $http.post('http://localhost:5000/api/tax/deletetaxes', x).
+            $scope.message = $http.post('http://danishtest.ml/api/tax/deletetaxes', x).
                 then(function (response) {
                     $scope.response = response.data;
 
@@ -42,7 +42,7 @@
 
     app.controller('editTController', function ($scope, $rootScope, $http) {
 
-        $scope.message = $http.post('http://localhost:5000/api/tax/gettaxes', $rootScope.taxId).
+        $scope.message = $http.post('http://danishtest.ml/api/tax/gettaxes', $rootScope.taxId).
             then(function (response) {
                 $scope.taxes = response.data[0];
                 console.log($scope.taxes);
@@ -50,7 +50,7 @@
             });
         $scope.edit = function () {
             console.log($scope.taxes);
-            $scope.message = $http.post('http://localhost:5000/api/tax/edittaxes', $scope.taxes).
+            $scope.message = $http.post('http://danishtest.ml/api/tax/edittaxes', $scope.taxes).
                 then(function (response) {
                     console.log(response.data);
                     console.log($scope.taxes);

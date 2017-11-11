@@ -196,25 +196,63 @@ namespace SimpleInvoices.BLL
             db.ledgerDetails.AddRange(toReturn);
             return toReturn;
         }
-        public List<InvoiceRes> getAllInvoice(int id)
+        public List<InvoiceRes> getAllInvoice(int id,string type)
         {
             //  Utils.Email em=new Utils.Email();
             // em.sendEmail("","");
             List<InvoiceRes> toReturn = new List<InvoiceRes>();
             List<Ledgers> ledgers = new List<Ledgers>();
             var db = _db;
-            if (id == 0)
+            if (id == 0 && type.Equals("all"))
             {
-                ledgers = db.ledgers.Include(c => c.biller)
+                ledgers = db.ledgers.Where(c=>c.enable==true).Include(c => c.biller)
                 .Include(c => c.customer)
                 .Include(c => c.ledgerDetails).ThenInclude(c => c.product)
                 .Include(c => c.ledgerDetails).ThenInclude(c => c.tax)
                 .Include(c => c.ledgerDetails).ThenInclude(c => c.designs)
                 .ToList();
             }
+            else if (id == 0 && type.Equals("due"))
+            {
+                ledgers = db.ledgers.Where(c=>c.enable==true).Where(c=>c.balance>0).Include(c => c.biller)
+                .Include(c => c.customer)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.product)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.tax)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.designs)
+                .ToList();
+            }
+            else if (id == 0 && type.Equals("paid"))
+            {
+                ledgers = db.ledgers.Where(c=>c.balance<1 && c.enable==true).Include(c => c.biller)
+                .Include(c => c.customer)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.product)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.tax)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.designs)
+                .ToList();
+            }
+             else if (id == 0 && type.Equals("delivery"))
+            {
+                ledgers = db.ledgers.Where(c=>c.enable==true).Include(c => c.biller)
+                .Include(c => c.customer)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.product)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.tax)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.designs)
+                .OrderByDescending(c=>c.deliveryDate.Date).ThenBy(c=>c.deliveryDate.TimeOfDay)
+                .ToList();
+            }
+            else if (id == 0 && type.Equals("date"))
+            {
+                ledgers = db.ledgers.Where(c=>c.enable==true).Include(c => c.biller)
+                .Include(c => c.customer)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.product)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.tax)
+                .Include(c => c.ledgerDetails).ThenInclude(c => c.designs)
+                .OrderByDescending(c=>c.createdDate.Date).ThenBy(c=>c.createdDate.TimeOfDay)
+                .ToList();
+            }
             else
             {
-                ledgers = db.ledgers.Where(c => c.Id.Equals(id)).Include(c => c.biller)
+                ledgers = db.ledgers.Where(c=>c.enable==true).Where(c => c.Id.Equals(id)).Include(c => c.biller)
                 .Include(c => c.customer)
                  .Include(c => c.ledgerDetails).ThenInclude(c => c.product)
                  .Include(c => c.ledgerDetails).ThenInclude(c => c.tax)
@@ -225,6 +263,7 @@ namespace SimpleInvoices.BLL
             {
                 InvoiceRes res = new InvoiceRes();
                 res.id = entity.Id;
+                res.name=entity.invoiceName;
                 res.billerId = entity.biller.Id;
                 res.billerName = entity.biller.name;
                 res.customerId = entity.customer.Id;
